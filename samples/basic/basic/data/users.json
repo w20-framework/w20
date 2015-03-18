@@ -1,0 +1,32 @@
+[
+    {
+        "id": "1",
+        "firstName": "Robert",
+        "lastName": "SMITH",
+        "genre": "male"
+    },
+    {
+        "id": "2",
+        "firstName": "Anna",
+        "lastName": "BENSON",
+        "genre": "female"
+    },
+    {
+        "id": "3",
+        "firstName": "Johnny",
+        "lastName": "FLOYD",
+        "genre": "male"
+    },
+    {
+        "id": "4",
+        "firstName": "Roger",
+        "lastName": "CRIMSON",
+        "genre": "male"
+    },
+    {
+        "id": "5",
+        "firstName": "Cassandra",
+        "lastName": "O'HARA",
+        "genre": "female"
+    }
+]

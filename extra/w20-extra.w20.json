@@ -1,0 +1,31 @@
+{
+    "id":"w20-extra",
+    "name":"W20 extra component",
+    "description":"W20 miscellaneous component",
+
+    "modules" : {
+        "piwik" : {
+            "path" : "{w20-extra}/modules/piwik",
+            "configSchema": {
+                "title": "Piwik analytics configuration",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "jsUrl": {
+                        "description": "The uri of piwik.js on the PHP server",
+                        "type": "string"
+                    },
+                    "trackerUrl": {
+                        "description": "The url of the piwik tracker (piwik.php)",
+                        "type": "string"
+                    },
+                    "siteId": {
+                        "description": "The id given by Piwik for this application",
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+
+    }
+}

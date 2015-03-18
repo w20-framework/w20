@@ -1,0 +1,121 @@
+{
+    "id":"w20-dataviz",
+    "name":"W20 data visualization",
+    "description":"W20 data visualization components (charts, ...)",
+
+    "modules" : {
+        "bullet" : {
+            "path" : "{w20-dataviz}/modules/charts/bullet",
+            "configSchema": {
+                "title": "Bullet chart configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+         "cumulativeline" : {
+            "path" : "{w20-dataviz}/modules/charts/cumulativeline",
+            "configSchema": {
+                "title": "Cumulative line chart configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+         "discretebar" : {
+            "path" : "{w20-dataviz}/modules/charts/discretebar",
+            "configSchema": {
+                "title": "Discrete bar chart configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+         "historicalbar" : {
+            "path" : "{w20-dataviz}/modules/charts/historicalbar",
+            "configSchema": {
+                "title": "Historical bar chart configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+         "line" : {
+            "path" : "{w20-dataviz}/modules/charts/line",
+            "configSchema": {
+                "title": "Line chart configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+         "lineplusbar" : {
+            "path" : "{w20-dataviz}/modules/charts/lineplusbar",
+            "configSchema": {
+                "title": "Line and bar chart configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+         "linewithfocus" : {
+            "path" : "{w20-dataviz}/modules/charts/linewithfocus",
+            "configSchema": {
+                "title": "Line chart with focus configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+         "multibar" : {
+            "path" : "{w20-dataviz}/modules/charts/multibar",
+            "configSchema": {
+                "title": "Multibar chart configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+        "multibarhorizontal" : {
+            "path" : "{w20-dataviz}/modules/charts/multibarhorizontal",
+            "configSchema": {
+                "title": "Horizontal multibar chart configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+         "pie" : {
+            "path" : "{w20-dataviz}/modules/charts/pie",
+            "configSchema": {
+                "title": "Pie chart configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+         "scatter" : {
+            "path" : "{w20-dataviz}/modules/charts/scatter",
+            "configSchema": {
+                "title": "Scatter chart configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+         "stackedarea" : {
+            "path" : "{w20-dataviz}/modules/charts/stackedarea",
+            "configSchema": {
+                "title": "Stacked area chart configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        }
+    },
+
+    "requireConfig" : {
+        "paths": {
+            "{d3}": "${components-path:bower_components}/d3",
+            "{nvd3}": "${components-path:bower_components}/nvd3"
+        },
+
+        "shim" : {
+              "{d3}/d3": {
+                   "exports": "d3"
+              },
+              "{nvd3}/nv.d3": {
+                  "deps": ["{d3}/d3"],
+                  "exports": "nv"
+              }
+          }
+      }
+}

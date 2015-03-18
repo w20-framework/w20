@@ -1,0 +1,170 @@
+{
+    "id": "w20-core",
+    "name": "W20 core",
+    "description": "W20 core modules",
+
+    "modules": {
+        "application": {
+            "path": "{w20-core}/modules/application",
+            "configSchema": {
+                "title": "Application module configuration",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "description": "The application unique identifier",
+                        "type": "string",
+                        "required": true,
+                        "title": "Application identifier"
+                    },
+                    "home": {
+                        "description": "The path of the home view",
+                        "type": "string",
+                        "title": "Home view path"
+                    },
+                    "blank": {
+                        "description": "The path of the blank view",
+                        "type": "string",
+                        "title": "Blank view path"
+                    },
+                    "notFound": {
+                        "description": "The path of the 'view not found' view",
+                        "type": "string",
+                        "title": "Missing view path"
+                    },
+                    "redirectAfterRouteError": {
+                        "description": "Specify the path to go to after a route change error",
+                        "type": "string",
+                        "title": "Route error redirection"
+                    },
+                    "defaultSandboxPermissions": {
+                        "description": "Specify the default iframe-based sandbox permissions (can be overridden by the sandboxPermissions attribute on a specific route)",
+                        "type": "string"
+                    },
+                    "defaultSandboxId": {
+                        "description": "Specify the default identifier for the sandbox iframe",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "culture": {
+            "path": "{w20-core}/modules/culture",
+            "configSchema": {
+                "title": "Culture module configuration",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "available": {
+                        "description": "The IETF codes of available culture(s)",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "default": {
+                        "description": "The IETF code of the default culture",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "env": {
+            "path": "{w20-core}/modules/env",
+            "configSchema": {
+                "title": "Environment module configuration",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "type": {
+                        "description": "The name of the environment (dev, test, preprod, prod are recognized as special values)",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "security": {
+            "path": "{w20-core}/modules/security",
+            "configSchema": {
+                "title": "Security module configuration",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "autoLogin": {
+                        "description": "Specify if application should attempt a login on startup",
+                        "type": "boolean"
+                    },
+                    "redirectAfterLogout": {
+                        "description": "The path to go to after logout",
+                        "type": "string"
+                    },
+                    "redirectAfterLogin": {
+                        "description": "The path to go to after login",
+                        "type": "string"
+                    },
+                    "roleMapping": {
+                        "description": "Allow to map roles from multiple realms to one UI virtual role.",
+                        "type": "object"
+                    },
+                    "persistentRestrictions": {
+                        "description": "If true, security restrictions state will be persisted to local storage.",
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "utils": {
+            "path": "{w20-core}/modules/utils",
+            "configSchema": {
+                "title": "Utils module configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        }
+    },
+
+    "requireConfig": {
+        "map": {
+            "*": {
+                "jquery": "{jquery}/jquery",
+                "[text]": "{requirejs-text}/text"
+            }
+        },
+        
+        "paths": {
+            "{lodash}": "${components-path:bower_components}/lodash/dist",
+            "{globalize}": "${components-path:bower_components}/globalize/lib",
+            "{angular}": "${components-path:bower_components}/angular",
+            "{angular-resource}": "${components-path:bower_components}/angular-resource",
+            "{angular-route}": "${components-path:bower_components}/angular-route",
+            "{angular-sanitize}": "${components-path:bower_components}/angular-sanitize",
+            "{jquery}": "${components-path:bower_components}/jquery/dist",
+            "{tv4}": "${components-path:bower_components}/tv4",
+            "{requirejs-text}": "${components-path:bower_components}/requirejs-text",
+            "{requirejs}": "${components-path:bower_components}/requirejs",
+            "w20": "empty:"
+        },
+
+        "shim": {
+            "{angular-resource}/angular-resource": [ "{angular}/angular" ],
+            "{angular-route}/angular-route": [ "{angular}/angular" ],
+            "{angular-sanitize}/angular-sanitize": [ "{angular}/angular" ],
+            "{angular}/angular": {
+                "deps": [ "{jquery}/jquery" ],
+                "exports": "angular"
+            },
+            "{lodash}/lodash": {
+                "exports": "_"
+            },
+            "{jquery}/jquery": {
+                "exports": "jQuery"
+            },
+            "{globalize}/globalize": {
+                "exports": "Globalize"
+            },
+            "{tv4}/tv4": {
+                "exports": "tv4"
+            }
+        }
+    }
+}

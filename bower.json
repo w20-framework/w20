@@ -1,0 +1,51 @@
+{
+  "name": "w20",
+  "version": "2.0.0",
+  "ignore": [
+    ".*",
+    "*.iml",
+    "specs",
+    "mocks",
+    "samples",
+    "bower_components",
+    "coverage",
+    "node_modules",
+    "gruntfile.js",
+    "karma.conf.js",
+    "package.json",
+    "test-main.js"
+  ],
+  "dependencies": {
+    "jquery": "2.1.1",
+    "angular": "1.3.6",
+    "angular-route": "1.3.6",
+    "angular-sanitize": "1.3.6",
+    "angular-resource": "1.3.6",
+    "globalize": "0.1.1",
+    "lodash": "2.4.1",
+    "requirejs": "2.1.15",
+    "requirejs-text": "2.0.12",
+    "tv4": "1.1.4",
+
+    "angular-bootstrap": "0.12.0",
+    "bootstrap": "3.3.1",
+    "angular-ui-grid": "3.0.0-RC.18",
+    "angular-ui-select": "0.9.3",
+    "font-awesome": "4.2.0",
+    "jgrowl": "1.4.1",
+    "require-css": "0.1.8",
+    "showdown": "0.3.1",
+
+    "nvd3": "1.7.1",
+
+    "hammerjs": "2.0.4",
+    "jcaret2": "https://jcaret.googlecode.com/files/jquery.caret.1.02.js",
+    "iscroll": "https://raw.githubusercontent.com/cubiq/iscroll/v4.2.5/src/iscroll.js"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.3.6"
+  },
+  "resolutions": {
+    "angular": "1.3.6"
+  }
+}

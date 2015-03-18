@@ -1,0 +1,42 @@
+{
+    "layer1":[
+        { "value":"Close", "isChar":false, "buttonClass":"kb-button kb-button-numpad-hide", "onclick":"virtualKeyboardService.close();", "keyClass":"kb-key kb-key-numpad-hide" },
+        { "value":47 },
+        { "value":42 },
+        { "value":45 },
+        {"separator":true },
+
+
+
+
+        { "value":55 },
+        { "value":56 },
+        { "value":57 },
+        { "value":43, "buttonClass":"kb-button"},
+
+
+
+
+        { "value":52 },
+        { "value":53 },
+        { "value":54 },
+        { "value":"Del", "isChar":false, "onclick":"jsKeyboard.del()", "buttonClass":"kb-button kb-button-numpad-del", "keyClass":"kb-key" },
+
+
+
+
+        { "value":49 },
+        { "value":50 },
+        { "value":51 },
+        { "value":"Enter", "buttonClass":"kb-button kb-button-numpad-enter", "isChar":false, "onclick":"jsKeyboard.enter();", "keyClass":"kb-key kb-key-numpad-enter" },
+
+
+
+
+        { "value":48, "buttonClass":"kb-button kb-button-numpad-zero" },
+        { "value":46 }
+    ],
+    "layer2":[],
+    "layer3":[],
+    "layer4":[]
+}

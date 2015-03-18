@@ -1,0 +1,46 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>{{ 'application.view.basic.content' | localize }}</h1>
+			<div class="alert alert-danger">
+				<a class="close" data-dismiss="alert" href="#">x</a>
+				<h4 class="alert-heading">{{ 'application.view.content.error' | localize }}</h4>
+				{{ 'application.view.content.errormsg' | localize }}
+			</div>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<br />
+			<div class="btn-toolbar pull-right">
+				<button id="resetButton" data-ng-click="showCoucou()" class="btn" data-w20-tooltip="'application.helper.resetform' | localize" data-w20-tooltip-my="right bottom" data-w20-tooltip-at="left bottom">{{ 'application.form.reset' | localize }}</button>
+				<button id="submitButton" class="btn btn-primary" data-w20-tooltip="'application.helper.submitform' | localize" data-w20-tooltip-my="bottom right" data-w20-tooltip-at="top right">{{ 'application.form.submit' | localize }}</button>
+			</div>
+
+			<ul class="nav nav-tabs">
+				<li class="active"><a>{{ 'application.view.content.tab1' | localize }}</a></li>
+				<li><a>{{ 'application.view.content.tab2' | localize }}</a></li>
+				<li><a>{{ 'application.view.content.tab3' | localize }}</a></li>
+			</ul>
+
+			<h1>{{ 'application.view.content.title1' | localize }}</h1>
+			<h2>{{ 'application.view.content.title2' | localize }}</h2>
+			<h3>{{ 'application.view.content.title3' | localize }}</h3>
+			<h4>{{ 'application.view.content.title4' | localize }}</h4>
+			<h5>{{ 'application.view.content.title5' | localize }}</h5>
+			<h6>{{ 'application.view.content.title6' | localize }}</h6>
+
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>{{ 'application.view.content.table.header1' | localize }}</th>
+						<th>{{ 'application.view.content.table.header2' | localize }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="user in users">
+						<td>{{ user.firstName }}</td>
+						<td>{{ user.lastName }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,10 @@
+<li data-ng-controller="W20CultureActionController" class="dropdown" id="ddlanguage">
+    <a class="dropdown-toggle" id="ddlanguage-link" data-toggle="dropdown" data-target="#" data-role="button">
+        <i class="icon-flag icon-white"></i> {{ currentCulture().nativeName | firstUpperCase }}<b class="caret"></b>
+    </a>
+    <ul id="ddlanguage-menu" class="dropdown-menu" data-role="menu">
+        <li data-ng-repeat="culture in availableCultures()">
+            <a data-ng-click="switchCulture(culture.name)">{{ culture.nativeName | firstUpperCase }}</a>
+        </li>
+    </ul>
+</li>

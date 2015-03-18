@@ -1,0 +1,123 @@
+{
+    "id":"w20-ui",
+    "name":"W20 UI",
+    "description":"W20 base UI components",
+
+    "modules" : {
+        "select" : {
+            "path" : "{w20-ui}/modules/select",
+            "configSchema": {
+                "title": "Select module configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+        "grid" : {
+            "path" : "{w20-ui}/modules/grid",
+            "configSchema": {
+                "title": "Grid module configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+        "ui" : {
+            "path" : "{w20-ui}/modules/ui",
+            "autoload" : true,
+            "configSchema": {
+                "title": "UI module configuration",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "expandedRouteCategories": {
+                        "description": "Array of initially expanded route categories",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "notifications" : {
+            "path" : "{w20-ui}/modules/notifications",
+            "configSchema": {
+                "title": "Notifications module configuration",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "disableNotifications": {
+                        "description": "Disable the built-in notifications (like login, logout, or page access error)",
+                        "type": "boolean"
+                    },
+                    "position": {
+                        "description": "Specify the screen position of notifications (bottom-left, bottom-right, top-right, top-left)",
+                        "type": "string"
+                    },
+                    "limit": {
+                        "description": "Specify the maximum number of notifications displayed simultaneously",
+                        "type": "integer"
+                    },
+                    "options": {
+                        "description": "Specify the default options for each level of notification",
+                        "type": "object"
+                    }
+                }
+            }
+        },
+        "text" : {
+            "path" : "{w20-ui}/modules/text",
+            "configSchema": {
+                "title": "Text module configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        }
+    },
+
+    "requireConfig" : {
+        "map": {
+            "*": {
+                "[css]": "{require-css}/css"
+            }
+        },
+
+        "paths": {
+            "{angular-ui-grid}": "${components-path:bower_components}/angular-ui-grid",
+            "{angular-ui-select}": "${components-path:bower_components}/angular-ui-select/dist",
+            "{require-css}": "${components-path:bower_components}/require-css",
+            "{bootstrap}": "${components-path:bower_components}/bootstrap/dist",
+            "{angular-bootstrap}": "${components-path:bower_components}/angular-bootstrap",
+            "{font-awesome}": "${components-path:bower_components}/font-awesome",
+            "{jgrowl}": "${components-path:bower_components}/jgrowl",
+            "{showdown}": "${components-path:bower_components}/showdown/compressed"
+        },
+
+        "shim" : {
+            "{jgrowl}/jquery.jgrowl":[
+                "{jquery}/jquery"
+            ],
+            "{bootstrap}/js/bootstrap" : [
+                "{jquery}/jquery"
+            ],
+            "{angular-bootstrap}/ui-bootstrap-tpls" : [
+                "{angular}/angular"
+            ],
+            "{angular-ui-grid}/ui-grid" : [
+                "{angular}/angular",
+                "[css]!{angular-ui-grid}/ui-grid"
+            ],
+            "{angular-ui-select}/select" : [
+                "{angular}/angular",
+                "[css]!{angular-ui-select}/select"
+            ],
+            "{showdown}/showdown": {
+                "exports": "Showdown"
+            }
+        }
+    },
+
+    "i18n": {
+        "en" : [ "{w20-ui}/i18n/messages-en.json" ],
+        "fr" : [ "{w20-ui}/i18n/messages-fr.json" ]
+    }
+}

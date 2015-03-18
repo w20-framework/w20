@@ -1,0 +1,5 @@
+{
+    "test.key.to.localize": "key to localize in english",
+    "test.key.to.localize.with.placeholder": "this {0} has {1} {2}",
+    "test.key.no.value.in.french": "No value in other language than en-GB"
+}
