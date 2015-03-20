@@ -105,7 +105,7 @@
     "requireConfig" : {
         "paths": {
             "{d3}": "${components-path:bower_components}/d3",
-            "{nvd3}": "${components-path:bower_components}/nvd3"
+            "{nvd3}": "${components-path:bower_components}/nvd3/build"
         },
 
         "shim" : {
