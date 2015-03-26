@@ -1,7 +1,7 @@
 <li data-ng-controller="W20ProfileActionController">
-    <a data-ng-show="!subjectAuthenticated()" data-ng-click="authenticate()"><i class="glyphicon glyphicon-user"></i> {{ 'w20.ui.action.login' | localize }}</a>
+    <a data-ng-show="!subjectAuthenticated()" data-ng-click="authenticate()"><i class="icon-user icon-white glyphicon glyphicon-user"></i> {{ 'w20.ui.action.login' | localize }}</a>
     <a data-ng-show="subjectAuthenticated()" class="dropdown-toggle" id="ddprofile-link" data-toggle="dropdown">
-        <i class="glyphicon glyphicon-user"></i> {{ subjectPrincipal('firstName') + ' ' + subjectPrincipal('lastName') + ' - ' + subjectId() }} <b class="caret"></b>
+        <i class="icon-user icon-white glyphicon glyphicon-user"></i> {{ subjectPrincipal('firstName') + ' ' + subjectPrincipal('lastName') + ' - ' + subjectId() }} <b class="caret"></b>
     </a>
     <div data-ng-show="subjectAuthenticated()" id="ddprofile-menu" class="dropdown-menu" data-role="menu" data-stop-event="click">
         <div class="w20-action-profile panel-primary">
@@ -29,7 +29,7 @@
             <div class="panel-footer">
                 <span class="pull-right">
                     <button class="btn btn-sm btn-primary" type="button" data-ng-click="deauthenticate()">
-                        <i class="glyphicon glyphicon-off"></i> {{  'w20.ui.action.logout' | localize }}
+                        <i class="icon-off glyphicon glyphicon-off"></i> {{  'w20.ui.action.logout' | localize }}
                     </button>
                 </span>
                 <div class="clearfix"></div>
