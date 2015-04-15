@@ -4,28 +4,33 @@
     "description":"W20 miscellaneous component",
 
     "modules" : {
-        "piwik" : {
-            "path" : "{w20-extra}/modules/piwik",
+        "analytics" : {
+            "path" : "{w20-extra}/modules/analytics",
             "configSchema": {
-                "title": "Piwik analytics configuration",
+                "title": "Analytics module configuration",
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
-                    "jsUrl": {
-                        "description": "The uri of piwik.js on the PHP server",
+                    "provider": {
+                        "description": "The name of the analytic provider (available: adobe, chartbeat, flurry, ga, ga-cordova, gtm, kissmetrics, mixpanel, piwik, segmentio, splunk, woopra)",
                         "type": "string"
                     },
-                    "trackerUrl": {
-                        "description": "The url of the piwik tracker (piwik.php)",
-                        "type": "string"
-                    },
-                    "siteId": {
-                        "description": "The id given by Piwik for this application",
-                        "type": "integer"
+                    "virtualPageViews": {
+                        "description": "Automatic virtual page view tracking is enabled by default, meaning the entire user navigation across the different routes of your application is tracked. This attribute can disable it",
+                        "type": "boolean"
                     }
                 }
             }
         }
+    },
 
+    "requireConfig": {
+        "paths": {
+            "{angulartics}": "${components-path:bower_components}/angulartics/src"
+        },
+
+        "shim": {
+            "{angulartics}/angulartics": [ "{angular}/angular" ]
+        }
     }
 }
