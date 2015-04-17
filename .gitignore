@@ -8,6 +8,7 @@
 *.iml
 
 # Distribution
+.tmp
 dist/
 
 # NPM

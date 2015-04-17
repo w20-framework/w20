@@ -134,7 +134,6 @@ define([
             expect(shiftCallbacks.indexOf(callback) > -1).toBeTruthy();
         });
 
-
         it('should compute the content shift', function() {
             var callback = { fn: function() {} };
             window.spyOn(displayService, 'computeContentShift');

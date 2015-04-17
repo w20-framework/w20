@@ -17,7 +17,7 @@ module.exports = function (grunt) {
         clean: [
             'bower_components/**',
             'dist/**',
-	    'coverage/**'
+            'coverage/**'
         ],
         jshint: {
             core: {
@@ -53,27 +53,61 @@ module.exports = function (grunt) {
                 autoWatch: true
             }
         },
-        concat : {
-            core: {
-                options : {
-                    sourceMap :true
-                },
-                dist : {
-                    src  : ['src/modules/*.js'],
-                    dest : '.tmp/core-concat.js'
-                }
+        coveralls: {
+            options: {
+                src: ['coverage/lcov.info'],
+                force: true
             }
         },
-        uglify : {
+
+        /* Tasks below not used at the moment */
+
+        concat: {
+            options: {
+                sourceMap: true
+            },
             core: {
-                options : {
-                    sourceMap : true,
-                    sourceMapIncludeSources : true,
-                    sourceMapIn : '<%= concat.core.dist.dest %>.map'
+                src: ['core/modules/*.js'],
+                dest: '.tmp/core-concat.js'
+            },
+            ui: {
+                src: ['ui/modules/*.js'],
+                dest: '.tmp/ui-concat.js'
+            },
+            dataviz: {
+                src: ['dataviz/modules/*.js'],
+                dest: '.tmp/dataviz-concat.js'
+            },
+            touch: {
+                src: ['touch/modules/*.js'],
+                dest: '.tmp/touch-concat.js'
+            },
+            extra: {
+                src: ['extra/modules/*.js', 'extra/modules/providers/*.js'],
+                dest: '.tmp/extra-concat.js'
+            }
+        },
+        uglify: {
+            core: {
+                options: {
+                    sourceMap: true,
+                    sourceMapIncludeSources: true,
+                    sourceMapIn: '<%= concat.core.dist.dest %>.map'
                 },
-                dist : {
-                    src  : '<%= concat.core.dist.dest %>',
-                    dest : 'dist/w20-core.min.js'
+                dist: {
+                    src: '<%= concat.core.dist.dest %>',
+                    dest: 'dist/w20-core.min.js'
+                }
+            },
+            ui: {
+                options: {
+                    sourceMap: true,
+                    sourceMapIncludeSources: true,
+                    sourceMapIn: '<%= concat.core.dist.dest %>.map'
+                },
+                dist: {
+                    src: '<%= concat.core.dist.dest %>',
+                    dest: 'dist/w20-core.min.js'
                 }
             }
         }
@@ -84,7 +118,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-bower-task');
 
-    grunt.registerTask('default', ['jshint', 'bower', 'karma:test', 'concat', 'uglify']);
-} ;
+    grunt.registerTask('default', ['jshint', 'bower', 'karma:test', 'coveralls']);
+};

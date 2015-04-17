@@ -29,16 +29,19 @@ module.exports = function(config) {
             'core/modules/*.js': 'coverage',
             'dataviz/modules/*.js': 'coverage',
             'extra/modules/*.js': 'coverage',
+            'extra/modules/providers/*.js': 'coverage',
             'touch/modules/*.js': 'coverage',
             'ui/modules/*.js': 'coverage'
         },
         reporters: ['dots', 'coverage' ],
+        coverageReporter: {
+            type: "lcov",
+            dir: "coverage/",
+            subdir: "."
+        },
         port: 9876,
         colors: true,
         logLevel: 'INFO',
-        coverageReporter: {
-            type : 'text'
-        },
         browsers: [ 'PhantomJS' ]
     });
 };
