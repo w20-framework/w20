@@ -37,9 +37,27 @@ window.w20 = {
             }
         },
         '/base/ui/w20-ui.w20.json': {
-            'modules': {
-                'ui': {
+            modules: {
+                ui: {
                     'expandedRouteCategories': ['category1.category11']
+                },
+                grid: {},
+                select: {}
+            },
+            vars: {
+                'components-path': '/base/bower_components'
+            }
+        },
+        'base/extra/w20-extra.w20.json': {
+            modules: {
+                analytics: {
+                    provider: 'piwik',
+                    virtualPageViews: true,
+                    settings: {
+                        jsUrl: '/base/extra/specs/mock-piwik.js',
+                        trackerUrl: 'url/of/tracker.url',
+                        siteId: 1
+                    }
                 }
             },
             vars: {
