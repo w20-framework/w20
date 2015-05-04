@@ -292,7 +292,7 @@ define([
                         }
                     }
                 } else if (typeof rejection === 'string') {
-                    reason = rejection;
+                    reason = cultureService.localize('w20.ui.notifications.route.error.reason.' + rejection);
                 }
 
                 notificationService.warn(cultureService.localize('w20.ui.notifications.route.error', [cultureService.displayName(current.$$route), reason]));

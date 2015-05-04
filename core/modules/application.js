@@ -19,7 +19,6 @@ define([
     '{angular-route}/angular-route',
     '{angular-sanitize}/angular-sanitize',
 
-    '{w20-core}/modules/culture',
     '{w20-core}/modules/env',
     '{w20-core}/modules/security'
 ], function (module, w20, require, $, _, angular) {
@@ -118,10 +117,10 @@ define([
             route.name = normalizeRouteName(path);
             route.i18n = 'application.view.' + route.name;
             route.resolve = {
-                security: ['$q', '$route', 'SecurityExpressionService', 'CultureService', 'AuthenticationService', function ($q, $route, securityExpressionService, cultureService, authenticationService) {
+                security: ['$q', '$route', 'SecurityExpressionService', 'AuthenticationService', function ($q, $route, securityExpressionService, authenticationService) {
                     function checkSecurity() {
                         if (typeof $route.current.security !== 'undefined' && !securityExpressionService.evaluate($route.current.security)) {
-                            return $q.reject(cultureService.localize('w20.application.route.accessdenied'));
+                            return $q.reject('denied');
                         }
 
                         return $q.defer().resolve();

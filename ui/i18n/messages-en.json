@@ -4,6 +4,7 @@
     "w20.ui.notifications.route.error.reason.httpstatus" : "HTTP status {0}",
     "w20.ui.notifications.route.error.reason.notfound" : "Not found (HTTP 404)",
     "w20.ui.notifications.route.error.reason.forbidden" : "Forbidden (HTTP 403)",
+    "w20.ui.notifications.route.error.reason.denied" : "Access denied",
     "w20.ui.notifications.login.authenticated" : "You are now authenticated as {0}.",
     "w20.ui.notifications.login.deauthenticated" : "You are now deauthenticated.",
     "w20.ui.notifications.login.failed" : "Failed to authenticate.",
