@@ -115,7 +115,9 @@ define([
      */
     w20UIText.filter('markdown', ['TextService', function (textService) {
         return function(value) {
-            return textService.markdown(value);
+            if (value) {
+                return textService.markdown(value);
+            }
         };
     }]);
 
