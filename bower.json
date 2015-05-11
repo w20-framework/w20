@@ -1,6 +1,6 @@
 {
   "name": "w20",
-  "version": "2.0.0-M1",
+  "version": "2.0.0-M2",
   "ignore": [
     ".*",
     "*.iml",
@@ -30,7 +30,7 @@
 
     "angular-bootstrap": "0.12.0",
     "bootstrap": "3.3.1",
-    "angular-ui-grid": "3.0.0-RC.18",
+    "angular-ui-grid": "3.0.0-rc.21",
     "angular-ui-select": "0.9.3",
     "font-awesome": "4.2.0",
     "jgrowl": "1.4.1",
