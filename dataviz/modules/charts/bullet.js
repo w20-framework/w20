@@ -279,12 +279,6 @@ define([
             link: function (scope, element, attrs) {
                 scope.$watch('config.data', function (data) {
                     if (data) {
-                        //if the chart exists on the scope, do not call addGraph again, update data and call the chart.
-//                        if (scope.chart) {
-//                            return d3.select('#' + attrs.id + ' svg')
-//                                .datum(data)
-//                                .call(scope.chart);
-//                        }
                         nv.addGraph({
                             generate: function () {
                                 var margin = {left: 150, top: 10, bottom: 10, right: 10},
@@ -292,7 +286,6 @@ define([
                                     height = scope.config.height;
 
                                 var chart = nv.models.bulletChart()
-                                    // width and height removed because of formatting issue
                                     .margin(margin)
                                     .orient(scope.config.orient === undefined ? 'left' : scope.config.orient)
                                     .ranges(scope.config.ranges === undefined ? function (d) {

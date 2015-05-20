@@ -16,7 +16,7 @@ define([
     '{angular-ui-grid}/ui-grid'
 ], function (module, angular) {
     'use strict';
-    var w20UIGrid = angular.module('w20UIGrid', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.autoResize', 'w20CoreEnv', 'w20CoreCulture']);
+    var w20UIGrid = angular.module('w20UIGrid', ['ui.grid.pagination', 'ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.autoResize', 'w20CoreEnv', 'w20CoreCulture']);
 
     w20UIGrid.run(['i18nService', 'EventService', 'CultureService', function (i18nService, eventService, cultureService) {
         function applyCulture(culture) {

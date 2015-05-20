@@ -230,10 +230,6 @@ define([
                         }
                         nv.addGraph({
                             generate: function () {
-//                                var margin = (scope.$eval(attrs.margin) || {left:50, top:50, bottom:50, right:50}),
-//                                width = attrs.width - (margin.left + margin.right),
-//                                height = attrs.height - (margin.top + margin.bottom);
-
                                 var chart = nv.models.pieChart()
                                     .x(scope.config.x === undefined ? function (d) {
                                         return d.key;
@@ -241,8 +237,6 @@ define([
                                     .y(scope.config.y === undefined ? function (d) {
                                         return d.value;
                                     } : scope.config.y)
-//                                    .width(width)
-//                                    .height(height)
                                     .tooltips(scope.config.tooltips === undefined ? false : scope.config.tooltips)
                                     .noData(scope.config.noData === undefined ? 'No Data Available.' : scope.config.noData)
                                     .showLabels(scope.config.showLabels === undefined ? false : scope.config.showLabels)
@@ -251,9 +245,6 @@ define([
                                     .pieLabelsOutside(scope.config.pieLabelsOutside === undefined ? true : scope.config.pieLabelsOutside)
                                     .valueFormat(scope.config.valueFormat === undefined ? d3.format(',.2f') : scope.config.valueFormat)
                                     .showLegend(scope.config.showLegend === undefined ? false : scope.config.showLegend)
-                                    .description(scope.config.description === undefined ? function (d) {
-                                        return d.description;
-                                    } : scope.config.description())
                                     .color(scope.config.color === undefined ? nv.utils.defaultColor() : scope.config.color)
                                     .donutLabelsOutside(scope.config.donutLabelsOutside === undefined ? false : scope.config.donutLabelsOutside)
                                     .donut(scope.config.donut === undefined ? false : scope.config.donut)
@@ -266,12 +257,9 @@ define([
 
                                 var drawChart = function () {
                                     d3.select('#' + attrs.id + ' svg')
-                                        //.attr('height', height)
-                                        //.attr('width', width)
                                         .datum(data)
                                         .transition().duration((scope.config.transitionDuration === undefined ? 500 : scope.config.transitionDuration))
                                         .call(chart);
-
                                 };
 
                                 element.on('resize', function () {

@@ -32,7 +32,7 @@ define([
                 nodata: '@',
                 x: '&',
                 y: '&',
-//                forcex: '@',
+                //forcex: '@',
                 forcey: '@',
                 isarea: '@',
                 interactive: '@',
@@ -89,12 +89,6 @@ define([
             link: function (scope, element, attrs) {
                 scope.$watch('data', function (data) {
                     if (data) {
-                        //if the chart exists on the scope, do not call addGraph again, update data and call the chart.
-//                        if (scope.chart) {
-//                            return d3.select('#' + attrs.id + ' svg')
-//                                .datum(data)
-//                                .call(scope.chart);
-//                        }
                         nv.addGraph({
                             generate: function () {
                                 var margin = (scope.$eval(attrs.margin) || {left: 50, top: 50, bottom: 50, right: 50}),
@@ -114,12 +108,6 @@ define([
                                     .tooltips(attrs.tooltips === undefined ? false : (attrs.tooltips === 'true'))
                                     .noData(attrs.nodata === undefined ? 'No Data Available.' : scope.nodata)
                                     .interactive(attrs.interactive === undefined ? false : (attrs.interactive === 'true'))
-//                                    .clipEdge(attrs.clipedge === undefined ? false : (attrs.clipedge === "true"))
-//                                   .clipVoronoi(attrs.clipvoronoi === undefined ? false : (attrs.clipvoronoi === "true"))
-//                                    .interpolate(attrs.interpolate === undefined ? 'linear' : attrs.interpolate)
-//                                    .isArea(attrs.isarea === undefined ? function(){return false;} : function(){ return (attrs.isarea === "true"); })
-//                                    .highlightPoint(attrs.highlightpoint === undefined ? false : (attrs.highlightpoint === "true"))
-                                    //.clearHighlights(attrs.clearhighlights === undefined ? false : (attrs.clearhighlights === "true"))
                                     .color(attrs.color === undefined ? nv.utils.defaultColor() : scope.color());
 
                                 common.configureXaxis(chart, scope, attrs);
