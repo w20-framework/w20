@@ -248,12 +248,6 @@ define([
             link: function (scope, element, attrs) {
                 scope.$watch('config.data', function (data) {
                     if (data) {
-                        //if the chart exists on the scope, do not call addGraph again, update data and call the chart.
-//                        if (scope.chart) {
-//                            return d3.select('#' + attrs.id + ' svg')
-//                                .datum(data)
-//                                .call(scope.chart);
-//                        }
                         nv.addGraph({
                             generate: function () {
                                 var margin = {left: 80, top: 50, bottom: 50, right: 50},

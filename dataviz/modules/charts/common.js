@@ -21,7 +21,7 @@ define([
      * @param attrs chart's attributes
      */
 
-        // execute "fisheye" (magnifying) view for some charts (ex. scatter)
+    // execute "fisheye" (magnifying) view for some charts (ex. scatter)
     (function () {
         d3.fisheye = {
             scale: function (scaleType) {
