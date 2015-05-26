@@ -1218,9 +1218,9 @@ define([
                         return key !== 'default';
                     }));
 
-                    availableCultures = _.keys(_.filter(globalize.cultures, function(elt) {
-                        return elt !== 'default';
-                    }));
+                    availableCultures = _.pluck(_.filter(globalize.cultures, function(elt, key) {
+                        return key !== 'default';
+                    }), 'name');
 
                     w20.console.log('available cultures: ' + availableCultures);
 

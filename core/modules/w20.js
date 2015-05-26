@@ -283,20 +283,7 @@ define([ 'module' ], function (module) {
         }
 
         return function (jsonSchema) {
-            console.log(jsonSchema);
             return jsonSchema.title + ':\n' + buildConfigurationDescription(jsonSchema, 1);
-        };
-    })();
-
-    // This strips the query string of an url
-    var stripQueryString = (function() {
-        return function(url) {
-            var index = url.indexOf('?');
-            if (index !== -1) {
-                return url.substring(0, index);
-            } else {
-                return url;
-            }
         };
     })();
 
@@ -305,6 +292,7 @@ define([ 'module' ], function (module) {
     /////////////////////////////////////////////////////////////////////
 
     var useBundles = false,
+        allModules = {},
         w20Object = {
         console: console,
         requireConfig: {
@@ -440,13 +428,50 @@ define([ 'module' ], function (module) {
 
     var requireApplication = (function () {
         return function (w20, modulesToRequire, callback) {
-            require(modulesToRequire, function () {
+            console.log("requiring modules " + modulesToRequire);
+
+            require([ '{tv4}/tv4' ].concat(modulesToRequire), function (tv4) {
                 var definedModules = require.s.contexts._.defined,
                     modulesRequired = Object.keys(definedModules).map(function (elt) {
                         return definedModules[elt];
                     }).filter(function (elt) {
                         return elt !== undefined;
                     });
+
+                // Validate configuration now that the validator (tv4) is loaded
+                console.log("validating modules configuration");
+
+                for (var fragmentName in allModules) {
+                    if (allModules.hasOwnProperty(fragmentName)) {
+                        for (var moduleName in allModules[fragmentName]) {
+                            if (allModules[fragmentName].hasOwnProperty(moduleName)) {
+                                var validationData = allModules[fragmentName][moduleName];
+
+                                if (typeof validationData.values !== 'undefined' && typeof validationData.schema !== 'undefined') {
+                                    var validationResult = tv4.validateMultiple(validationData.values, validationData.schema);
+
+                                    if (!validationResult.valid) {
+                                        // jshint loopfunc:true
+                                        report('error', 'Configuration of module ' + moduleName + ' in fragment ' + fragmentName + ' is not valid', function () {
+                                            var result = '';
+                                            for (var i = 0; i < validationResult.errors.length; i++) {
+                                                var currentError = validationResult.errors[i];
+                                                result += (currentError.dataPath) +
+                                                    ': ' +
+                                                    currentError.message +
+                                                    '\n';
+                                            }
+
+                                            result += '\n' + formatJsonSchema(validationData.schema);
+
+                                            return result;
+                                        }, true);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
                 callback(modulesToRequire, modulesRequired);
             });
@@ -585,7 +610,7 @@ define([ 'module' ], function (module) {
     })();
 
     /////////////////////////////////////////////////////////////////////
-    // CONFIGURATION AND MANIFEST LOADING FUNCTION                     //
+    // CONFIGURATION FUNCTIONS                                         //
     /////////////////////////////////////////////////////////////////////
 
     var loadConfiguration = (function () {
@@ -594,8 +619,7 @@ define([ 'module' ], function (module) {
                 var fragmentsToLoad = [],
                     fragmentConfigs = [],
                     loadedFragments = {},
-                    modulesToLoad = [],
-                    buildsToLoad = [];
+                    modulesToLoad = [];
 
                 if (w20Object.appVersion) {
                     w20Object.requireConfig.urlArgs = '__v=' + w20Object.appVersion;
@@ -686,6 +710,8 @@ define([ 'module' ], function (module) {
                                 fragmentUrl = loadedFragments[loadedFragment].url,
                                 fragmentRoot = loadedFragments[loadedFragment].root;
 
+                            allModules[loadedFragment] = {};
+
                             if (typeof fragmentDefinition.requireConfig !== 'undefined') {
                                 mergeObjects(w20Object.requireConfig, fragmentDefinition.requireConfig || {});
                             }
@@ -709,11 +735,14 @@ define([ 'module' ], function (module) {
                                 if (declaredModules.hasOwnProperty(module)) {
                                     var moduleDefinition = declaredModules[module],
                                         moduleConfiguration = configuredModules[module],
-                                        modulePath;
+                                        modulePath,
+                                        configSchema;
 
                                     // Module definition shortcut without configuration
                                     if (typeof moduleDefinition === 'string') {
                                         w20Object.requireConfig.config[moduleDefinition] = moduleConfiguration || {};
+
+                                        configSchema = undefined;
 
                                         if (typeof moduleConfiguration !== 'undefined') {
                                             modulePath = moduleDefinition;
@@ -725,10 +754,13 @@ define([ 'module' ], function (module) {
                                     else if (typeof moduleDefinition === 'object') {
                                         w20Object.requireConfig.config[moduleDefinition.path] = mergeObjects(moduleDefinition.config || {}, moduleConfiguration || {});
 
+
                                         if (typeof moduleConfiguration !== 'undefined' || moduleDefinition.autoload) {
                                             modulePath = moduleDefinition.path;
+                                            configSchema = moduleDefinition.configSchema;
                                         } else {
                                             modulePath = undefined;
+                                            configSchema = undefined;
                                         }
                                     } else {
                                         report('error', 'module ' + module + ' has an invalid definition in fragment: ' + fragmentDefinition.id, undefined, true);
@@ -736,6 +768,10 @@ define([ 'module' ], function (module) {
 
                                     // Load module if necessary
                                     if (modulePath && moduleConfiguration !== false) {
+                                        allModules[loadedFragment][module] = {
+                                            values: moduleConfiguration,
+                                            schema: configSchema
+                                        };
                                         modulesToLoad.push(modulePath);
                                     }
                                 }
@@ -759,35 +795,10 @@ define([ 'module' ], function (module) {
 
                     require.config(w20Object.requireConfig);
 
-                    // Validation of configuration is now
-                    require([ '{tv4}/tv4' ], function(tv4) {
-                        //if (typeof moduleDefinition.configSchema !== 'undefined' && typeof moduleConfiguration !== 'undefined') {
-                        //    var validationResult = tv4.validateMultiple(moduleConfiguration, moduleDefinition.configSchema);
-                        //    if (!validationResult.valid) {
-                        //        hasErrors = true;
-                        //        console.log(validationResult.errors);
-                        //        report('error', 'Configuration of module ' + module + ' in fragment ' + fragmentDefinition.id + ' is not valid', function () {
-                        //            var result = '';
-                        //            for (var i = 0; i < validationResult.errors.length; i++) {
-                        //                var currentError = validationResult.errors[i];
-                        //                result += (currentError.dataPath) +
-                        //                ': ' +
-                        //                currentError.message +
-                        //                '\n';
-                        //            }
-                        //
-                        //            result += '\n' + formatJsonSchema(moduleDefinition.configSchema);
-                        //
-                        //            return result;
-                        //        }, false);
-                        //    }
-                        //}
-                    });
-
                     w20Object.configuration = loadedConfiguration;
                     w20Object.fragments = loadedFragments;
 
-                    callback(w20Object, buildsToLoad, modulesToLoad);
+                    callback(w20Object, modulesToLoad);
                 });
             }
 
@@ -819,7 +830,7 @@ define([ 'module' ], function (module) {
     console.info('w20 application starting up');
     console.time('startup process duration');
     console.time('configuration load duration');
-    loadConfiguration(function (w20, builds, modules) {
+    loadConfiguration(function (w20, modules) {
         console.timeEnd('configuration load duration');
 
         window.w20 = w20Object;
