@@ -6,24 +6,29 @@
     <div data-ng-show="subjectAuthenticated()" id="ddprofile-menu" class="dropdown-menu" data-role="menu" data-stop-event="click">
         <div class="w20-action-profile panel-primary">
             <div class="panel-body">
-                <p>{{ 'w20.ui.action.profile.restrict-roles' | localize }}</p>
-                <div data-ng-repeat="role in getRoles()">
-                    <div class="checkbox" style="width: 30px">
-                        <label>
-                            <input type="checkbox" data-ng-change="updateRole(role)" data-ng-model="roles[role]"> {{ ('application.security.roles.' + role) | localize }}
-                        </label>
+                <h4 data-ng-show="getRoles().length == 0">{{ 'w20.ui.action.profile.no-role' | localize }}</h4>
+                <div data-ng-show="getRoles().length > 0">
+                    <h4>{{ 'w20.ui.action.profile.roles' | localize }}</h4>
+                    <div data-ng-repeat="role in getRoles()">
+                        <div class="checkbox" style="width: 30px">
+                            <label>
+                                <input type="checkbox" data-ng-change="updateRole(role)" data-ng-model="roles[role]"> {{ ('application.security.roles.' + role) | localize }}
+                            </label>
+                        </div>
                     </div>
                 </div>
-                <hr/>
-                <p>{{ 'w20.ui.action.profile.restrict-attributes' | localize }}</p>
-                <div class="input-group" data-ng-repeat="attributeName in getAttributes() | keys">
-                    <span class="input-group-addon"> {{ ('application.security.attributes.name.' + attributeName) | localize }} </span>
-                    <select  data-ng-options="(('application.security.attributes.value.' + attr) | localize) for attr in getAttributes()[attributeName]"
-                             data-ng-model="attributes[attributeName]"
-                             data-ng-change="updateAttribute(attributeName)"
-                             class="form-control">
-                        <option value=""></option>
-                    </select>
+                <div data-ng-show="(getAttributes() | keys).length > 0">
+                    <hr/>
+                    <h4>{{ 'w20.ui.action.profile.attributes' | localize }}</h4>
+                    <div class="input-group" data-ng-repeat="attributeName in getAttributes() | keys">
+                        <span class="input-group-addon"> {{ ('application.security.attributes.' + attributeName) | localize }} </span>
+                        <select  data-ng-options="(('application.security.attributes.' + attributeName + '.' + attr) | localize) for attr in getAttributes()[attributeName]"
+                                 data-ng-model="attributes[attributeName]"
+                                 data-ng-change="updateAttribute(attributeName)"
+                                 class="form-control">
+                            <option value=""></option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="panel-footer">
