@@ -28,7 +28,8 @@ define([
         allBundles = {},
         loadedCultures = [],
         defaultCulture = globalize.findClosestCulture('default'),
-        activeCulture = defaultCulture;
+        activeCulture = defaultCulture,
+        persistedCulture;
 
     function switchCulture(selector, callback) {
         var culture = (typeof selector === 'string' ? globalize.findClosestCulture(selector) : selector);
@@ -124,8 +125,8 @@ define([
         return {
             'DATETIME_FORMATS': {
                 'AMPMS': [
-                    standardCalendar.AM && standardCalendar.AM[0] || 'AM',
-                    standardCalendar.PM && standardCalendar.PM[0] || 'PM'
+                        standardCalendar.AM && standardCalendar.AM[0] || 'AM',
+                        standardCalendar.PM && standardCalendar.PM[0] || 'PM'
                 ],
                 'DAY': standardCalendar.days.names,
                 'MONTH': standardCalendar.months.names,
@@ -162,7 +163,7 @@ define([
                 ]
             },
             'id': culture.name.toLowerCase(),
-            'pluralCat': function() {
+            'pluralCat': function () {
                 return 'other';
             }
         };
@@ -443,7 +444,10 @@ define([
      * @memberOf w20CoreCulture
      * @w20doc service
      */
-    w20CoreCulture.factory('CultureService', ['EventService', '$rootScope', '$locale', function (eventService, $rootScope, $locale) {
+    w20CoreCulture.factory('CultureService', ['EventService', 'StateService', '$rootScope', '$locale', '$window', function (eventService, stateService, $rootScope, $locale, $window) {
+
+        var cultureState = stateService.state('culture', 'first', defaultCulture);
+
         var service = {
             /**
              * Returns the default culture of the application (not necessarily the active one).
@@ -479,6 +483,12 @@ define([
                     // Override $locale values with new ones
                     _.merge($locale, buildAngularLocale(newCulture));
 
+                    // persist culture preference
+                    if ($window.localStorage && newCulture && newCulture.name) {
+                        cultureState.value(newCulture.name);
+                        persistedCulture = cultureState.value();
+                    }
+
                     /**
                      * This event is emitted after the culture has changed successfully.
                      *
@@ -488,6 +498,7 @@ define([
                      * @argument {Object} The new culture definition.
                      */
                     eventService.emit('w20.culture.culture-changed', newCulture);
+
 
                     $rootScope.$safeApply();
                 });
@@ -1202,19 +1213,13 @@ define([
 
                 // Preload cultures
                 require(_.map(_.filter(config.available, function (elt) {
-                    // Filter cultures to remove en since it is already in globalize.js
-                    return elt !== 'en';
+                        // Filter cultures to remove en since it is already in globalize.js
+                        return elt !== 'en';
                 }), function (elt) {
-                    return '{globalize}/cultures/globalize.culture.' + elt;
+                        return '{globalize}/cultures/globalize.culture.' + elt;
                 }), function () {
-                    if (typeof config['default'] !== 'undefined') {
-                        defaultCulture = globalize.findClosestCulture(config['default']) || defaultCulture;
-                    }
-                    else {
-                        defaultCulture = globalize.findClosestCulture(window.navigator.language || window.navigator.userLanguage) || defaultCulture;
-                    }
 
-                    availableCultureObjects = _.values(_.filter(globalize.cultures, function(elt, key) {
+                    availableCultureObjects = _.values(_.filter(globalize.cultures, function (elt, key) {
                         return key !== 'default';
                     }));
 
@@ -1222,9 +1227,24 @@ define([
                         return key !== 'default';
                     }), 'name');
 
+                    if (window.localStorage) {
+                        persistedCulture = localStorage.getItem('w20.state.' + w20.fragments['w20-core'].configuration.modules.application.id + '.culture');
+                        if (persistedCulture) {
+                            persistedCulture = globalize.findClosestCulture(JSON.parse(persistedCulture).first);
+                            persistedCulture = _.contains(availableCultureObjects, persistedCulture) ? persistedCulture : undefined;
+                        }
+                    }
+
+                    if (typeof config['default'] !== 'undefined') {
+                        defaultCulture = globalize.findClosestCulture(config['default']) || defaultCulture;
+                    }
+                    else {
+                        defaultCulture = globalize.findClosestCulture(window.navigator.language || window.navigator.userLanguage) || defaultCulture;
+                    }
+
                     w20.console.log('available cultures: ' + availableCultures);
 
-                    switchCulture(defaultCulture, function (culture) {
+                    switchCulture(persistedCulture || defaultCulture, function (culture) {
                         w20CoreCulture.config(['$provide', function ($provide) {
                             // define $locale values based on default culture
                             $provide.value('$locale', buildAngularLocale(culture));
