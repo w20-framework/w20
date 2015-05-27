@@ -86,7 +86,7 @@ define([
      * @name w20CoreApplication
      * @module
      */
-    var w20CoreApplication = angular.module('w20CoreApplication', [ 'w20CoreEnv', 'w20CoreCulture', 'ngRoute', 'ngSanitize' ]),
+    var w20CoreApplication = angular.module('w20CoreApplication', [ 'w20CoreEnv', 'ngRoute', 'ngSanitize' ]),
         config = module && module.config() || {},
         allRoutes = {},
         allRouteHandlers = {},
