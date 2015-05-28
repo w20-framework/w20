@@ -19,6 +19,7 @@ define([
     '[text]!{w20-ui}/templates/error-report.html',
 
     '{w20-core}/modules/env',
+    '{w20-core}/modules/culture',
     '{w20-core}/modules/security',
     '{bootstrap}/js/bootstrap',
     '[css]!{bootstrap}/css/bootstrap',
@@ -43,7 +44,7 @@ define([
      * @name w20UI
      * @module
      */
-    var w20UI = angular.module('w20UI', ['ui.bootstrap', 'w20CoreEnv', 'w20CoreSecurity']),
+    var w20UI = angular.module('w20UI', ['ui.bootstrap', 'w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture']),
         config = module && module.config() || {},
         allNavigation = {};
 
