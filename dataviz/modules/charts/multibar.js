@@ -305,7 +305,6 @@ define([
                                     .noData(scope.config.noData === undefined ? 'No Data Available.' : scope.config.noData)
                                     .rotateLabels(scope.config.rotateLabels === undefined ? 0 : scope.config.rotateLabels)
                                     .color(scope.config.color === undefined ? nv.utils.defaultColor() : scope.config.color)
-                                    .delay(scope.config.delay === undefined ? 800 : scope.config.delay)
                                     .stacked(scope.config.stacked === undefined ? false : scope.config.stacked);
 
                                 // common function to configure axis on NVD3 charts
