@@ -428,7 +428,7 @@ define([
         if (input instanceof Date) {
             return input;
         }
-        else if (typeof input === 'number') {
+        else if (typeof input === 'number' || typeof input === 'string') {
             return new Date(input);
         }
         else {
