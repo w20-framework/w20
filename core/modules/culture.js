@@ -171,40 +171,42 @@ define([
 
 
     /**
+     * @ngdoc object
+     * @name w20CoreCulture
+     *
+     * @description
+     *
      * This module manages the end-user culture. Only one culture can be active at a time in the application but you
      * can format values in any culture supported by the application, without switching the active one. This module
      * handles text internationalization, date and time formatting, currency formatting, number formatting.
      *
-     * Configuration
-     * -------------
+     * # Configuration
      *
      *      "culture" : {
      *          // Array of available cultures in the application
-     *          "available" : [ "ietf-code-of-language-1", "ietf-code-of-language-2", "ietf-code-of-language-3", ... ],
+     *          "available" : [ "ietf-code-1", "ietf-code-2", ... ],
      *
      *          // Default culture of the application when no user preference is overriding it
-     *          "default" : "ietf-code-of-default-language"
+     *          "default" : "ietf-code"
      *      }
      *
-     * Fragment definition sections
-     * ----------------------------
+     * # Fragment definition
      *
      * The fragment "i18n" section allows to declare culture localization bundles. All fragments "i18n" sections are merged
-     * on application initialization. Fragment "i18n" definitions cannot be overriden in application configuration. Bundles
+     * on application initialization. Fragment "i18n" definitions cannot be overridden in application configuration. Bundles
      * modules paths will be loaded as a text dependency and parsed as JSON. The empty language code can be used to point
-     * to a server-side parameterized url. The :language placeholder will be replaced by the actual ietf language code. This
-     * special bundle will always be loaded for any language. If no keys are avaiable for a particular language an empty
+     * to a server-side parameterized url. The :language placeholder will be replaced by the actual IETF language code. This
+     * special bundle will always be loaded for any language. If no keys are available for a particular language an empty
      * object can be returned.
      *
      *      "i18n" : {
-     *          "" : [ "module/path/of/the/multilingual/bundle" ]
+     *          "" : [ "module/path/of/the/dynamic/bundle" ]
      *          "ietf-language-code-1" : [ "module/path/of/the/bundle/1", "module/path/of/the/bundle/2", ...  ],
      *          "ietf-language-code-2" : [ "module/path/of/the/bundle/1", "module/path/of/the/bundle/2", ...  ]
      *          ...
      *      }
      *
-     * Available IETF cultures codes
-     * ------------------------
+     * # Available IETF cultures codes
      *
      * af-ZA, af, am-ET, am, ar-AE, ar-BH, ar-DZ, ar-EG, ar-IQ, ar-JO, ar-KW, ar-LB, ar-LY, ar-MA, ar-OM, ar-QA,
      * ar-SA, ar-SY, ar-TN, ar-YE, ar, arn-CL, arn, as-IN, as, az-Cyrl-AZ, az-Cyrl, az-Latn-AZ, az-Latn, az, ba-RU,
@@ -417,9 +419,6 @@ define([
      *          // Map of messages used by .localize()
      *          messages: {}
      *      }
-     *
-     * @name w20CoreCulture
-     * @module
      */
     var w20CoreCulture = angular.module('w20CoreCulture', ['w20CoreEnv', 'ngResource']);
     var placeholderRegexp = new RegExp('{-?[0-9]+}', 'g');
@@ -437,12 +436,13 @@ define([
     };
 
     /**
+     * @ngdoc service
+     * @name w20CoreCulture.service:CultureService
+     *
+     * @description
+     *
      * This service is the façade of the culture module capabilities. It provides all the functions and properties
      * you need to use it.
-     *
-     * @name CultureService
-     * @memberOf w20CoreCulture
-     * @w20doc service
      */
     w20CoreCulture.factory('CultureService', ['EventService', 'StateService', '$rootScope', '$locale', '$window', function (eventService, stateService, $rootScope, $locale, $window) {
 
@@ -450,29 +450,33 @@ define([
 
         var service = {
             /**
-             * Returns the default culture of the application (not necessarily the active one).
+             * @ngdoc function
+             * @name w20CoreCulture.service:CultureService#defaultCulture
+             * @methodOf w20CoreCulture.service:CultureService
+             * @returns {Object} The default culture object
              *
-             * @name CultureService#defaultCulture
-             * @memberOf CultureService
-             * @function
-             * @returns Object The default culture object
+             * @description
+             *
+             * Returns the default culture of the application (not necessarily the active one).
              */
             defaultCulture: function () {
                 return defaultCulture;
             },
 
             /**
+             * @ngdoc function
+             * @name w20CoreCulture.service:CultureService#culture
+             * @methodOf w20CoreCulture.service:CultureService
+             * @param {String} [selector] The selector of the culture to switch to. Examples : "fr", "fr-FR", ["en-US", "fr-FR"], "fr;q=0.4, es;q=0.5, he".
+             * @returns {Object} The current culture object if no selector was specified, undefined if new culture selector was specified.
+             *
+             * @description
+             *
              * Getter/setter of the currently active culture in the application. Return the current culture if the
              * selector parameter is undefined, change it otherwise.
              *
              * Automatically load i18n string bundles configured when switching for the first time to a new culture.
              * The <code>w20.culture.culture-changed</code> event is fired when the culture has switched.
-             *
-             * @name CultureService#culture
-             * @memberOf CultureService
-             * @function
-             * @param {String} selector The selector of the culture to switch to. Examples : "fr", "fr-FR", ["en-US", "fr-FR"], "fr;q=0.4, es;q=0.5, he".
-             * @returns {Object} The current culture object if no selector was specified, undefined if new culture selector was specified.
              */
             culture: function (selector) {
                 if (typeof selector === 'undefined') {
@@ -505,29 +509,33 @@ define([
             },
 
             /**
-             * Return an array of available cultures in the application.
-             *
-             * @name CultureService#availableCultures
-             * @memberOf CultureService
-             * @function
+             * @ngdoc function
+             * @name w20CoreCulture.service:CultureService#availableCultures
+             * @methodOf w20CoreCulture.service:CultureService
              * @returns {Object} The array of available cultures (fully detailed culture description).
+             *
+             * @description
+             *
+             * Return an array of available cultures in the application.
              */
             availableCultures: function () {
                 return availableCultureObjects;
             },
             /**
-             * Localize an i18n key in the current culture or the explicitely specified one. An localized string
-             * can contain placeholders like {0}, {1}, {2}, ... {n} which will be replaced by the corresponding
-             * element in the values array.
-             *
-             * @name CultureService#localize
-             * @memberOf CultureService
-             * @function
+             * @ngdoc function
+             * @name w20CoreCulture.service:CultureService#localize
+             * @methodOf w20CoreCulture.service:CultureService
              * @param {String} key The i18n key to localize.
              * @param {Array} [values] The localized string placeholder values.
              * @param {String} [defaultValue] A default value to be returned if no localization exists in the language.
              * @param {String} [culture] If specified this culture selector will be used to do the localization.
              * @returns {String} The translated string, with placeholders replaced by their respective values.
+             *
+             * @description
+             *
+             * Localize an i18n key in the current culture or the explicitely specified one. An localized string
+             * can contain placeholders like {0}, {1}, {2}, ... {n} which will be replaced by the corresponding
+             * element in the values array.
              */
             localize: function (key, values, defaultValue, culture) {
                 var result = globalize.localize(key, culture || activeCulture.name);
@@ -554,6 +562,16 @@ define([
             },
 
             /**
+             * @ngdoc function
+             * @name w20CoreCulture.service:CultureService#format
+             * @methodOf w20CoreCulture.service:CultureService
+             * @param {*} value The value to format.
+             * @param {String} format Pattern used for the formatting.
+             * @param {String} [culture] If specified this culture selector will be used to do the formatting.
+             * @returns {String} The value formatted.
+             *
+             * @description
+             *
              * Format any value according to the format parameter. The current culture is used for formatting rules,
              * except if a selector is specified as the culture parameter.
              *
@@ -832,20 +850,22 @@ define([
              * <td>A.D.</td>
              * </tr>
              * </table>
-             *
-             * @name CultureService#format
-             * @memberOf CultureService
-             * @function
-             * @param {*} value The value to format.
-             * @param {String} format Pattern used for the formatting.
-             * @param {String} culture If specified this culture selector will be used to do the formatting.
-             * @returns {String} The value formatted.
              */
             format: function (value, format, culture) {
                 return globalize.format(value, format, culture || activeCulture);
             },
 
             /**
+             * @ngdoc function
+             * @name w20CoreCulture.service:CultureService#parseInt
+             * @methodOf w20CoreCulture.service:CultureService
+             * @param {String} value The value to parse as an integer.
+             * @param {int} [radix] The radix used for the conversion (10 by default).
+             * @param {String} [culture] If specified this culture selector will be used to do the parsing.
+             * @returns {int} The integer parsed.
+             *
+             * @description
+             *
              * Parses a string representing a whole number in the given radix (10 by default),
              * taking into account any formatting rules followed by the given culture (or the
              * current culture, if not specified).
@@ -856,20 +876,22 @@ define([
              *      // assuming a culture where "." is the group separator
              *      // and "," is the decimal separator
              *      CultureService.parseInt( "1.234,56" ); // 1234
-             *
-             * @name CultureService#parseInt
-             * @memberOf CultureService
-             * @function
-             * @param {String} value The value to parse as an integer.
-             * @param {int} radix The radix used for the conversion (10 by default).
-             * @param {String} culture If specified this culture selector will be used to do the parsing.
-             * @returns {int} The integer parsed.
              */
             parseInt: function (value, radix, culture) {
                 return globalize.parseInt(value, radix, culture || activeCulture);
             },
 
             /**
+             * @ngdoc function
+             * @name w20CoreCulture.service:CultureService#parseFloat
+             * @methodOf w20CoreCulture.service:CultureService
+             * @param {String} value The value to parse as a float.
+             * @param {int} [radix] The radix used for the conversion (10 by default).
+             * @param {String} [culture] If specified this culture selector will be used to do the parsing.
+             * @returns {Number} The float parsed.
+             *
+             * @description
+             *
              * Parses a string representing a floating point number in the given radix (10 by
              * default), taking into account any formatting rules followed by the given
              * culture (or the current culture, if not specified).
@@ -880,19 +902,21 @@ define([
              *      // assuming a culture where "." is the group separator
              *      // and "," is the decimal separator
              *      CultureService.parseFloat( "1.234,56" ); // 1234.56
-             *
-             * @name CultureService#parseFloat
-             * @memberOf CultureService
-             * @function
-             * @param {String} value The value to parse as a float.
-             * @param {int} radix The radix used for the conversion (10 by default).
-             * @param {String} culture If specified this culture selector will be used to do the parsing.
-             * @returns {Number} The float parsed.
              */
             parseFloat: function (value, radix, culture) {
                 return globalize.parseFloat(value, radix, culture || activeCulture);
             },
             /**
+             * @ngdoc function
+             * @name w20CoreCulture.service:CultureService#culture
+             * @methodOf w20CoreCulture.service:CultureService
+             * @param {String} value The value to parse as a date.
+             * @param {String} [formats] The formats used to do the parsing.
+             * @param {String} [culture] If specified this culture selector will be used to do the parsing.
+             * @returns {Date} The date object parsed.
+             *
+             * @description
+             *
              * Parses a string representing a date into a JavaScript Date object, taking into
              * account the given possible formats (or the given culture's set of default
              * formats if not given). As before, the current culture is used if one is not
@@ -902,23 +926,46 @@ define([
              *      cultureService.parseDate( "1/2/2003" ); // Thu Jan 02 2003
              *      cultureService.culture( "fr" );
              *      cultureService.parseDate( "1/2/2003" ); // Sat Feb 01 2003
-             *
-             * @name CultureService#parseDate
-             * @memberOf CultureService
-             * @function
-             * @param {String} value The value to parse as a date.
-             * @param {String} formats The formats used to do the parsing.
-             * @param {String} culture If specified this culture selector will be used to do the parsing.
-             * @returns {Date} The date object parsed.
              */
             parseDate: function (value, formats, culture) {
                 return globalize.parseDate(value, formats, culture || activeCulture);
             },
 
+            /**
+             * @ngdoc function
+             * @name w20CoreCulture.service:CultureService#addCultureInfo
+             * @methodOf w20CoreCulture.service:CultureService
+             * @param {String} [cultureName] If supplied it will create a culture with this name.
+             * @param {String} [baseCultureName] If supplied it will extend this culture to create the new one.
+             * @param {String} info The culture information to add, according to the culture object format.
+             *
+             * @description
+             *
+             * This method allows you to create a new culture based on an existing culture or add to existing culture info.
+             * If the optional argument `baseCultureName` is not supplied, it will extend the existing culture if it
+             * exists or create a new culture based on the default culture if it doesn't exist. If `cultureName` is not
+             * supplied, it will add the supplied info to the current culture.
+             */
             addCultureInfo: function (cultureName, baseCultureName, info) {
                 return globalize.addCultureInfo(cultureName, baseCultureName, info);
             },
 
+            /**
+             * @ngdoc function
+             * @name w20CoreCulture.service:CultureService#displayName
+             * @methodOf w20CoreCulture.service:CultureService
+             * @param {String} object The object to compute the display name of.
+             * @param {String} [values] The values used to localize the i18n key if any.
+             * @returns {String} The display name of the object.
+             *
+             * @description
+             *
+             * Compute the display name of an object by following these steps:
+             *
+             * * Return its `label` attribute if it exists, or,
+             * * Return the localized form of its `i18n` attribute if it exists, or,
+             * * Return an empty string.
+             */
             displayName: function (object, values) {
                 if (typeof object.label !== 'undefined') {
                     return object.label;
@@ -936,12 +983,13 @@ define([
     }]);
 
     /**
-     * This filter localize an i18n key by invoking the CultureService.localize function.
+     * @ngdoc filter
+     * @name w20CoreCulture.filter:localize
+     * @param {String...} [values] Localized string placeholder replacement values.
      *
-     * @name localize
-     * @w20doc filter
-     * @memberOf w20CoreCulture
-     * @argument {String...} Localized string placeholder replacement values.
+     * @description
+     *
+     * This filter localizes an i18n key by invoking the `CultureService.localize` function.
      */
     w20CoreCulture.filter('localize', ['CultureService', function (cultureService) {
         var filter = function (input) {
@@ -958,13 +1006,14 @@ define([
     }]);
 
     /**
-     * This filter prefixes an i18n key and localize the resulting key by invoking the CultureService.localize function.
+     * @ngdoc filter
+     * @name w20CoreCulture.filter:localizeWithPrefix
+     * @param {String} prefix The prefix to use.
+     * @param {String...} [values] Localized string placeholder replacement values.
      *
-     * @name localizeWithPrefix
-     * @w20doc filter
-     * @memberOf w20CoreCulture
-     * @argument {String} The prefix to use.
-     * @argument {String...} Localized string placeholder replacement values.
+     * @description
+     *
+     * This filter prefixes an i18n key and localize the resulting key by invoking the `CultureService.localize` function.
      */
     w20CoreCulture.filter('localizeWithPrefix', ['CultureService', function (cultureService) {
         var filter = function (input, prefix) {
@@ -985,12 +1034,13 @@ define([
     }]);
 
     /**
-     * This filter localize an i18n key by invoking the CultureService.localize function.
+     * @ngdoc filter
+     * @name w20CoreCulture.filter:displayName
+     * @param {String...} [values] Localized string placeholder replacement values.
      *
-     * @name localize
-     * @w20doc filter
-     * @memberOf w20CoreCulture
-     * @argument {Array(String)} Localized string placeholder replacement values.
+     * @description
+     *
+     * This filter computes the display name of an object according to the `CultureService.displayName` function.
      */
     w20CoreCulture.filter('displayName', ['CultureService', function (cultureService) {
         var filter = function (input) {
@@ -1011,12 +1061,13 @@ define([
     }]);
 
     /**
-     * This filter format a number to currency string by invoking the CultureService.format function.
+     * @ngdoc filter
+     * @name w20CoreCulture.filter:currency
+     * @param {String} [pattern] Pattern used to format the value ('c' by default).
      *
-     * @name currency
-     * @w20doc filter
-     * @memberOf w20CoreCulture
-     * @argument {String} Pattern used to format the value ('c' by default).
+     * @description
+     *
+     * This filter formats a number into a currency string by invoking the `CultureService.format` function.
      */
     w20CoreCulture.filter('currency', ['CultureService', function (cultureService) {
         var filter = function (input, format) {
@@ -1032,12 +1083,13 @@ define([
     }]);
 
     /**
-     * This filter format a date to datetime string by invoking the CultureService.format function.
+     * @ngdoc filter
+     * @name w20CoreCulture.filter:datetime
+     * @param {String} [pattern] Pattern used to format the value ('F' by default).
      *
-     * @name datetime
-     * @w20doc filter
-     * @memberOf w20CoreCulture
-     * @argument {String} Pattern used to format the value ('F' by default).
+     * @description
+     *
+     * This filter formats a date object into a datetime string by invoking the `CultureService.format` function.
      */
     w20CoreCulture.filter('datetime', ['CultureService', function (cultureService) {
         var filter = function (input, format) {
@@ -1054,12 +1106,13 @@ define([
     }]);
 
     /**
-     * This filter format a date to date string by invoking the CultureService.format function.
+     * @ngdoc filter
+     * @name w20CoreCulture.filter:date
+     * @param {String} [pattern] Pattern used to format the value ('d' by default).
      *
-     * @name date
-     * @w20doc filter
-     * @memberOf w20CoreCulture
-     * @argument {String} Pattern used to format the value ('d' by default).
+     * @description
+     *
+     * This filter formats a date object into a date string by invoking the `CultureService.format` function.
      */
     w20CoreCulture.filter('date', ['CultureService', function (cultureService) {
         var filter = function (input, format) {
@@ -1076,12 +1129,13 @@ define([
     }]);
 
     /**
-     * This filter format a date to time string by invoking the CultureService.format function.
+     * @ngdoc filter
+     * @name w20CoreCulture.filter:time
+     * @param {String} [pattern] Pattern used to format the value ('T' by default).
      *
-     * @name time
-     * @w20doc filter
-     * @memberOf w20CoreCulture
-     * @argument {String} Pattern used to format the value ('T' by default).
+     * @description
+     *
+     * This filter formats a date into a time string by invoking the `CultureService.format` function.
      */
     w20CoreCulture.filter('time', ['CultureService', function (cultureService) {
         var filter = function (input, format) {
@@ -1098,12 +1152,13 @@ define([
     }]);
 
     /**
-     * This filter format a number to string by invoking the CultureService.format function.
+     * @ngdoc filter
+     * @name w20CoreCulture.filter:number
+     * @param {String} [pattern] Pattern used to format the value ('n' by default).
      *
-     * @name number
-     * @w20doc filter
-     * @memberOf w20CoreCulture
-     * @argument {String} Pattern used to format the value ('n' by default).
+     * @description
+     *
+     * This filter formats a number into a string by invoking the `CultureService.format` function.
      */
     w20CoreCulture.filter('number', ['CultureService', function (cultureService) {
         var filter = function (input, format) {
@@ -1119,12 +1174,13 @@ define([
     }]);
 
     /**
-     * This filter format a number integer part to string by invoking the CultureService.format function.
+     * @ngdoc filter
+     * @name w20CoreCulture.filter:digit
+     * @param {String} [pattern] Pattern used to format the value ('d' by default).
      *
-     * @name digit
-     * @w20doc filter
-     * @memberOf w20CoreCulture
-     * @argument {String} Pattern used to format the value ('d' by default).
+     * @description
+     *
+     * This filter formats a number integer part into a string by invoking the `CultureService.format` function.
      */
     w20CoreCulture.filter('digit', ['CultureService', function (cultureService) {
         var filter = function (input, format) {
@@ -1140,12 +1196,13 @@ define([
     }]);
 
     /**
-     * This filter format a number to percent string by invoking the CultureService.format function.
+     * @ngdoc filter
+     * @name w20CoreCulture.filter:percent
+     * @param {String} [pattern] Pattern used to format the value ('p' by default).
      *
-     * @name percent
-     * @w20doc filter
-     * @memberOf w20CoreCulture
-     * @argument {String} Pattern used to format the value ('p' by default).
+     * @description
+     *
+     * This filter formats a number into a percent string by invoking the `CultureService.format` function.
      */
     w20CoreCulture.filter('percent', ['CultureService', function (cultureService) {
         var filter = function (input, format) {
@@ -1161,13 +1218,14 @@ define([
     }]);
 
     /**
-     * This filter format a value to string by invoking the CultureService.format function.
-     * The format argument is required.
+     * @ngdoc filter
+     * @name w20CoreCulture.filter:format
+     * @argument {String} pattern Pattern used to format the value (required).
      *
-     * @name format
-     * @w20doc filter
-     * @memberOf w20CoreCulture
-     * @argument {String} Pattern used to format the value (required).
+     * @description
+     *
+     * This filter formats a value into a string by invoking the `CultureService.format` function.
+     * The format argument is required.
      */
     w20CoreCulture.filter('format', ['CultureService', function (cultureService) {
         var filter = function (input, format) {

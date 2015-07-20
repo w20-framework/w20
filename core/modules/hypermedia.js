@@ -19,25 +19,50 @@ define([
     '{angular-resource}/angular-resource'
 
 ], function (_module, w20, require, angular, URITemplate) {
-
     'use strict';
 
-    var HYPERMEDIA_TYPE = 'application/hal+json';
-
     /**
-     * @module w20Hypermedia
+     * @ngdoc object
+     * @name w20CoreHypermedia
      *
-     * Module to ease the work with hypermedia api.
+     * @description
+     *
+     * This module provide a support for working with hypermedia api.
+     * The following hypermedia type are supported:
+     *
+     * * JSON-HOME document for configuring the entry points to an hypermedia api
+     * * HAL document for the actual hypermedia resources
+     *
+     *
+     * # Configuration
+     *
+     * Values of field are the default values
+     *
+     *      "hypermedia": {
+     *          // a map of APIs name to the actual url of the API exposing a JSON-HOME document
+                api: {},
+                // Automatically transform all responses served as application/hal+json
+                interceptAll: true
+                // The name of the property used to reference resources links. Default to the one used in the HAL specification.
+                linksKey: '_links'
+                // The name of the property used to reference resources links url. Default to the one used in the HAL specification.
+                linksHrefKey: 'href',
+                // The name of the property used to reference resources self links. Default to the one used in the HAL specification.
+                linksSelfLinkName: 'self',
+                // The name of the property used to reference resources embedded resources. Default to the one used in the HAL specification.
+                embeddedKey: '_embedded',
+                // The name of the property to add to $resource objects to retrieve embedded resources.
+                embeddedNewKey: '$embedded',
+                // The name of the property to add to $resource objects to retrieve resources links.
+                resourcesKey: '$links',
+     *      }
      */
-    var module = angular.module('w20Hypermedia', ['ngResource']),
-        moduleConfig = _module && _module.config() || {};
-
-    /**
-     * Default configuration.
-     */
-    var config = {
+    var w20CoreHypermedia = angular.module('w20CoreHypermedia', ['ngResource']),
+        HYPERMEDIA_TYPE = 'application/hal+json',
+        moduleConfig = _module && _module.config() || {},
+        api = {},
+        config = {
         api: moduleConfig.api || {},
-
         interceptAll: moduleConfig.interceptAll || true,
         linksKey: moduleConfig.linksKey || '_links',
         linksHrefKey: moduleConfig.linksHrefKey || 'href',
@@ -45,33 +70,27 @@ define([
         embeddedKey: moduleConfig.embeddedKey || '_embedded',
         embeddedNewKey: moduleConfig.embeddedNewKey || '$embedded',
         resourcesKey: moduleConfig.resourcesKey || '$links',
-        metadata: moduleConfig.metadata || '$metadata',
-
+        // fixed config
         resourcesFunction: undefined,
         fetchFunction: undefined,
         fetchAllKey: '_allLinks'
     };
 
-    var api = {};
 
-    /**
-     * @module w20Hypermedia
-     *
+    /*
      * Apply hypermedia interceptor globally if configured
      */
-    module.config(['HypermediaRestInterceptorProvider', function (HypermediaRestInterceptorProvider) {
+    w20CoreHypermedia.config(['HypermediaRestInterceptorProvider', function (HypermediaRestInterceptorProvider) {
         if (config.interceptAll) {
             HypermediaRestInterceptorProvider.apply();
         }
     }]);
 
 
-    /**
-     * @module w20Hypermedia
-     *
+    /*
      * Register the json-home endpoints if configured
      */
-    module.run(['HomeService', function (homeService) {
+    w20CoreHypermedia.run(['HomeService', function (homeService) {
         var resource;
 
         angular.forEach(api, function (apiConfig, endpoint) {
@@ -86,11 +105,16 @@ define([
     }]);
 
     /**
-     * @module w20Hypermedia
+     * @ngdoc service
+     * @name w20CoreHypermedia.service:HomeService
+     * @param {String} api One of the api key registered in the api section of the module configuration
+     * @returns {Object} The object that allows to interact with the requested api
      *
-     * Service for registering json-home entry points resources
+     * @description
+     *
+     * Service for registering api entry points resources exposed as json-home document
      */
-    module.factory('HomeService', ['$resource', function ($resource) {
+    w20CoreHypermedia.factory('HomeService', ['$resource', function ($resource) {
 
         var home = {};
 
@@ -122,9 +146,15 @@ define([
 
             return {
                 /**
+                 * @ngdoc function
+                 * @name w20CoreHypermedia.service:HomeService#register
+                 * @methodOf w20CoreHypermedia.service:HomeService
+                 * @param {Object} resource a json-home compliant resource declaration
+                 *
+                 * @description
+                 *
                  * Register a new home resource
                  *
-                 * @param {object} resource the value of the home resource
                  */
                 register: function (resource) {
                     validate(resource);
@@ -133,9 +163,16 @@ define([
                     home[endpoint][rel] = resource[rel];
                 },
                 /**
+                 * @ngdoc function
+                 * @name w20CoreHypermedia.service:HomeService#getDefinition
+                 * @methodOf w20CoreHypermedia.service:HomeService
+                 * @param {String} rel relation (link) of the resource
+                 * @returns {Object} the requested home resource configuration
+                 *
+                 * @description
+                 *
                  * Return the home resource definition
-                 * @param rel link relation of the resource
-                 * @returns {object} the home resource configuration
+                 *
                  */
                 getDefinition: function (rel) {
                     if (isRegistered(rel)) {
@@ -145,14 +182,20 @@ define([
                     }
                 },
                 /**
+                 * @ngdoc function
+                 * @name w20CoreHypermedia.service:HomeService#enter
+                 * @methodOf w20CoreHypermedia.service:HomeService
+                 * @param {String} rel the relation (link) of the home resource to retrieve
+                 * @param {Object} parameters the parameters for the resource url
+                 * @param {Object} actions optional $resource method actions
+                 * @param {Object} options additional $resource method options
+                 * @returns {Object} the $resource for this home resource
+                 *
+                 * @description
+                 *
                  * Provide a $resource object configured from a registered home resource.
                  * This method allow to enter an hypermedia endpoint
                  *
-                 * @param rel the link relation of the resource
-                 * @param {object} parameters the parameters for the resource url
-                 * @param {object} actions optional $resource method actions
-                 * @param {object} options additional $resource method options
-                 * @returns {object} the $resource for this home resource
                  */
                 enter: function (rel, parameters, actions, options) {
                     var homeResource = this.getDefinition(rel);
@@ -187,21 +230,61 @@ define([
 
     }]);
 
-
     /**
-     * @module w20Hypermedia
+     * @ngdoc service
+     * @name w20CoreHypermedia.service:HypermediaRestAdapterProvider
+     *
+     * @description
      *
      * Provider for the HypermediaRestAdapter which is the core of this module.
      */
-    module.provider('HypermediaRestAdapter', function () {
+
+    /**
+     * @ngdoc service
+     * @name w20CoreHypermedia.service:HypermediaRestAdapter
+     *
+     * @description
+     *
+     * Service to manually process http response data into hypermedia resource object.
+     * The processed hypermedia resource object is an AngularJS $resource object extended with additional methods:
+     *
+     * * **$links(rel, parameters, actions, options)**: Same signature as $resource action method. Provide the name of a relation (link) instead of the url.
+     * If called without parameter $links() return an object with all the available links.
+     *
+     *
+     * * **$embedded(key)**: if present, retrieve embedded resources in the _embedded field by the key name. If no key is provided, return all the embedded objects.
+     *
+     * @example
+     *
+     * ```
+     *       HypermediaRestAdapter.process(response.data).then(function (processedResponse) {
+     *         // processedResponse is a $resource object augmented with a $links and $embedded method
+     *       });
+     *
+     *       HypermediaRestAdapter.process(response, 'aLink', true).then(function(processedResponse) {
+     *           // follow 'aLink' automatically and get the response as processedResponse
+     *        });
+     *
+     *        HypermediaRestAdapter.process(response, ['someLink', 'testLink'], true).then(function(processedResponse) {
+     *           // follow multiple links automatically and get the response as processedResponse
+     *        });
+     *```
+     */
+    w20CoreHypermedia.provider('HypermediaRestAdapter', function () {
 
         return {
 
             /**
+             * @ngdoc function
+             * @name w20CoreHypermedia.service:HypermediaRestAdapterProvider#config
+             * @methodOf w20CoreHypermedia.service:HypermediaRestAdapterProvider
+             * @param {Object} newConfig the new configuration object. See HomeService.
+             * @returns {Object} The configuration
+             *
+             * @description
+             *
              * Sets and gets the configuration object.
              *
-             * @param {object} newConfig the new configuration to be set
-             * @returns {object} the configuration object
              */
             config: function (newConfig) {
                 // if the configuration object is 'undefined' then return the configuration object
@@ -229,7 +312,7 @@ define([
 
             $get: ['$injector', function ($injector) {
 
-                /**
+                /*
                  * Returns the Angular $resource method which is configured with the given parameters.
                  *
                  * @param {object} link the resource object (link property value)
@@ -268,7 +351,7 @@ define([
                     }
                 }
 
-                /**
+                /*
                  * Fetches the given URL and adds the response to the given data object as a property
                  * with the name of the given key.
                  *
@@ -311,19 +394,22 @@ define([
                 }
 
                 /**
+                 * @ngdoc function
+                 * @name w20CoreHypermedia.service:HypermediaRestAdapter#process
+                 * @methodOf w20CoreHypermedia.service:HypermediaRestAdapter
+                 * @param {Object} promiseOrData a promise with the given JSON data or just the JSON data
+                 * @param {Array|String} fetchLinkNames the link names to be fetched automatically or the '_allLinks' key to fetch all links except the 'self' key.
+                 * @param {boolean} recursive true if the automatically fetched response should be processed recursively with the adapter, false otherwise
+                 * @returns {Object} the processed JSON data
+                 *
+                 * @description
+                 *
                  * The actual adapter method which processes the given JSON data object and adds
                  * the wrapped resource property to all embedded elements where resources are available.
-                 *
-                 * @param {object} promiseOrData a promise with the given JSON data or just the JSON data
-                 * @param {object|string} fetchLinkNames the link names to be fetched automatically or the
-                 * 'fetchAllLinkNamesKey' key from the config object to fetch all links except the 'self' key.
-                 * @param {boolean} recursive true if the automatically fetched response should be processed recursively with the
-                 * adapter, false otherwise
-                 * @returns {object} the processed JSON data
                  */
                 var processData = function processDataFunction(promiseOrData, fetchLinkNames, recursive) {
 
-                    /**
+                    /*
                      * Gets the processed URL of the given resource name form the given data object.
                      * @param {object} data the given data object
                      * @param {string} resourceName the resource name from which the URL is retrieved
@@ -345,9 +431,8 @@ define([
                     // convert the given promise or data to a $q promise
                     return $injector.get('$q').when(promiseOrData).then(function (data) {
 
-                        /**
+                        /*
                          * Wraps the Angular $resource method and adds the ability to retrieve the available resources.
-                         * todo If no parameter is given it will return an array with the available resources in this object.
                          *
                          * @param {string|object} resource the resource name to be retrieved or an object which holds the
                          * resource name and the parameters
@@ -526,12 +611,10 @@ define([
 
     });
 
-    /**
-     * @module w20Hypermedia
-     *
+    /*
      * Provider for the interceptor which wraps the HypermediaRestAdapter around the response object.
      */
-    module.provider('HypermediaRestInterceptor', ['$httpProvider', 'HypermediaRestAdapterProvider', function ($httpProvider) {
+    w20CoreHypermedia.provider('HypermediaRestInterceptor', ['$httpProvider', 'HypermediaRestAdapterProvider', function ($httpProvider) {
             return {
 
                 apply: function () {
@@ -566,7 +649,7 @@ define([
         }]
     );
 
-    /**
+    /*
      * Prefix the links in the data structure with a host prefix
      *
      * @param data the original data structure
@@ -609,7 +692,7 @@ define([
     }
 
 
-    /**
+    /*
      * Makes a deep extend of the given destination object and the source objects.
      *
      * @param {object} destination the destination object
@@ -630,7 +713,7 @@ define([
         return angular.copy(destination);
     }
 
-    /**
+    /*
      * Add an embedded lookup function and remove the original embedded property on the resource
      *
      * @param {object} object the object in which the source key exists and destination key is created
@@ -653,7 +736,7 @@ define([
         }
     }
 
-    /**
+    /*
      * Extracts the url out of a url string. If template parameters exist, they will be removed from the
      * returned url.
      *
@@ -673,7 +756,7 @@ define([
     }
 
 
-    /**
+    /*
      * Returns the template parameters of the given url as object. e.g. from this url
      * 'http://localhost:8080/categories{?page,size,sort}' it will return the following object:
      * {'page': '', 'size': '', 'sort': ''}
@@ -694,7 +777,7 @@ define([
         return templateParametersObject;
     }
 
-    /**
+    /*
      * Strip potential trailing slash in url
      *
      * @param url the url to remove potential trailing slash from
@@ -708,7 +791,7 @@ define([
         return arr.join('/');
     }
 
-    /**
+    /*
      * Return the host of a given url. If the url is not fully absolute use the document domain. If the url is
      * relative return undefined
      *
@@ -727,7 +810,7 @@ define([
         }
     }
 
-    /**
+    /*
      * Check if a url is absolute
      *
      * @param url the url to check
@@ -737,7 +820,7 @@ define([
         return url.substring(0, 5) === 'http:' || url.substring(0, 6) === 'https:';
     }
 
-    /**
+    /*
      * Check if url start with a slash so that it is relative to the root
      *
      * @param url
@@ -749,11 +832,11 @@ define([
 
 
     return {
-        angularModules: [ 'w20Hypermedia' ],
+        angularModules: [ 'w20CoreHypermedia' ],
         lifecycle: {
             pre: function (modules, fragments, callback) {
 
-                /**
+                /*
                  * Prepend a '/' to relative url used for api entry point since they are resolved from
                  * the root
                  *
@@ -767,7 +850,8 @@ define([
 
                 }
 
-                /* Prefix the definition of a json-home Resource href-template and href-vars with the host if
+                /*
+                 * Prefix the definition of a json-home Resource href-template and href-vars with the host if
                  * the host was specified and the url are absolute (starting with '/')
                  *
                  * @param {object} definition a json-home Resource
@@ -811,7 +895,7 @@ define([
                     return definition;
                 }
 
-                var $injector = angular.injector(['w20Hypermedia'], true),
+                var $injector = angular.injector(['w20CoreHypermedia'], true),
                     $http = $injector.get('$http'),
                     $q = $injector.get('$q'),
                     apiPromises = [],

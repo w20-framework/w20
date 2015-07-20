@@ -21,5 +21,8 @@ coverage/
 # Bower
 bower_components/
 
+# ngdocs
+docs/
+
 #Vim
 *~

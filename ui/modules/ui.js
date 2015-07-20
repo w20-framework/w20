@@ -29,6 +29,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc object
+     * @name w20UI
+     *
+     * @description
+     *
      * This module manages the UI. It provides Bootstrap 3 and UI-Bootstrap libraries. It is automatically loaded.
      *
      * Configuration
@@ -40,15 +45,24 @@ define([
      * ----------------------------
      *
      * This module has no fragment definition section.
-     *
-     * @name w20UI
-     * @module
      */
     var w20UI = angular.module('w20UI', ['ui.bootstrap', 'w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture']),
         config = module && module.config() || {},
         allNavigation = {};
 
 
+    /**
+     * @ngdoc service
+     * @name w20UI.service:DisplayService
+     *
+     * @description
+     *
+     * This service manages different aspect of the display such as entering/exiting fullscreen or registering
+     * dynamic value for margin and padding on dedicated css classes.
+     *
+     * TODO Explain how the content shift work and can be used with some example
+     *
+     */
     w20UI.factory('DisplayService', ['$window', '$log', function ($window, $log) {
         function getCSSRule(ruleName) {
             var styleSheet = $window.document.styleSheets[0];
@@ -94,6 +108,17 @@ define([
             };
 
         return {
+            /**
+             * @ngdoc function
+             * @name w20UI.service:DisplayService#enterFullScreen
+             * @methodOf w20UI.service:DisplayService
+             * @param {Object} element Asynchronously requests that the element be made full-screen.
+             * It's not guaranteed that the element will be put into full-screen mode.
+             *
+             * @description
+             *
+             * Request that the given element be made fullscreen. If no argument is supplied, defaults to the body element
+             */
             enterFullScreen: function (element) {
                 if (!element) {
                     element = angular.element('body')[0];
@@ -111,7 +136,15 @@ define([
                     $log.warn('cannot enter fullscreen mode, no support');
                 }
             },
-
+            /**
+             * @ngdoc function
+             * @name w20UI.service:DisplayService#exitFullScreen
+             * @methodOf w20UI.service:DisplayService
+             *
+             * @description
+             *
+             * Request that the given element exit fullscreen mode.
+             */
             exitFullScreen: function () {
                 if ($window.document.cancelFullScreen) {
                     $window.document.cancelFullScreen();
@@ -122,6 +155,45 @@ define([
                 }
             },
 
+            /**
+             * @ngdoc function
+             * @name w20UI.service:DisplayService#registerContentShiftCallback
+             * @methodOf w20UI.service:DisplayService
+             * @param {Function} callback A function that return an array of length 4 corresponding, in the order, to
+             * a top, right, bottom and left css content shift that will be summed to any previous content shift value
+             * registered by this same method.
+             * @returns {Array} An array of functions to be computed
+             *
+             * @description
+             *
+             * Register and compute a new css content shift.
+             *
+             * Explanation:
+             *
+             * The following classes can have dynamic values:
+             *
+             * .w20-top-shift-padding
+             * .w20-top-shift-margin
+             * .w20-top-shift
+             * .w20-right-shift-padding
+             * .w20-right-shift-margin
+             * .w20-right-shift
+             * .w20-bottom-shift-padding
+             * .w20-bottom-shift-margin
+             * .w20-bottom-shift
+             * .w20-left-shift-padding
+             * .w20-left-shift-margin
+             * .w20-left-shift
+             *
+             * Whenever a function () { return [ a, b, c, d ]; } is registered through this method, the value of theses classes
+             * is summed with the value of a, b, c and d
+             *
+             * a increment the value of .w20-top-shift-padding, .w20-top-shift-margin .w20-top-shift
+             * b increment the value of .w20-right-shift-padding, .w20-right-shift-margin, .w20-right-shift
+             * c increment the value of .w20-bottom-shift-padding, .w20-bottom-shift-margin, .w20-bottom-shift
+             * d increment the value of .w20-left-shift-padding, .w20-left-shift-margin, .w20-left-shift
+             *
+             */
             registerContentShiftCallback: function (callback) {
                 if (callback) {
                     shiftCallbacks.push(callback);
@@ -131,6 +203,16 @@ define([
                 return shiftCallbacks;
             },
 
+            /**
+             * ngdoc function
+             * @name w20UI.service:DisplayService#computeContentShift
+             * @methodOf w20UI.service:DisplayService
+             *
+             * @description
+             *
+             * Compute the current css content shift to the w20 "shift" css classes.
+             *
+             */
             computeContentShift: function () {
                 var contentShift = _.reduce(_.map(shiftCallbacks, function (callback) {
                     return callback();
@@ -589,7 +671,7 @@ define([
                     return $.trim(arg.replace(/^(?!at).*$/m, '')).replace(/\n/g, '<br/>');
                 }
 
-                $rootScope.$on('w20.core.application.error-occured', function (event, errors) {
+                $rootScope.$on('w20.core.application.error-occurred', function (event, errors) {
                     $('#w20ErrorReportMessage').html(errors[0].exception.message);
                     $('#w20ErrorReportStack').html(formatStack(errors[0].exception.stack));
                     $('#w20ErrorReport').modal('show');
