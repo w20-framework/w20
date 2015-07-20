@@ -120,6 +120,44 @@
                 "type": "object",
                 "additionalProperties": false
             }
+        },
+        "hypermedia": {
+            "path": "{w20-core}/modules/hypermedia",
+            "configSchema": {
+                "title": "Hypermedia module configuration",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "linksKey": {
+                        "description": "Specify the links key of the resources (defaults to '_links')",
+                        "type": "string"
+                    },
+                    "linksHrefKey": {
+                        "description": "Specify the links href key of the resources (defaults to 'href')",
+                        "type": "string"
+                    },
+                    "linksSelfLinkName": {
+                        "description": "Specify the self reference key of the resources (defaults to 'self')",
+                        "type": "string"
+                    },
+                    "embeddedKey": {
+                        "description": "Specify the embedded key of the resources (defaults to '_embedded')",
+                        "type": "string"
+                    },
+                    "embeddedNewKey": {
+                        "description": "Specify the key used for accessing embedded items of the resources (defaults to '$embedded')",
+                        "type": "string"
+                    },
+                    "linksNewKey": {
+                        "description": "Specify the key used for accessing the links of resources (defaults to '$links')",
+                        "type": "string"
+                    },
+                    "metadata": {
+                        "description": "Specify the key used for accessing additional metadata when retrieving a collection (defaults to '$metadata')",
+                        "type": "string"
+                    }
+                }
+            }
         }
     },
 
@@ -130,7 +168,7 @@
                 "[text]": "{requirejs-text}/text"
             }
         },
-        
+
         "paths": {
             "{lodash}": "${components-path:bower_components}/lodash/dist",
             "{globalize}": "${components-path:bower_components}/globalize/lib",
@@ -142,6 +180,7 @@
             "{tv4}": "${components-path:bower_components}/tv4",
             "{requirejs-text}": "${components-path:bower_components}/requirejs-text",
             "{requirejs}": "${components-path:bower_components}/requirejs",
+            "{uri.js}": "${components-path:bower_components}/uri.js/src",
             "w20": "empty:"
         },
 
@@ -164,6 +203,9 @@
             },
             "{tv4}/tv4": {
                 "exports": "tv4"
+            },
+            "{uri.js}/URITemplate": {
+                "deps": ["{uri.js}/URI"]
             }
         }
     }

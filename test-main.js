@@ -30,7 +30,8 @@ window.w20 = {
                         'fr-FR'
                     ],
                     default: 'en-GB'
-                }
+                },
+                hypermedia: {}
             },
             vars: {
                 'components-path': '/base/bower_components'
