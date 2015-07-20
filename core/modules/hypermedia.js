@@ -12,13 +12,14 @@ define([
     'module',
     'w20',
     'require',
+    'jquery',
 
     '{angular}/angular',
     '{uri.js}/URITemplate',
 
     '{angular-resource}/angular-resource'
 
-], function (_module, w20, require, angular, URITemplate) {
+], function (_module, w20, require, $, angular, URITemplate) {
 
     'use strict';
 
@@ -50,6 +51,8 @@ define([
         fetchAllKey: '_allLinks'
     };
 
+    var api = {};
+
     /**
      * @module w20Hypermedia
      *
@@ -61,35 +64,25 @@ define([
         }
     }]);
 
+
     /**
      * @module w20Hypermedia
      *
-     * Retrieve the json-home endpoints if configured
+     * Register the json-home endpoints if configured
      */
-    module.run(['$http', 'HomeService', function ($http, homeService) {
-        if (typeof config.api === 'object') {
+    module.run(['HomeService', function (homeService) {
+        var obj;
 
-            angular.forEach(config.api, function (url, endpoint) {
-                $http.get(url)
+        angular.forEach(api, function (resource, endpoint) {
 
-                    .success(function (home) {
-                        if (!home.resources || !angular.isObject(home.resources)) {
-                            throw new Error('Json-home resources does not have a "resources" root element');
-                        }
-                        var resource;
-                        angular.forEach(home.resources, function (definition, rel) {
-                            resource = {};
-                            resource[rel] = definition;
-                            homeService(endpoint).register(resource);
-                        });
-
-                    })
-
-                    .error(function (data, status) {
-                        throw new Error('Could not get home resources, ' + status);
-                    });
+            angular.forEach(resource, function (definition, rel) {
+                obj = {};
+                obj[rel] = definition;
+                homeService(endpoint).register(obj);
             });
-        }
+
+        });
+
     }]);
 
     /**
@@ -645,7 +638,36 @@ define([
                         angular.extend(config.api, fragment.definition.api);
                     }
                 });
-                callback(module);
+
+                var deferred = [];
+
+                angular.forEach(config.api, function (url, endpoint) {
+
+                    var f = $.getJSON(url)
+
+                        .done(function (home) {
+                            if (!home.resources || !angular.isObject(home.resources)) {
+                                throw new Error('Json-home resources does not have a "resources" root element');
+                            }
+
+                            angular.forEach(home.resources, function (definition, rel) {
+                                api[endpoint] = api[endpoint] ? api[endpoint] : {};
+                                api[endpoint][rel] = definition;
+                            });
+
+                        })
+
+                        .fail(function (data, status) {
+                            throw new Error('Could not get home resources, ' + status);
+                        });
+
+                    deferred.push(f);
+                });
+
+                $.when.apply(null, deferred).done(function () {
+                    callback(module);
+                });
+
             }
         }
     };
