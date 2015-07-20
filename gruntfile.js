@@ -29,9 +29,6 @@ module.exports = function (grunt) {
             extra: {
                 src: ['extra/modules/**/*.js']
             },
-            touch: {
-                src: ['touch/modules/**/*.js']
-            },
             ui: {
                 src: ['ui/modules/**/*.js']
             }
@@ -57,58 +54,6 @@ module.exports = function (grunt) {
             src: ['coverage/lcov.info'],
             options: {
                 force: true
-            }
-        },
-
-        /* Tasks below not used at the moment */
-
-        concat: {
-            options: {
-                sourceMap: true
-            },
-            core: {
-                src: ['core/modules/*.js'],
-                dest: '.tmp/core-concat.js'
-            },
-            ui: {
-                src: ['ui/modules/*.js'],
-                dest: '.tmp/ui-concat.js'
-            },
-            dataviz: {
-                src: ['dataviz/modules/*.js'],
-                dest: '.tmp/dataviz-concat.js'
-            },
-            touch: {
-                src: ['touch/modules/*.js'],
-                dest: '.tmp/touch-concat.js'
-            },
-            extra: {
-                src: ['extra/modules/*.js', 'extra/modules/providers/*.js'],
-                dest: '.tmp/extra-concat.js'
-            }
-        },
-        uglify: {
-            core: {
-                options: {
-                    sourceMap: true,
-                    sourceMapIncludeSources: true,
-                    sourceMapIn: '<%= concat.core.dist.dest %>.map'
-                },
-                dist: {
-                    src: '<%= concat.core.dist.dest %>',
-                    dest: 'dist/w20-core.min.js'
-                }
-            },
-            ui: {
-                options: {
-                    sourceMap: true,
-                    sourceMapIncludeSources: true,
-                    sourceMapIn: '<%= concat.core.dist.dest %>.map'
-                },
-                dist: {
-                    src: '<%= concat.core.dist.dest %>',
-                    dest: 'dist/w20-core.min.js'
-                }
             }
         }
     });

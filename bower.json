@@ -1,13 +1,12 @@
 {
   "name": "w20",
-  "version": "2.0.0-M3",
+  "version": "2.0.0",
   "ignore": [
     ".*",
     "*.iml",
     "specs",
     "mocks",
     "samples",
-    "doc",
     "bower_components",
     "coverage",
     "node_modules",

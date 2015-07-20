@@ -1,2 +1,0 @@
-W20 data visualization provides the technical foundation for data representation and helpers for common visualizations
-(like charts).

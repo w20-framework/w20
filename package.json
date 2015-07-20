@@ -1,7 +1,7 @@
 {
   "name": "w20",
-  "version": "2.0.0-M3",
-  "description": "SeedStack web framework",
+  "version": "2.0.0",
+  "description": "SeedStack Web framework",
   "license": "MPL 2.0",
   "contributors": [
     {
