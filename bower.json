@@ -38,10 +38,6 @@
 
     "nvd3": "1.7.1",
 
-    "hammerjs": "2.0.4",
-    "jcaret2": "https://jcaret.googlecode.com/files/jquery.caret.1.02.js",
-    "iscroll": "https://raw.githubusercontent.com/cubiq/iscroll/v4.2.5/src/iscroll.js",
-
     "angulartics": "0.17.2",
 
     "uri.js": "~1.15.1"
