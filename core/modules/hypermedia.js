@@ -655,16 +655,12 @@ define([
                                 api[endpoint][rel] = definition;
                             });
 
-                        })
-
-                        .fail(function (data, status) {
-                            throw new Error('Could not get home resources, ' + status);
                         });
 
                     deferred.push(f);
                 });
 
-                $.when.apply(null, deferred).done(function () {
+                $.when.apply(null, deferred).always(function () {
                     callback(module);
                 });
 
