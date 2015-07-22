@@ -12,14 +12,13 @@ define([
     'module',
     'w20',
     'require',
-    'jquery',
 
     '{angular}/angular',
     '{uri.js}/URITemplate',
 
     '{angular-resource}/angular-resource'
 
-], function (_module, w20, require, $, angular, URITemplate) {
+], function (_module, w20, require, angular, URITemplate) {
 
     'use strict';
 
@@ -632,35 +631,39 @@ define([
         angularModules: [ 'w20Hypermedia' ],
         lifecycle: {
             pre: function (modules, fragments, callback) {
+
+                var $injector = angular.injector(['w20Hypermedia'], true),
+                    $http = $injector.get('$http'),
+                    $q = $injector.get('$q'),
+                    apiPromises = [];
+
                 // Collect all fragment api configuration for entry points
-                angular.forEach(fragments, function(fragment) {
+                angular.forEach(fragments, function (fragment) {
                     if (typeof fragment.definition.api === 'object') {
                         angular.extend(config.api, fragment.definition.api);
                     }
                 });
 
-                var deferred = [];
+                // Retrieve all the api before application start
+                angular.forEach(config.api, function (apiUrl, endpoint) {
+                    apiPromises.push(
 
-                angular.forEach(config.api, function (url, endpoint) {
+                        $http.get(apiUrl)
 
-                    var f = $.getJSON(url)
+                            .success(function (home) {
+                                if (!home.resources || !angular.isObject(home.resources)) {
+                                    throw new Error('Json-home resources does not have a "resources" root element');
+                                }
 
-                        .done(function (home) {
-                            if (!home.resources || !angular.isObject(home.resources)) {
-                                throw new Error('Json-home resources does not have a "resources" root element');
-                            }
+                                angular.forEach(home.resources, function (definition, rel) {
+                                    api[endpoint] = api[endpoint] ? api[endpoint] : {};
+                                    api[endpoint][rel] = definition;
+                                });
 
-                            angular.forEach(home.resources, function (definition, rel) {
-                                api[endpoint] = api[endpoint] ? api[endpoint] : {};
-                                api[endpoint][rel] = definition;
-                            });
-
-                        });
-
-                    deferred.push(f);
+                            }));
                 });
 
-                $.when.apply(null, deferred).always(function () {
+                $q.all(apiPromises).then(function () {
                     callback(module);
                 });
 
