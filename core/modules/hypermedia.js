@@ -22,6 +22,8 @@ define([
 
     'use strict';
 
+    var HYPERMEDIA_TYPE = 'application/hal+json';
+
     /**
      * @module w20Hypermedia
      *
@@ -70,14 +72,13 @@ define([
      * Register the json-home endpoints if configured
      */
     module.run(['HomeService', function (homeService) {
-        var obj;
+        var resource;
 
-        angular.forEach(api, function (resource, endpoint) {
-
-            angular.forEach(resource, function (definition, rel) {
-                obj = {};
-                obj[rel] = definition;
-                homeService(endpoint).register(obj);
+        angular.forEach(api, function (apiConfig, endpoint) {
+            angular.forEach(apiConfig, function (definition, rel) {
+                resource = {};
+                resource[rel] = definition;
+                homeService(endpoint).register(resource);
             });
 
         });
@@ -114,9 +115,10 @@ define([
                 }
             }
 
-            function isRegistered(endpoint, rel) {
+            function isRegistered(rel) {
                 return home.hasOwnProperty(endpoint) && home[endpoint].hasOwnProperty(rel);
             }
+
 
             return {
                 /**
@@ -136,14 +138,15 @@ define([
                  * @returns {object} the home resource configuration
                  */
                 getDefinition: function (rel) {
-                    if (isRegistered(endpoint, rel)) {
+                    if (isRegistered(rel)) {
                         return home[endpoint][rel];
                     } else {
                         throw new Error('No registered home resources with rel "' + rel + '"');
                     }
                 },
                 /**
-                 * Provide a $resource object configured from a registered home resource
+                 * Provide a $resource object configured from a registered home resource.
+                 * This method allow to enter an hypermedia endpoint
                  *
                  * @param rel the link relation of the resource
                  * @param {object} parameters the parameters for the resource url
@@ -151,17 +154,31 @@ define([
                  * @param {object} options additional $resource method options
                  * @returns {object} the $resource for this home resource
                  */
-                resource: function (rel, parameters, actions, options) {
+                enter: function (rel, parameters, actions, options) {
                     var homeResource = this.getDefinition(rel);
+
+                    // Override the default actions for the entry point $resource
+                    // We only use get, other actions will not do anything
+                    // Also specify the accepted content-type to be of type hypermedia
+                    actions = actions ? actions : {};
+                    angular.extend(actions, {
+                        query: angular.noop,
+                        delete: angular.noop,
+                        remove: angular.noop,
+                        save: angular.noop,
+                        get: {
+                            method: 'GET',
+                            headers: { 'accept': HYPERMEDIA_TYPE }
+                        }
+                    });
 
                     if (homeResource.href) {
                         return $resource(homeResource.href, parameters, actions, options);
                     }
                     else {
-                        var hrefTemplate = homeResource['href-template'];
-                        hrefTemplate = new URITemplate(hrefTemplate);
-                        hrefTemplate = hrefTemplate.expand(parameters);
-                        return $resource(hrefTemplate, undefined, actions, options);
+                        var url = new URITemplate(homeResource['href-template']);
+                        url = url.expand(parameters);
+                        return $resource(url, undefined, actions, options);
                     }
                 }
             };
@@ -169,6 +186,7 @@ define([
 
 
     }]);
+
 
     /**
      * @module w20Hypermedia
@@ -234,6 +252,16 @@ define([
                     }
 
                     if (config.resourcesFunction === undefined) {
+
+                        actions = actions ? actions : {};
+                        angular.extend(actions, {
+                            'get': { method: 'GET', headers: { 'accept': HYPERMEDIA_TYPE } },
+                            'save': { method: 'POST', headers: { 'accept': HYPERMEDIA_TYPE } },
+                            'query': { method: 'GET', headers: { 'accept': HYPERMEDIA_TYPE } },
+                            'remove': { method: 'DELETE', headers: { 'accept': HYPERMEDIA_TYPE } },
+                            'delete': { method: 'DELETE', headers: { 'accept': HYPERMEDIA_TYPE } }
+                        });
+
                         return $injector.get('$resource')(url, parameters, actions, options);
                     } else {
                         return config.resourcesFunction(url, parameters, actions, options);
@@ -318,8 +346,8 @@ define([
                     return $injector.get('$q').when(promiseOrData).then(function (data) {
 
                         /**
-                         * Wraps the Angular $resource method and adds the ability to retrieve the available resources. If no
-                         * parameter is given it will return an array with the available resources in this object.
+                         * Wraps the Angular $resource method and adds the ability to retrieve the available resources.
+                         * todo If no parameter is given it will return an array with the available resources in this object.
                          *
                          * @param {string|object} resource the resource name to be retrieved or an object which holds the
                          * resource name and the parameters
@@ -430,12 +458,8 @@ define([
                                         // 1. the all link names key is given then fetch the link
                                         // 2. the given key is equal
                                         // 3. the given key is inside the array
-                                        if (fetchLinkNames === config.fetchAllKey ||
-                                            (typeof fetchLinkNames === 'string' && linkName === fetchLinkNames) ||
-                                            (fetchLinkNames instanceof Array && fetchLinkNames.indexOf(linkName) >= 0)) {
-                                            promisesArray.push(fetchFunction(getProcessedUrl(data, linkName), linkName,
-                                                processedData, fetchLinkNames, recursive));
-
+                                        if (fetchLinkNames === config.fetchAllKey || (typeof fetchLinkNames === 'string' && linkName === fetchLinkNames) || (fetchLinkNames instanceof Array && fetchLinkNames.indexOf(linkName) >= 0)) {
+                                            promisesArray.push(fetchFunction(getProcessedUrl(data, linkName), linkName, processedData, fetchLinkNames, recursive));
                                         }
                                     }
                                 });
@@ -450,17 +474,16 @@ define([
                                 processedData = angular.copy(data);
                             }
 
-
                             var embeddedObject = processedData[config.embeddedKey];
-
 
                             // recursively process all contained objects in the embedded value array
                             angular.forEach(embeddedObject, function (value, key) {
 
                                 // if the embeddedResourceName config variable is set to true, process each resource name array
                                 if (value instanceof Array && value.length > 0) {
-                                    var processedDataArray = [];
-                                    var processedDataArrayPromise;
+                                    var processedDataArray = [],
+                                        processedDataArrayPromise;
+
                                     angular.forEach(value, function (arrayValue, arrayKey) {
                                         processedDataArrayPromise = processDataFunction({data: arrayValue}, fetchLinkNames, recursive).then(function (processedResponseData) {
                                             processedDataArray[arrayKey] = processedResponseData;
@@ -521,7 +544,9 @@ define([
                         response: function (response) {
 
                             // intercept hal resource for client processing, return other content type untouched
-                            if (response.headers()['content-type'] === 'application/hal+json') {
+                            if (response.headers()['content-type'] === HYPERMEDIA_TYPE) {
+
+                                toAbsoluteLinks(response.data, response.config.url);
 
                                 return HypermediaRestAdapter.process(response.data).then(function (processedResponse) {
 
@@ -540,6 +565,48 @@ define([
             };
         }]
     );
+
+    /**
+     * Prefix the links in the data structure with a host prefix
+     *
+     * @param data the original data structure
+     * @param originUrl the url from which the data originated
+     */
+    function toAbsoluteLinks(data, originUrl) {
+
+        var host = stripTrailingSlash(getHost(originUrl));
+
+        function prefixLinks(links) {
+            if (host) {
+                angular.forEach(links, function (linkValue, linkKey) {
+                    if (linkValue.href.charAt(0) === '/') {
+                        linkValue.href = host + linkValue.href;
+                        links[linkKey] = linkValue;
+                    }
+                });
+            }
+        }
+
+        function walkTree(node, action) {
+
+            action(node[config.linksKey]);
+
+            angular.forEach(node[config.embeddedKey], function (embedded) {
+                if (embedded instanceof Array) {
+                    angular.forEach(embedded, function (embeddedItem) {
+                        walkTree(embeddedItem, action);
+                    });
+
+                } else {
+                    walkTree(embedded, action);
+
+                }
+            });
+        }
+
+        walkTree(data, prefixLinks);
+
+    }
 
 
     /**
@@ -627,45 +694,179 @@ define([
         return templateParametersObject;
     }
 
+    /**
+     * Strip potential trailing slash in url
+     *
+     * @param url the url to remove potential trailing slash from
+     * @returns {string} url the url without trailing slash
+     */
+    function stripTrailingSlash(url) {
+        var arr = url.split('/');
+        if (arr[arr.length - 1] === '') {
+            arr.pop();
+        }
+        return arr.join('/');
+    }
+
+    /**
+     * Return the host of a given url. If the url is not fully absolute use the document domain
+     *
+     * @param url the url to get the host part from
+     * @returns {string} the host part of the url
+     */
+    function getHost(url) {
+        var uri;
+
+        if (url.substring(0, 5) === 'http:' || url.substring(0, 6) === 'https:' || url.charAt(0) === '/') {
+
+            uri = window.document.createElement('a');
+            uri.href = url;
+
+            return uri.protocol + '//' + uri.host;
+
+        }
+    }
+
+
     return {
         angularModules: [ 'w20Hypermedia' ],
         lifecycle: {
             pre: function (modules, fragments, callback) {
 
+                /*
+                 * Extract the host (protocol with hostname with port) from a given url and return it
+                 *
+                 * @param {string} apiUrl the url of the api entry point
+                 * @returns {string} host the host part of the apiUrl
+                 */
+                function setApiHost(apiUrl) {
+
+                    var apiHost = getHost(apiUrl);
+
+                    return apiHost ? apiHost : 'http://localhost:8080';
+
+                }
+
+                /*
+                 * Prefix the given url with a host depending on the format of the url
+                 *
+                 * @param {string} url the url to be prefixed
+                 * @param {string} host the host part
+                 * @returns {string} url the result
+                 */
+                function prefixWithApiHost(url, host) {
+
+                    host = stripTrailingSlash(host);
+
+                    // if it is an absolute (non full) url (i.e starting with '/') prefix it with the apiHost
+                    if (url.charAt(0) === '/') {
+
+                        return host + url;
+
+                        // if it is not an absolute full url (starting with http or https) it is a relative url to the apiHost
+                    } else if (url.substring(0, 5) !== 'http:' || url.substring(0, 6) !== 'https:') {
+
+                        return host + '/' + url;
+
+                        // else it is an absolute url
+                    } else {
+
+                        return url;
+                    }
+                }
+
+
+                /* Prefix the definition of a json-home Resource href-template and href-vars with the host if
+                 * the host was specified and the url are absolute (starting with '/')
+                 *
+                 * @param {object} definition a json-home Resource
+                 * @param {string} host the host (protocol with hostname with port)
+                 * @returns {string} definition the modified definition
+                 */
+                function prefixHomeResourcesWithApiHost(definition, apiHost) {
+
+                    if (definition.href) {
+
+                        definition.href = prefixWithApiHost(definition.href, apiHost);
+
+                    }
+                    if (definition['href-template']) {
+
+                        definition['href-template'] = prefixWithApiHost(definition['href-template'], apiHost);
+
+                    }
+
+                    if (definition['href-vars']) {
+
+                        angular.forEach(definition['href-vars'], function (hrefVarsPath, hrefVarsKey) {
+
+                            definition['href-vars'][hrefVarsKey] = prefixWithApiHost(hrefVarsPath, apiHost);
+
+                        });
+                    }
+
+                    return definition;
+                }
+
                 var $injector = angular.injector(['w20Hypermedia'], true),
                     $http = $injector.get('$http'),
                     $q = $injector.get('$q'),
-                    apiPromises = [];
+                    apiPromises = [],
+                    apiHost;
+
 
                 // Collect all fragment api configuration for entry points
                 angular.forEach(fragments, function (fragment) {
+
                     if (typeof fragment.definition.api === 'object') {
+
                         angular.extend(config.api, fragment.definition.api);
                     }
                 });
 
                 // Retrieve all the api before application start
-                angular.forEach(config.api, function (apiUrl, endpoint) {
-                    apiPromises.push(
+                angular.forEach(config.api, function (apiUrl, apiName) {
 
-                        $http.get(apiUrl)
+                    if (api[apiName]) {
+
+                        throw new Error('Duplicate name in api declaration');
+                    }
+
+                    api[apiName] = {};
+                    apiHost = setApiHost(apiUrl);
+
+                    apiPromises.push(
+                        $http({ method: 'GET', url: apiUrl, headers: { 'accept': 'application/json-home' } })
 
                             .success(function (home) {
+
                                 if (!home.resources || !angular.isObject(home.resources)) {
                                     throw new Error('Json-home resources does not have a "resources" root element');
                                 }
 
                                 angular.forEach(home.resources, function (definition, rel) {
-                                    api[endpoint] = api[endpoint] ? api[endpoint] : {};
-                                    api[endpoint][rel] = definition;
+                                    api[apiName][rel] = prefixHomeResourcesWithApiHost(definition, apiHost);
                                 });
 
                             }));
                 });
 
-                $q.all(apiPromises).then(function () {
-                    callback(module);
-                });
+                $q.all(apiPromises)
+
+                    .then(function () {
+
+                        window.console.info('All api endpoints retrieved successfully');
+
+                    }, function () {
+
+                        window.console.error('Some api endpoints were not retrieved successfully');
+
+                    })
+                    .finally(function () {
+
+                        callback(module);
+
+                    });
 
             }
         }
