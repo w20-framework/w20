@@ -136,10 +136,10 @@ define([
             });
 
             $httpBackend.whenGET('/api/resources').respond(200, fakeProducts, { 'content-type': 'application/hal+json' });
-            $httpBackend.whenGET('/rest/products').respond(200, {response: 'products'}, { 'content-type': 'application/hal+json' });
-            $httpBackend.whenGET('/rest/aResource').respond(200, {response: 'aResource'}, { 'content-type': 'application/hal+json' });
-            $httpBackend.whenGET('/rest/anotherResource').respond(200, {response: 'anotherResource'}, { 'content-type': 'application/hal+json' });
-            $httpBackend.whenGET('/rest/products/0').respond(200, fakeProduct, { 'content-type': 'application/hal+json' });
+            $httpBackend.whenGET('http://localhost:9876/rest/products').respond(200, {response: 'products'}, { 'content-type': 'application/hal+json' });
+            $httpBackend.whenGET('http://localhost:9876/rest/aResource').respond(200, {response: 'aResource'}, { 'content-type': 'application/hal+json' });
+            $httpBackend.whenGET('http://localhost:9876/rest/anotherResource').respond(200, {response: 'anotherResource'}, { 'content-type': 'application/hal+json' });
+            $httpBackend.whenGET('http://localhost:9876/rest/products/0').respond(200, fakeProduct, { 'content-type': 'application/hal+json' });
 
         });
 
@@ -260,12 +260,13 @@ define([
             });
 
             $httpBackend.whenGET('/api/resources').respond(200, fakeProducts, { 'content-type': 'application/hal+json' });
-            $httpBackend.whenGET('/api/resourcesNoEmbedded').respond(200, noEmbeddedItems, { 'content-type': 'application/hal+json' });
-            $httpBackend.whenGET('/rest/products').respond(200, {response: 'products'}, { 'content-type': 'application/hal+json' });
-            $httpBackend.whenGET('/rest/aResource').respond(200, {response: 'aResource'}, { 'content-type': 'application/hal+json' });
-            $httpBackend.whenGET('/rest/anotherResource').respond(200, {response: 'anotherResource'}, { 'content-type': 'application/hal+json' });
+            $httpBackend.whenGET('http://localhost:9876/api/resourcesNoEmbedded').respond(200, noEmbeddedItems, { 'content-type': 'application/hal+json' });
+            $httpBackend.whenGET('http://localhost:9876/rest/products').respond(200, {response: 'products'}, { 'content-type': 'application/hal+json' });
+            $httpBackend.whenGET('http://localhost:9876/rest/aResource').respond(200, {response: 'aResource'}, { 'content-type': 'application/hal+json' });
+            $httpBackend.whenGET('http://localhost:9876/rest/anotherResource').respond(200, {response: 'anotherResource'}, { 'content-type': 'application/hal+json' });
+            $httpBackend.whenGET('http://localhost:9876/rest/uriTemplate').respond(200, uriTemplate, { 'content-type': 'application/hal+json' });
             $httpBackend.whenGET('/rest/uriTemplate').respond(200, uriTemplate, { 'content-type': 'application/hal+json' });
-            $httpBackend.whenGET('/rest/products/0').respond(200, fakeProduct, { 'content-type': 'application/hal+json' });
+            $httpBackend.whenGET('http://localhost:9876/rest/products/0').respond(200, fakeProduct, { 'content-type': 'application/hal+json' });
 
         });
 
@@ -377,6 +378,7 @@ define([
                 $rootScope.$digest();
             });
 
+            $httpBackend.whenGET('http://localhost:9876/rest/widgets').respond(200, {widgets: 'blah'}, { 'content-type': 'application/json' });
             $httpBackend.whenGET('/widgets').respond(200, {widgets: 'blah'}, { 'content-type': 'application/json' });
 
         });
@@ -400,7 +402,7 @@ define([
             homeResource['http://example.org/rel/widgets'] = jsonHomeDocument.resources['http://example.org/rel/widgets'];
             homeService('mock').register(homeResource);
 
-            var widgets = homeService('mock').resource('http://example.org/rel/widgets');
+            var widgets = homeService('mock').enter('http://example.org/rel/widgets');
 
             expect(widgets).toBeDefined();
             expect(typeof widgets.get).toBe('function');
