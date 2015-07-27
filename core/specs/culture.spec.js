@@ -101,7 +101,6 @@ define([
                 return elt.name;
             });
 
-            expect(cultureList).toContain('en');
             expect(cultureList).toContain('en-GB');
             expect(cultureList).toContain('fr-FR');
         });
