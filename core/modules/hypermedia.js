@@ -718,7 +718,7 @@ define([
     function getHost(url) {
         var uri = window.document.createElement('a');
 
-        if (isAbsolute(url)) {
+        if (isAbsolute(url) || startWithSlash(url)) {
 
             uri.href = url;
 
@@ -776,16 +776,17 @@ define([
                  */
                 function prefixHomeResourcesWithApiHost(definition, apiHost) {
 
+                    if (!apiHost) {
+
+                        return definition;
+                    }
+
                     var prefixWithApiHost = function (url, host) {
 
                         return toAbsoluteUrl(url, stripTrailingSlash(host));
 
                     };
 
-                    if (!apiHost) {
-
-                        return definition;
-                    }
 
                     if (definition.href) {
 
@@ -859,7 +860,7 @@ define([
 
                     api[apiName] = {};
 
-                    apiHost = getHost(toAbsoluteUrl(apiUrl));
+                    apiHost = getHost(toAbsoluteUrl(apiUrl, ''));
 
                     apiPromises.push(
                         $http({ method: 'GET', url: apiUrl, headers: { 'accept': 'application/json-home' } })
