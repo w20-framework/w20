@@ -284,11 +284,18 @@ define([
                                     .height(height)
                                     .showLegend(scope.config.showLegend === undefined ? false : scope.config.showLegend)
                                     .showControls(scope.config.showControls === undefined ? false : scope.config.showControls)
-                                    .tooltips(scope.config.tooltips === undefined ? false : scope.config.tooltips)
                                     .noData(scope.config.noData === undefined ? 'No Data Available.' : scope.config.noData)
                                     .interactive(true)
                                     .clipEdge(scope.config.clipEdge === undefined ? false : scope.config.clipEdge)
                                     .color(scope.config.color === undefined ? nv.utils.defaultColor() : scope.config.color);
+
+                                if (scope.config.tooltipContent) {
+                                    chart.tooltip.contentGenerator(scope.config.tooltipContent);
+                                }
+
+                                if (scope.config.tooltips) {
+                                    chart.tooltip.enabled();
+                                }
 
                                 if (scope.config.usevoronoi) {
                                     chart.useVoronoi(scope.config.usevoronoi);

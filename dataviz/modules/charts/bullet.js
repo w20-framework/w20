@@ -298,8 +298,11 @@ define([
                                         return d.measures;
                                     } : scope.config.measures())
                                     .tickFormat(scope.config.tickFormat === undefined ? null : scope.config.tickFormat())
-                                    .tooltips(scope.config.tooltips === undefined ? false : scope.config.tooltips)
                                     .noData(scope.config.noData === undefined ? 'No Data Available.' : scope.config.noData);
+
+                                if (scope.config.tooltips) {
+                                    chart.tooltip.enabled();
+                                }
 
                                 if (scope.config.tooltipContent) {
                                     chart.tooltipContent(scope.config.tooltipContent());

@@ -324,7 +324,6 @@ define([
                                     .width(width)
                                     .height(height)
                                     .showLegend(scope.config.showLegend === undefined ? false : scope.config.showLegend)
-                                    .tooltips(scope.config.tooltips === undefined ? false : scope.config.tooltips)
                                     .showXAxis(scope.config.showXAxis === undefined ? true : scope.config.showXAxis)
                                     .showYAxis(scope.config.showYAxis === undefined ? true : scope.config.showYAxis)
                                     .rightAlignYAxis(scope.config.rightAlignYAxis === undefined ? false : scope.config.rightAlignYAxis)
@@ -340,8 +339,12 @@ define([
                                         return scope.config.isArea;
                                     });
 
-                                if (attrs.tooltipContent) {
-                                    chart.tooltipContent(scope.tooltipContent);
+                                if (scope.config.tooltipContent) {
+                                    chart.tooltip.contentGenerator(scope.config.tooltipContent);
+                                }
+
+                                if (scope.config.tooltips) {
+                                    chart.tooltip.enabled();
                                 }
 
                                 common.configureXaxis(chart, scope);

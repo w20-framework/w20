@@ -299,7 +299,6 @@ define([
                                     .showYAxis(scope.config.showYAxis === undefined ? true : scope.config.showYAxis)
                                     .showLegend(scope.config.showLegend === undefined ? false : scope.config.showLegend)
                                     .showControls(scope.config.showControls === undefined ? false : scope.config.showControls)
-                                    .tooltips(scope.config.tooltips === undefined ? false : scope.config.tooltips)
                                     .reduceXTicks(scope.config.reduceXTicks === undefined ? false : scope.config.reduceXTicks)
                                     .staggerLabels(scope.config.staggerLabels === undefined ? false : scope.config.staggerLabels)
                                     .noData(scope.config.noData === undefined ? 'No Data Available.' : scope.config.noData)
@@ -312,7 +311,11 @@ define([
                                 common.configureYaxis(chart, scope);
 
                                 if (scope.config.tooltipContent) {
-                                    chart.tooltipContent(scope.config.tooltipContent);
+                                    chart.tooltip.contentGenerator(scope.config.tooltipContent);
+                                }
+
+                                if (scope.config.tooltips) {
+                                    chart.tooltip.enabled();
                                 }
 
                                 var drawChart = function () {

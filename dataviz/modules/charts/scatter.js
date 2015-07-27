@@ -319,7 +319,6 @@ define([
                                     height = scope.config.height;
                                 var chart = nv.models.scatterChart()
                                     .margin(margin)
-                                    .tooltips(scope.config.tooltips === undefined ? false : scope.config.tooltips)
                                     .tooltipXContent(scope.$eval(scope.config.tooltipXContent) || function (key, x) {
                                         return '<strong>' + x + '</strong>';
                                     })
@@ -338,6 +337,14 @@ define([
 
                                 common.configureXaxis(chart, scope);
                                 common.configureYaxis(chart, scope);
+
+                                if (scope.config.tooltipContent) {
+                                    chart.tooltip.contentGenerator(scope.config.tooltipContent);
+                                }
+
+                                if (scope.config.tooltips) {
+                                    chart.tooltip.enabled();
+                                }
 
                                 var drawChart = function () {
                                     d3.select('#' + attrs.id + ' svg')
