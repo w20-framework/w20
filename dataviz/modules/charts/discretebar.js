@@ -276,7 +276,6 @@ define([
                                     .width(width)
                                     .height(height)
                                     .showValues(scope.config.showValues === undefined ? false : scope.config.showValues)
-                                    .tooltips(scope.config.tooltips === undefined ? false : scope.config.tooltips)
                                     .noData(scope.config.noData === undefined ? 'No Data Available.' : scope.config.noData)
                                     .staggerLabels(scope.config.staggerLabels === undefined ? false : scope.config.staggerLabels)
                                     .color(scope.config.color === undefined ? nv.utils.defaultColor() : scope.config.color);
@@ -285,7 +284,11 @@ define([
                                 common.configureYaxis(chart, scope);
 
                                 if (scope.config.tooltipContent) {
-                                    chart.tooltipContent(scope.config.tooltipContent);
+                                    chart.tooltip.contentGenerator(scope.config.tooltipContent);
+                                }
+
+                                if (scope.config.tooltips) {
+                                    chart.tooltip.enabled();
                                 }
 
                                 if (scope.config.valueFormat) {

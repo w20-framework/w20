@@ -237,7 +237,6 @@ define([
                                     .y(scope.config.y === undefined ? function (d) {
                                         return d.value;
                                     } : scope.config.y)
-                                    .tooltips(scope.config.tooltips === undefined ? false : scope.config.tooltips)
                                     .noData(scope.config.noData === undefined ? 'No Data Available.' : scope.config.noData)
                                     .showLabels(scope.config.showLabels === undefined ? false : scope.config.showLabels)
                                     .labelThreshold(scope.config.labelThreshold === undefined ? 0.02 : scope.config.labelThreshold)
@@ -252,7 +251,11 @@ define([
 
 
                                 if (scope.config.tooltipContent) {
-                                    chart.tooltipContent(scope.config.tooltipContent);
+                                    chart.tooltip.contentGenerator(scope.config.tooltipContent);
+                                }
+
+                                if (scope.config.tooltips) {
+                                    chart.tooltip.enabled();
                                 }
 
                                 var drawChart = function () {

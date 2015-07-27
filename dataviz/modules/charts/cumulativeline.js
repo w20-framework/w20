@@ -298,7 +298,6 @@ define([
                                     .width(width)
                                     .height(height)
                                     .showLegend(scope.config.showLegend === undefined ? false : scope.config.showLegend)
-                                    .tooltips(scope.config.tooltips === undefined ? true : scope.config.tooltips)
                                     .showXAxis(scope.config.showXAxis === undefined ? false : scope.config.showXAxis)
                                     .showYAxis(scope.config.showYAxis === undefined ? false : scope.config.showYAxis)
                                     .rightAlignYAxis(scope.config.rightAlignYAxis === undefined ? false : scope.config.rightAlignYAxis)
@@ -313,8 +312,12 @@ define([
                                     .color(scope.config.color === undefined ? d3.scale.category10().range() : scope.config.color)
                                     .isArea(scope.config.isarea === undefined ? false : scope.config.isarea);
 
-                                if (scope.config.tooltipcontent) {
-                                    chart.tooltipContent(scope.config.tooltipcontent);
+                                if (scope.config.tooltips) {
+                                    chart.tooltip.enabled();
+                                }
+
+                                if (scope.config.tooltipContent) {
+                                    chart.tooltip.contentGenerator(scope.config.tooltipContent);
                                 }
 
                                 common.configureXaxis(chart, scope);

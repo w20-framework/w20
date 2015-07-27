@@ -283,7 +283,6 @@ define([
                                     .forceY(scope.config.forceY === undefined ? [0] : scope.$eval(scope.config.forceY))
                                     .width(width)
                                     .height(height)
-                                    .tooltips(scope.config.tooltips === undefined ? false : scope.config.tooltips)
                                     .noData(scope.config.noData === undefined ? 'No Data Available.' : scope.config.noData)
                                     .color(scope.config.color === undefined ? nv.utils.defaultColor() : scope.config.color)
                                     .showLegend(scope.config.showLegend === undefined ? false : scope.config.showLegend)
@@ -295,7 +294,11 @@ define([
                                 common.configureYaxis(chart, scope);
 
                                 if (scope.config.tooltipContent) {
-                                    chart.tooltipContent(scope.config.tooltipContent);
+                                    chart.tooltip.contentGenerator(scope.config.tooltipContent);
+                                }
+
+                                if (scope.config.tooltips) {
+                                    chart.tooltip.enabled();
                                 }
 
                                 if (scope.config.valueFormat) {

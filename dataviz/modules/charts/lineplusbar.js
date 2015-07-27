@@ -265,12 +265,15 @@ define([
                                     .width(width)
                                     .height(height)
                                     .showLegend(scope.config.showLegend === undefined ? false : scope.config.showLegend)
-                                    .tooltips(scope.config.tooltips === undefined ? false : scope.config.tooltips)
                                     .noData(scope.config.noData === undefined ? 'No Data Available.' : scope.config.noData)
                                     .color(scope.config.color === undefined ? nv.utils.defaultColor() : scope.config.color);
 
                                 if (scope.config.tooltipContent) {
-                                    chart.tooltipContent(scope.tooltipContent);
+                                    chart.tooltip.contentGenerator(scope.config.tooltipContent);
+                                }
+
+                                if (scope.config.tooltips) {
+                                    chart.tooltip.enabled();
                                 }
 
                                 common.configureXaxis(chart, scope);

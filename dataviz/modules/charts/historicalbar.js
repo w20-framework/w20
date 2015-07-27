@@ -94,6 +94,7 @@ define([
                                 var margin = (scope.$eval(attrs.margin) || {left: 50, top: 50, bottom: 50, right: 50}),
                                     width = attrs.width - (margin.left + margin.right),
                                     height = attrs.height - (margin.top + margin.bottom);
+
                                 var chart = nv.models.historicalBarChart()
                                     .margin(margin)
                                     .x(attrs.x === undefined ? function (d) {
@@ -105,7 +106,6 @@ define([
                                     .forceY(attrs.forcey === undefined ? [0] : scope.$eval(attrs.forcey)) // List of numbers to Force into the Y scale
                                     .width(width)
                                     .height(height)
-                                    .tooltips(attrs.tooltips === undefined ? false : (attrs.tooltips === 'true'))
                                     .noData(attrs.nodata === undefined ? 'No Data Available.' : scope.nodata)
                                     .interactive(attrs.interactive === undefined ? false : (attrs.interactive === 'true'))
                                     .color(attrs.color === undefined ? nv.utils.defaultColor() : scope.color());
@@ -113,8 +113,12 @@ define([
                                 common.configureXaxis(chart, scope, attrs);
                                 common.configureYaxis(chart, scope, attrs);
 
-                                if (attrs.tooltipcontent) {
-                                    chart.tooltipContent(scope.tooltipcontent());
+                                if (scope.config.tooltipContent) {
+                                    chart.tooltip.contentGenerator(scope.config.tooltipContent);
+                                }
+
+                                if (scope.config.tooltips) {
+                                    chart.tooltip.enabled();
                                 }
 
                                 if (attrs.valueformat) {
