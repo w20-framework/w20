@@ -13,9 +13,9 @@ define([
     'jquery',
     '{angular}/angular',
     '{w20-core}/modules/application',
-    '{showdown}/showdown',
+    'showdown',
     '{w20-core}/modules/utils'
-], function (_require, $, angular, w20CoreApplication, Showdown) {
+], function (_require, $, angular, w20CoreApplication, showdown) {
     'use strict';
 
     /**
@@ -44,7 +44,7 @@ define([
      * @w20doc service
      */
     w20UIText.factory('TextService', [function() {
-        var converter = new Showdown.converter(),
+        var converter = new showdown.Converter(),
             placeholderRegexp = new RegExp('(src|href)="(.*{.+}[^"]*)"', 'g');
 
 

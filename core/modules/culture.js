@@ -1219,13 +1219,13 @@ define([
                         return '{globalize}/cultures/globalize.culture.' + elt;
                 }), function () {
 
-                    availableCultureObjects = _.values(_.filter(globalize.cultures, function (elt, key) {
-                        return key !== 'default';
-                    }));
-
                     availableCultures = _.pluck(_.filter(globalize.cultures, function(elt, key) {
-                        return key !== 'default';
+                        return key !== 'default' && (key !== 'en' || _.contains(config.available, 'en'));
                     }), 'name');
+
+                    availableCultureObjects = _.map(availableCultures, function (name) {
+                        return globalize.cultures[name];
+                    });
 
                     if (window.localStorage) {
                         persistedCulture = localStorage.getItem('w20.state.' + w20.fragments['w20-core'].configuration.modules.application.id + '.culture');

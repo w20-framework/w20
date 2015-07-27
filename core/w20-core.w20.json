@@ -168,7 +168,6 @@
     "requireConfig": {
         "map": {
             "*": {
-                "jquery": "{jquery}/jquery",
                 "[text]": "{requirejs-text}/text"
             }
         },
@@ -180,11 +179,11 @@
             "{angular-resource}": "${components-path:bower_components}/angular-resource",
             "{angular-route}": "${components-path:bower_components}/angular-route",
             "{angular-sanitize}": "${components-path:bower_components}/angular-sanitize",
-            "{jquery}": "${components-path:bower_components}/jquery/dist",
             "{tv4}": "${components-path:bower_components}/tv4",
             "{requirejs-text}": "${components-path:bower_components}/requirejs-text",
             "{requirejs}": "${components-path:bower_components}/requirejs",
             "{uri.js}": "${components-path:bower_components}/uri.js/src",
+            "jquery": "${components-path:bower_components}/jquery/dist/jquery",
             "w20": "empty:"
         },
 
@@ -193,14 +192,11 @@
             "{angular-route}/angular-route": [ "{angular}/angular" ],
             "{angular-sanitize}/angular-sanitize": [ "{angular}/angular" ],
             "{angular}/angular": {
-                "deps": [ "{jquery}/jquery" ],
+                "deps": [ "jquery" ],
                 "exports": "angular"
             },
             "{lodash}/lodash": {
                 "exports": "_"
-            },
-            "{jquery}/jquery": {
-                "exports": "jQuery"
             },
             "{globalize}/globalize": {
                 "exports": "Globalize"

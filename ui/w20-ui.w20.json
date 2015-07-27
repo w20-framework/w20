@@ -89,15 +89,15 @@
             "{angular-bootstrap}": "${components-path:bower_components}/angular-bootstrap",
             "{font-awesome}": "${components-path:bower_components}/font-awesome",
             "{jgrowl}": "${components-path:bower_components}/jgrowl",
-            "{showdown}": "${components-path:bower_components}/showdown/compressed"
+            "showdown": "${components-path:bower_components}/showdown/dist/showdown"
         },
 
         "shim" : {
             "{jgrowl}/jquery.jgrowl":[
-                "{jquery}/jquery"
+                "jquery"
             ],
             "{bootstrap}/js/bootstrap" : [
-                "{jquery}/jquery"
+                "jquery"
             ],
             "{angular-bootstrap}/ui-bootstrap-tpls" : [
                 "{angular}/angular"
@@ -109,10 +109,7 @@
             "{angular-ui-select}/select" : [
                 "{angular}/angular",
                 "[css]!{angular-ui-select}/select"
-            ],
-            "{showdown}/showdown": {
-                "exports": "Showdown"
-            }
+            ]
         }
     },
 
