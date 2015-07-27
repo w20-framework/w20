@@ -709,22 +709,42 @@ define([
     }
 
     /**
-     * Return the host of a given url. If the url is not fully absolute use the document domain
+     * Return the host of a given url. If the url is not fully absolute use the document domain. If the url is
+     * relative return undefined
      *
      * @param url the url to get the host part from
      * @returns {string} the host part of the url
      */
     function getHost(url) {
-        var uri;
+        var uri = window.document.createElement('a');
 
-        if (url.substring(0, 5) === 'http:' || url.substring(0, 6) === 'https:' || url.charAt(0) === '/') {
+        if (isAbsolute(url)) {
 
-            uri = window.document.createElement('a');
             uri.href = url;
 
             return uri.protocol + '//' + uri.host;
 
         }
+    }
+
+    /**
+     * Check if a url is absolute
+     *
+     * @param url the url to check
+     * @returns {boolean} true if the url is absolute, false otherwise
+     */
+    function isAbsolute(url) {
+        return url.substring(0, 5) === 'http:' || url.substring(0, 6) === 'https:';
+    }
+
+    /**
+     * Check if url start with a slash so that it is relative to the root
+     *
+     * @param url
+     * @returns {boolean}
+     */
+    function startWithSlash(url) {
+        return url.charAt(0) === '/';
     }
 
 
@@ -733,48 +753,19 @@ define([
         lifecycle: {
             pre: function (modules, fragments, callback) {
 
-                /*
-                 * Extract the host (protocol with hostname with port) from a given url and return it
+                /**
+                 * Prepend a '/' to relative url used for api entry point since they are resolved from
+                 * the root
                  *
-                 * @param {string} apiUrl the url of the api entry point
-                 * @returns {string} host the host part of the apiUrl
+                 * @param url
+                 * @param host
+                 * @returns {string} an absolute url
                  */
-                function setApiHost(apiUrl) {
+                function toAbsoluteUrl(url, host) {
 
-                    var apiHost = getHost(apiUrl);
-
-                    return apiHost ? apiHost : 'http://localhost:8080';
+                    return isAbsolute(url) ? url : (startWithSlash(url) ? host + url : host + '/' + url);
 
                 }
-
-                /*
-                 * Prefix the given url with a host depending on the format of the url
-                 *
-                 * @param {string} url the url to be prefixed
-                 * @param {string} host the host part
-                 * @returns {string} url the result
-                 */
-                function prefixWithApiHost(url, host) {
-
-                    host = stripTrailingSlash(host);
-
-                    // if it is an absolute (non full) url (i.e starting with '/') prefix it with the apiHost
-                    if (url.charAt(0) === '/') {
-
-                        return host + url;
-
-                        // if it is not an absolute full url (starting with http or https) it is a relative url to the apiHost
-                    } else if (url.substring(0, 5) !== 'http:' || url.substring(0, 6) !== 'https:') {
-
-                        return host + '/' + url;
-
-                        // else it is an absolute url
-                    } else {
-
-                        return url;
-                    }
-                }
-
 
                 /* Prefix the definition of a json-home Resource href-template and href-vars with the host if
                  * the host was specified and the url are absolute (starting with '/')
@@ -784,6 +775,17 @@ define([
                  * @returns {string} definition the modified definition
                  */
                 function prefixHomeResourcesWithApiHost(definition, apiHost) {
+
+                    var prefixWithApiHost = function (url, host) {
+
+                        return toAbsoluteUrl(url, stripTrailingSlash(host));
+
+                    };
+
+                    if (!apiHost) {
+
+                        return definition;
+                    }
 
                     if (definition.href) {
 
@@ -815,12 +817,35 @@ define([
                     apiHost;
 
 
-                // Collect all fragment api configuration for entry points
+                // Collect all fragments api configuration for entry points and extend the configuration with them
                 angular.forEach(fragments, function (fragment) {
 
                     if (typeof fragment.definition.api === 'object') {
 
                         angular.extend(config.api, fragment.definition.api);
+                    }
+                });
+
+                // Resolve all api path alias
+                angular.forEach(config.api, function (apiUrl, apiName) {
+
+                    if (apiUrl.charAt(0) === '@') {
+
+                        var resolution = config.api[config.api[apiName].substring(1)];
+
+                        if (resolution) {
+
+                            config.api[apiName] = resolution;
+
+                        } else if (apiUrl === '@home') {
+
+                            config.api[apiName] = '/rest/';
+
+                        } else {
+
+                            throw new Error('Api ' + apiUrl + ' cannot be resolved. Must declare an api "hoe" with a valid url or replace "@hoe" with a valid url');
+                        }
+
                     }
                 });
 
@@ -833,7 +858,8 @@ define([
                     }
 
                     api[apiName] = {};
-                    apiHost = setApiHost(apiUrl);
+
+                    apiHost = getHost(toAbsoluteUrl(apiUrl));
 
                     apiPromises.push(
                         $http({ method: 'GET', url: apiUrl, headers: { 'accept': 'application/json-home' } })
