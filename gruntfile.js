@@ -16,6 +16,7 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         clean: [
             'bower_components/**',
+            'docs/**',
             'dist/**',
             'coverage/**'
         ],
@@ -55,6 +56,30 @@ module.exports = function (grunt) {
             options: {
                 force: true
             }
+        },
+        ngdocs: {
+            options: {
+                startPage: '/core',
+            },
+            core: {
+                src: ['core/modules/**/*.js'],
+                title: 'Core',
+                api: true
+            },
+            ui: {
+                src: ['ui/modules/**/*.js'],
+                title: 'UI',
+                api: true
+            }
+        },
+        connect: {
+            docs: {
+                options: {
+                    port: 9000,
+                    base: 'docs',
+                    keepalive: true
+                }
+            }
         }
     });
 
@@ -62,9 +87,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-ngdocs');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-bower-task');
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
-    grunt.registerTask('default', ['jshint', 'bower', 'karma:test', 'coveralls']);
+    grunt.registerTask('docs', ['ngdocs', 'connect:docs']);
+
+    grunt.registerTask('default', ['jshint', 'bower', 'karma:test', 'coveralls', 'ngdocs']);
 };

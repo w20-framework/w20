@@ -11,3 +11,6 @@ before_install: npm install -g grunt-cli
 install: npm install
 
 before_script: grunt
+
+after_success:
+  - "[[ $TRAVIS_PULL_REQUEST == \"false\" && $TRAVIS_BRANCH == \"master\" ]] && chmod +x deploy_ghpages.sh && ./deploy_ghpages.sh"

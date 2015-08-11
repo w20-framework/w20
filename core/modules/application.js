@@ -25,66 +25,66 @@ define([
     'use strict';
 
     /**
+     * @ngdoc object
+     * @name w20CoreApplication
+     *
+     * @description
+     *
      * This module configure the following AngularJS aspects:
      *
-     * * Routing (more information [here](#!/w20-doc/core/routing),
+     * * Routing (more information [here](http://www.seedstack.org/docs/w20/manual/core/routing/)),
      * * Exception handler,
      * * Initialization.
      *
      * This module is required to run a W20 application. It is automatically loaded.
      *
-     * Configuration
-     * -------------
+     * # Configuration
      *
-     *      "application" : {
-     *          "id": "The application unique identifier",
-     *          "home": "The path of the home view",
-     *          "blank": "The path of the blank view",
-     *          "notFound": "The path of the 'view not found' view",
-     *          "redirectAfterRouteError": "Specify the path to go to after a route change error",
-     *          "defaultSandboxPermissions": "Specify the default iframe-based sandbox permissions (can be overridden by the sandboxPermissions attribute on a specific route)",
-     *          "defaultSandboxId": "Specify the default identifier for the sandbox iframe"
-     *      }
+     *     "application" : {
+     *         "id": "The application unique identifier",
+     *         "home": "The path of the home view",
+     *         "blank": "The path of the blank view",
+     *         "notFound": "The path of the 'view not found' view",
+     *         "redirectAfterRouteError": "Specify the path to go to after a route change error",
+     *         "defaultSandboxPermissions": "Specify the default iframe-based sandbox permissions (can be overridden by the sandboxPermissions attribute on a specific route)",
+     *         "defaultSandboxId": "Specify the default identifier for the sandbox iframe"
+     *     }
      *
-     * Fragment definition sections
-     * ----------------------------
+     * # Fragment definition sections
      *
      * The fragment "routes" section allows to declare application routes. All fragments "routes" sections are merged on application
      * initialization. Fragment "routes" definitions can be overriden by redeclaring the "routes" section in the configuration and
      * redeclaring any value to be overriden.
      *
-     *      "routes" : {
-     *          "path/of/the/route/1" : {
-     *              // Type of the route (view by default by other type can be registered by modules)
-     *              "type": "view|..."
+     *     "routes" : {
+     *         "path/of/the/route/1" : {
+     *             // Type of the route (view by default by other type can be registered by modules)
+     *             "type": "view|..."
      *
-     *              // If type attribute is view, the URL of the view HTML template (exclusive with the "template" attribute)
-     *              "templateUrl" : "module name of the template",
+     *             // If type attribute is view, the URL of the view HTML template (exclusive with the "template" attribute)
+     *             "templateUrl" : "module name of the template",
      *
-     *              // If type attribute is view, inline template of the view (exclusive with the "templateUrl" attribute)
-     *              "template" : "<html><of><the><template>...",
+     *             // If type attribute is view, inline template of the view (exclusive with the "templateUrl" attribute)
+     *             "template" : "<html><of><the><template>...",
      *
-     *              // Integer key used to sort the category entries
-     *              "sortKey" : 1,
+     *             // Integer key used to sort the category entries
+     *             "sortKey" : 1,
      *
-     *              // Category of the route
-     *              "category" : "category-name",
+     *             // Category of the route
+     *             "category" : "category-name",
      *
-     *              // Hide the route from being displayed
-     *              "hidden" : true|false,
+     *             // Hide the route from being displayed
+     *             "hidden" : true|false,
      *
-     *              // Name of a "resolve" function that must return a promise. The routing is suspended until the promise is resolved (or rejected).
-     *              // The function should be declared using module.value("checkFnName", [ "...", function(...) { } ])
-     *              "check" : "checkFnName"
-     *          },
+     *             // Name of a "resolve" function that must return a promise. The routing is suspended until the promise is resolved (or rejected).
+     *             // The function should be declared using module.value("checkFnName", [ "...", function(...) { } ])
+     *             "check" : "checkFnName"
+     *         },
      *
-     *          "path/of/the/route/2" : { ... },
+     *         "path/of/the/route/2" : { ... },
      *
-     *          ...
-     *      }
-     *
-     * @name w20CoreApplication
-     * @module
+     *         ...
+     *     }
      */
     var w20CoreApplication = angular.module('w20CoreApplication', [ 'w20CoreEnv', 'ngRoute', 'ngSanitize' ]),
         config = module && module.config() || {},
@@ -190,54 +190,66 @@ define([
     }]);
 
     /**
-     * The ApplicationService provides access to global application properties.
+     * @ngdoc service
+     * @name w20CoreApplication.service:ApplicationService
      *
-     * @name ApplicationService
-     * @memberOf w20CoreApplication
-     * @w20doc service
+     * @description
+     *
+     * The ApplicationService provides access to global application properties.
      */
     w20CoreApplication.factory('ApplicationService', [function () {
         return {
             /**
-             * The unique id of the application. It can be used to disambiguate between multiple W20 applications
-             * when necessary.
+             * @ngdoc property
+             * @name w20CoreApplication.service:ApplicationService#applicationId
+             * @propertyOf w20CoreApplication.service:ApplicationService
+             * @return {String} the unique id of the application.
              *
-             * @field
-             * @name ApplicationService#applicationId
-             * @memberOf ApplicationService
-             * @type String
+             * @description
+             *
+             * This id can be used to disambiguate between multiple W20 applications when necessary.
              */
             applicationId: config.id || 'w20app',
 
             /**
-             * This function takes a route path and normalize it into a unique name. When multilevel paths (i.e. paths
-             * containing slashes) are normalized the separator parameter is used to build the name (default separator
-             * is the dot '.').
+             * @ngdoc function
+             * @name w20CoreApplication.service:ApplicationService#normalizeRouteName
+             * @methodOf w20CoreApplication.service:ApplicationService
              *
-             * @function
-             * @name ApplicationService#normalizeRouteName
-             * @memberOf ApplicationService
              * @param {String} path Route path to normalize.
              * @param {String} separator The separator used to build the normalized name.
              * @return {String} The normalized route name.
+             *
+             * @description
+             *
+             * This method takes a route path and normalize it into a unique name. When multilevel paths (i.e. paths
+             * containing slashes) are normalized the separator parameter is used to build the name (default separator
+             * is the dot '.').
              */
             normalizeRouteName: normalizeRouteName,
 
             /**
-             * This is the path of the home route.
-             *
-             * @field
-             * @name ApplicationService#homePath
-             * @memberOf ApplicationService
-             * @type String
+             * @ngdoc property
+             * @name w20CoreApplication.service:ApplicationService#homePath
+             * @propertyOf w20CoreApplication.service:ApplicationService
+             * @return {String} the path of the home route.
              */
             homePath: config.home
         };
     }]);
 
+    /**
+     * @ngdoc service
+     * @name w20CoreApplication.provider:$exceptionHandler
+     *
+     * @description
+     *
+     * Replaces the default exception handler of AngularJS. It collapses similar errors (same type, same message, same
+     * stack) and emits an event (`w20.core.application.error-occurred`). This event can be used to display an error
+     * report.
+     */
     w20CoreApplication.provider('$exceptionHandler', function () {
         var errorTimeoutPromise,
-            errorDuringErrorProcessing,
             allErrors = [];
 
         function isSameException(first, second) {
@@ -281,10 +293,22 @@ define([
                                 }
                             });
 
-                            eventService.emit('w20.core.application.error-occured', allErrors, errorDuringErrorProcessing);
+                            /**
+                             * @ngdoc event
+                             * @name w20CoreApplication.provider:$exceptionHandler#w20\.core\.application\.error-occurred
+                             * @eventOf w20CoreApplication.provider:$exceptionHandler
+                             * @eventType emitted on root scope
+                             *
+                             * @description
+                             *
+                             * This event is emitted on the root scope after an error has occurred. It can be used to
+                             * display an error report.
+                             *
+                             * @param {Error[]} allErrors The list of all errors that occurred since the last event.
+                             */
+                            eventService.emit('w20.core.application.error-occurred', allErrors);
                             allErrors = [];
-                            errorDuringErrorProcessing = undefined;
-                        }, 500, false); // do not apply which could retrigger errors
+                        }, 500, false); // do not apply which could re-trigger errors
                     }]);
                 } catch (e) {
                     $log.error(exception);
@@ -311,6 +335,10 @@ define([
         allRouteHandlers[type] = handlerFn;
     }
 
+    /**
+     * This handler manages routes of the `view` type. It resolves template URLs with RequireJS and if the route is
+     * marked as trusted, push it on the SCE URL whitelist.
+     */
     registerRouteHandler('view', function (route) {
         if (typeof route.templateUrl !== 'undefined') {
             route.templateUrl = require.toUrl(route.templateUrl);
@@ -323,6 +351,10 @@ define([
         return route;
     });
 
+    /**
+     * This handler manages routes of the `sandbox` type which are implemented with an iframe. This enables to embed
+     * external UI as a view.
+     */
     registerRouteHandler('sandbox', function (route) {
         var sandboxPermissions = route.sandboxPermissions || config.defaultSandboxPermissions;
         route.template = '<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; margin: 0; padding: 0;" class="w20-top-shift w20-right-shift w20-bottom-shift w20-left-shift">' +
@@ -333,6 +365,7 @@ define([
 
     return {
         angularModules: [ 'w20CoreApplication' ],
+
         lifecycle: {
             pre: function (modules, fragments, callback) {
                 allRoutes = {};
@@ -372,6 +405,7 @@ define([
                     callback(module);
                 });
             },
+
             run: function (modules, fragments, callback) {
                 var angularModules = [],
                     bootstrap = function () {
@@ -391,6 +425,7 @@ define([
                 angular.element(window.document).ready(bootstrap);
             }
         },
+
         registerRouteHandler: registerRouteHandler
     };
 });

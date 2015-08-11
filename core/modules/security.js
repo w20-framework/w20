@@ -21,6 +21,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc object
+     * @name w20CoreSecurity
+     *
+     * @description
+     *
      * This module provides authentication and authorization functions through realms. A realm is a security domain
      * where a subject has some attributes and permissions. A subject may have different permissions in different realms.
      * A permission check is always done in a specific realm and valid only for this realm. Realms are declared in
@@ -58,8 +63,6 @@ define([
      *          }
      *      }
      *
-     * @name w20CoreSecurity
-     * @module
      */
     var w20CoreSecurity = angular.module('w20CoreSecurity', ['w20CoreEnv', 'ngResource']),
         config = module && module.config() || {},
@@ -143,12 +146,14 @@ define([
     }]);
 
     /**
+     * @ngdoc service
+     * @name w20CoreSecurity.service:AuthenticationService
+     *
+     * @description
+     *
      * The AuthenticationService provides an API to authenticate and deauthenticate a subject, as well as query its
      * various properties.
      *
-     * @name AuthenticationService
-     * @memberOf w20CoreSecurity
-     * @w20doc service
      */
     w20CoreSecurity.factory('AuthenticationService', ['$log', '$injector', '$q', 'EventService', 'AuthorizationService', function ($log, $injector, $q, eventService, authorizationService) {
         var authProviders = [],
@@ -181,11 +186,18 @@ define([
 
         return {
             /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthenticationService#addProvider
+             * @methodOf w20CoreSecurity.service:AuthenticationService
+             * @param {String} realm The realm
+             * @param {Object} providerFactory An injectable AngularJS factory that act as a provider for authentication.
+             * This factory should return an object with a setConfig(config) and setRealm(realm) methods.
+             * @param {Object} config A configuration object with a **authorization** property url and a **authentication** property url
+             *
+             * @description
+             *
              * Add an authentication provider which can then be used by any security realm definition.
              *
-             * @name AuthenticationService#addProvider
-             * @memberOf AuthenticationService
-             * @function
              */
             addProvider: function (realm, providerFactory, config) {
                 var provider = $injector.invoke(providerFactory);
@@ -195,12 +207,15 @@ define([
             },
 
             /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthenticationService#subjectId
+             * @methodOf w20CoreSecurity.service:AuthenticationService
+             * @returns {String} The subject identifier or undefined if no subject is currently authenticated.
+             *
+             * @description
+             *
              * Retrieve the identifier of the currently authenticated subject.
              *
-             * @name AuthenticationService#subjectId
-             * @memberOf AuthenticationService
-             * @function
-             * @returns {String} The subject identifier or undefined if no subject is currently authenticated.
              */
             subjectId: function () {
                 if (currentSubject !== null) {
@@ -211,12 +226,15 @@ define([
             },
 
             /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthenticationService#subjectType
+             * @methodOf w20CoreSecurity.service:AuthenticationService
+             * @returns {String} The subject type or undefined if no subject is currently authenticated.
+             *
+             * @description
+             *
              * Retrieve the type of the currently authenticated subject.
              *
-             * @name AuthenticationService#subjectType
-             * @memberOf AuthenticationService
-             * @function
-             * @returns {String} The subject type or undefined if no subject is currently authenticated.
              */
             subjectType: function () {
                 if (currentSubject !== null) {
@@ -227,12 +245,14 @@ define([
             },
 
             /**
-             * Retrieve the alls the principals of the currently authenticated subject.
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthenticationService#subjectPrincipals
+             * @methodOf w20CoreSecurity.service:AuthenticationService
              *
-             * @name AuthenticationService#subjectPrincipals
-             * @memberOf AuthenticationService
-             * @function
-             * @returns {String} The subject principals or undefined if no subject is currently authenticated.
+             * @description
+             *
+             * Retrieve all the the principals of the currently authenticated subject.
+             *
              */
             subjectPrincipals: function () {
                 if (currentSubject !== null) {
@@ -243,13 +263,16 @@ define([
             },
 
             /**
-             * Retrieve the specified principal value of the currently authenticated subject.
-             *
-             * @name AuthenticationService#subjectPrincipal
-             * @memberOf AuthenticationService
-             * @function
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthenticationService#subjectPrincipal
+             * @methodOf w20CoreSecurity.service:AuthenticationService
              * @param {String} name The name of the principal value.
              * @returns {String} The specified principal value or undefined if no subject is currently authenticated or the specified principal doesn't exists.
+             *
+             * @description
+             *
+             * Retrieve the specified principal value of the currently authenticated subject.
+             *
              */
             subjectPrincipal: function (name) {
                 if (currentSubject !== null && typeof currentSubject.principals !== 'undefined') {
@@ -260,24 +283,30 @@ define([
             },
 
             /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthenticationService#subjectAuthenticated
+             * @methodOf w20CoreSecurity.service:AuthenticationService
+             * @returns {Boolean} True if the subject is currently authenticated, false otherwise.
+             *
+             * @description
+             *
              * Return if the subject is authenticated.
              *
-             * @name AuthenticationService#subjectAuthenticated
-             * @memberOf AuthenticationService
-             * @function
-             * @returns {Boolean} True if the subject is currently authenticated, false otherwise.
              */
             subjectAuthenticated: function () {
                 return currentSubject !== null;
             },
 
             /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthenticationService#isAuthentifiable
+             * @methodOf w20CoreSecurity.service:AuthenticationService
+             * @returns {Boolean} True if the subject is currently authentifiable, false otherwise.
+             *
+             * @description
+             *
              * Return if a subject is authentifiable (i.e. all authentication providers can authenticate a subject).
              *
-             * @name AuthenticationService#isAuthentifiable
-             * @memberOf AuthenticationService
-             * @function
-             * @returns {Boolean} True if the subject is currently authentifiable, false otherwise.
              */
             isAuthentifiable: function () {
                 if (authProviders.length === 0) {
@@ -290,14 +319,15 @@ define([
             },
 
             /**
-             * Authenticate the subject corresponding to the specified credentials through all the configured
-             * security realms.
-             *
-             * @name AuthenticationService#authenticate
-             * @memberOf AuthenticationService
-             * @function
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthenticationService#authenticate
+             * @methodOf w20CoreSecurity.service:AuthenticationService
              * @param {Object} credentials The credentials object passed to authentication providers to authenticate the subject.
              * @returns {Object} A promise that will be resolved upon successful subject authentication, or rejected otherwise.
+             *
+             * @description
+             *
+             * Authenticate the subject corresponding to the specified credentials through all the configured security realms.
              */
             authenticate: function (credentials) {
                 if (authProviders.length === 0) {
@@ -318,12 +348,16 @@ define([
                     }));
 
                     /**
+                     * @ngdoc event
+                     * @name w20CoreSecurity.service:AuthenticationService#w20\.security\.authenticated
+                     * @eventOf w20CoreSecurity.service:AuthenticationService
+                     * @eventType emitted on root scope
+                     * @param {Object} The authenticated subject definition.
+                     *
+                     * @description
+                     *
                      * This event is emitted after successful subject authentication.
                      *
-                     * @name w20.security.authenticated
-                     * @w20doc event
-                     * @memberOf w20CoreSecurity
-                     * @argument {Object} The authenticated subject definition.
                      */
                     eventService.emit('w20.security.authenticated', currentSubject);
 
@@ -337,12 +371,16 @@ define([
                     $log.error('Failed to authenticate on realm(s): ' + realms);
 
                     /**
+                     * @ngdoc event
+                     * @name w20CoreSecurity.service:AuthenticationService#w20\.security\.failed-authentication
+                     * @eventOf w20CoreSecurity.service:AuthenticationService
+                     * @eventType emitted on root scope
+                     * @param {String} id The authenticated subject identifier.
+                     *
+                     * @description
+                     *
                      * This event is emitted after unsuccessful subject authentication.
                      *
-                     * @name w20.security.failed-authentication
-                     * @w20doc event
-                     * @memberOf w20CoreSecurity
-                     * @argument {String} The authenticated subject identifier.
                      */
                     eventService.emit('w20.security.failed-authentication');
 
@@ -353,12 +391,15 @@ define([
             },
 
             /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthenticationService#deauthenticate
+             * @methodOf w20CoreSecurity.service:AuthenticationService
+             * @returns {Object} A promise that will be resolved upon successful subject deauthentication, or rejected otherwise.
+             *
+             * @description
+             *
              * Deauthenticate the currently authenticated subject.
              *
-             * @name AuthenticationService#deauthenticate
-             * @memberOf AuthenticationService
-             * @function
-             * @returns {Object} A promise that will be resolved upon successful subject deauthentication, or rejected otherwise.
              */
             deauthenticate: function () {
                 deferred = $q.all(authProviders.map(function (provider) {
@@ -372,13 +413,17 @@ define([
                     $log.info('subject deauthenticated from realm(s): ' + realms);
 
                     /**
+                     * @ngdoc event
+                     * @name w20CoreSecurity.service:AuthenticationService#w20\.security\.deauthenticated
+                     * @eventOf w20CoreSecurity.service:AuthenticationService
+                     * @eventType emitted on root scope
+                     * @param {String} id The deauthenticated subject identifier.
+                     * @param {Boolean} The subject is cleanly deauthenticated.
+                     *
+                     * @description
+                     *
                      * This event is emitted after the subject deauthentication.
                      *
-                     * @name w20.security.deauthenticated
-                     * @w20doc event
-                     * @memberOf w20CoreSecurity
-                     * @argument {String} The deauthenticated subject identifier.
-                     * @argument {Boolean} The subject is cleanly deauthenticated.
                      */
                     eventService.emit('w20.security.deauthenticated', true);
 
@@ -398,12 +443,15 @@ define([
             },
 
             /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthenticationService#refresh
+             * @methodOf w20CoreSecurity.service:AuthenticationService
+             * @returns {Object} A promise that will be resolved upon successful subject refresh, or rejected otherwise.
+             *
+             * @description
+             *
              * Refresh the currently connected subject by deauthenticating and reauthenticating it in a row.
              *
-             * @name AuthenticationService#refresh
-             * @memberOf AuthenticationService
-             * @function
-             * @returns {Object} A promise that will be resolved upon successful subject refresh, or rejected otherwise.
              */
             refresh: function () {
                 if (!currentSubject) {
@@ -428,12 +476,16 @@ define([
                     }));
 
                     /**
+                     * @ngdoc event
+                     * @name w20CoreSecurity.service:AuthenticationService#w20\.security\.refreshed
+                     * @eventOf w20CoreSecurity.service:AuthenticationService
+                     * @eventType emitted on root scope
+                     * @param {Object} The authenticated subject definition.
+                     *
+                     * @description
+                     *
                      * This event is emitted after successful subject refresh.
                      *
-                     * @name w20.security.refreshed
-                     * @w20doc event
-                     * @memberOf w20CoreSecurity
-                     * @argument {Object} The authenticated subject definition.
                      */
                     eventService.emit('w20.security.refreshed', currentSubject);
                 }, function (realms) {
@@ -442,12 +494,16 @@ define([
                     $log.error('failed to refresh subject ' + currentSubject.id + ' on realm(s): ' + realms);
 
                     /**
+                     * @ngdoc event
+                     * @name w20CoreSecurity.service:AuthenticationService#w20\.security\.failed-refresh
+                     * @eventOf w20CoreSecurity.service:AuthenticationService
+                     * @eventType emitted on root scope
+                     * @param {String} The authenticated subject identifier.
+                     *
+                     * @description
+                     *
                      * This event is emitted after unsuccessful subject refresh.
                      *
-                     * @name w20.security.failed-refresh
-                     * @w20doc event
-                     * @memberOf w20CoreSecurity
-                     * @argument {String} The authenticated subject identifier.
                      */
                     eventService.emit('w20.security.failed-refresh');
 
@@ -464,11 +520,13 @@ define([
     }]);
 
     /**
+     * @ngdoc service
+     * @name w20CoreSecurity.service:AuthorizationService
+     *
+     * @description
+     *
      * The AuthorizationService provides an API to check for currently authenticated subject authorizations.
      *
-     * @name AuthorizationService
-     * @memberOf w20CoreSecurity
-     * @w20doc service
      */
     w20CoreSecurity.factory('AuthorizationService', [ '$log', 'StateService', 'EventService', function ($log, stateService, eventService) {
         var currentRoles = {},
@@ -539,10 +597,30 @@ define([
         }
 
         return {
+            /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthorizationService#getRoles
+             * @methodOf w20CoreSecurity.service:AuthorizationService
+             * @returns {Array} a list of roles
+             *
+             * @description
+             *
+             * Get every available roles
+             */
             getRoles: function() {
                 return _.keys(unifiedRoles);
             },
 
+            /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthorizationService#getAttributes
+             * @methodOf w20CoreSecurity.service:AuthorizationService
+             * @returns {Object} a map of attributes to their values
+             *
+             * @description
+             *
+             * Get every attributes and their associated value
+             */
             getAttributes: function() {
                 var result = {};
                 _.each(unifiedRoles, function(unifiedRole) {
@@ -555,6 +633,17 @@ define([
                 return result;
             },
 
+            /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthorizationService#setRoleFilter
+             * @methodOf w20CoreSecurity.service:AuthorizationService
+             * @param {Array} value a list of role to restrict to. If this list is not a subset of the list returned by
+             * getRoles() an error is thrown
+             *
+             * @description
+             *
+             * Allow to restrict user roles by setting a filter of roles
+             */
             setRoleFilter: function(value) {
                 var invalidRoles = _.difference(value, this.getRoles());
 
@@ -568,6 +657,17 @@ define([
                     roleRestrictionsState.value(value);
                 }
 
+                /**
+                 * @ngdoc event
+                 * @name w20CoreSecurity.service:AuthorizationService#w20\.security\.role-filter-changed
+                 * @eventOf w20CoreSecurity.service:AuthorizationService
+                 * @eventType emitted on root scope
+                 * @param {Array} the new list of roles of the user
+                 *
+                 * @description
+                 *
+                 * This event is emitted when user roles are filtered
+                 */
                 eventService.emit('w20.security.role-filter-changed', value);
 
                 if (value.length === 0) {
@@ -577,10 +677,30 @@ define([
                 }
             },
 
+            /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthorizationService#getRoleFilter
+             * @methodOf w20CoreSecurity.service:AuthorizationService
+             * @returns {Array} the list of filtered roles
+             *
+             * @description
+             *
+             * Get the role filter
+             */
             getRoleFilter: function() {
                 return roleFilter;
             },
 
+            /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthorizationService#setAttributeFilter
+             * @methodOf w20CoreSecurity.service:AuthorizationService
+             * @param {Object} value A subset of the result of getAttributes() which will restrict the user security attributes to it
+             *
+             * @description
+             *
+             * Allow to restrict user security attributes
+             */
             setAttributeFilter: function(value) {
                 var validAttributes = this.getAttributes(),
                     invalidAttributes = {};
@@ -600,7 +720,17 @@ define([
                 if (config.persistentRestrictions) {
                     attributeRestrictionsState.value(value);
                 }
-
+                /**
+                 * @ngdoc event
+                 * @name w20CoreSecurity.service:AuthorizationService#w20\.security\.attribute-filter-changed
+                 * @eventOf w20CoreSecurity.service:AuthorizationService
+                 * @eventType emitted on root scope
+                 * @param {Object} the new map of security attributes
+                 *
+                 * @description
+                 *
+                 * This event is emitted when user roles are filtered
+                 */
                 eventService.emit('w20.security.attribute-filter-changed', value);
 
                 if (_.size(value) === 0) {
@@ -610,21 +740,34 @@ define([
                 }
             },
 
+            /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthorizationService#getAttributeFilter
+             * @methodOf w20CoreSecurity.service:AuthorizationService
+             * @returns {Object} the attribute filter
+             *
+             * @description
+             *
+             * Get the security attribute filter
+             */
             getAttributeFilter: function() {
                 return attributeFilter;
             },
 
             /**
-             * Check if the currently authenticated subject has the specified role with the specified attributes in the
-             * specified realm.
-             *
-             * @name AuthorizationService#hasRole
-             * @memberOf AuthorizationService
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthorizationService#hasRole
+             * @methodOf w20CoreSecurity.service:AuthorizationService
              * @param {String} realm The realm the check is made against.
              * @param {String} role The role to check.
              * @param {Object} attributes The optional attributes object to further check on the role.
-             * @function
              * @returns {Boolean} True if the subject has the role, false otherwise.
+             *
+             * @description
+             *
+             * Check if the currently authenticated subject has the specified role with the specified attributes in the
+             * specified realm.
+             *
              */
             hasRole: function (realm, role, attributes) {
                 var realmRoles = currentRoles[realm];
@@ -655,16 +798,19 @@ define([
             },
 
             /**
-             * Check if the currently authenticated subject has the specified permission with the specified attributes in the
-             * specified realm.
-             *
-             * @name AuthorizationService#hasPermission
-             * @memberOf AuthorizationService
-             * @function
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthorizationService#hasPermission
+             * @methodOf w20CoreSecurity.service:AuthorizationService
              * @param {String} realm The realm the check is made against.
              * @param {String[]} permission The permission to check (as an array of strings or as a ":" delimited unique string).
              * @param {Object} attributes The optional attributes object to further check on the permission.
              * @returns {Boolean} True if the subject has the permission, false otherwise.
+             *
+             * @description
+             *
+             * Check if the currently authenticated subject has the specified permission with the specified attributes in the
+             * specified realm.
+             *
              */
             hasPermission: function (realm, permission, attributes) {
                 function check(parent, values) {
@@ -707,6 +853,16 @@ define([
                 return check(realmPermissions, permission.slice(0));
             },
 
+            /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthorizationService#clear
+             * @methodOf w20CoreSecurity.service:AuthorizationService
+             *
+             * @description
+             *
+             * Clear every roles and authorizations
+             *
+             */
             clear: function() {
                 currentRoles = {};
                 unifiedRoles = {};
@@ -716,6 +872,18 @@ define([
                 sealed = false;
             },
 
+            /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthorizationService#addSubjectAuthorizations
+             * @methodOf w20CoreSecurity.service:AuthorizationService
+             * @param {String} realm The realm to add permission into
+             * @param {String} subject The subject
+             *
+             * @description
+             *
+             * Merge subject permissions to realm permissions
+             *
+             */
             addSubjectAuthorizations: function(realm, subject) {
                 if (sealed) {
                     throw new Error('AuthorizationService is sealed, cannot add further subject authorizations');
@@ -754,6 +922,16 @@ define([
                 mergePermissions(realmPermissions, subject.permissions);
             },
 
+            /**
+             * @ngdoc function
+             * @name w20CoreSecurity.service:AuthorizationService#seal
+             * @methodOf w20CoreSecurity.service:AuthorizationService
+             *
+             * @description
+             *
+             * Seal the AuthorizationService (an object sealed cannot be modified)
+             *
+             */
             seal: function() {
                 if (sealed) {
                     throw new Error('AuthorizationService is already sealed');
@@ -819,25 +997,30 @@ define([
     }]);
 
     /**
+     * @ngdoc service
+     * @name w20CoreSecurity.service:SecurityExpressionService
+     *
+     * @description
+     *
      * The SecurityExpressionService provides an API to evaluate a security expression.
      *
-     * @name SecurityExpressionService
-     * @memberOf w20CoreSecurity
-     * @w20doc service
      */
     w20CoreSecurity.factory('SecurityExpressionService', [ '$interpolate', 'AuthenticationService', 'AuthorizationService', function ($interpolate, authenticationService, authorizationService) {
         var cache = {};
 
         return {
             /**
-             * Evaluates the specified security expression to a boolean.
-             *
-             * @name SecurityExpressionService#evaluate
-             * @memberOf SecurityExpressionService
-             * @function
+             * @ngdoc function
+             * @name w20CoreSecurity.service:SecurityExpressionService#evaluate
+             * @methodOf w20CoreSecurity.service:SecurityExpressionService
              * @param {String} expression The security expression.
              * @param {Object} locals The local variables accessible in the expression.
              * @returns {Boolean} True if the specified expression evaluates to true, false otherwise.
+             *
+             * @description
+             *
+             * Evaluates the specified security expression to a boolean.
+             *
              */
             evaluate: function (expression, locals) {
                 var interpolationFn = cache[expression];
@@ -862,16 +1045,22 @@ define([
     }]);
 
     /**
-     * The w20Security directive hides the element when the specified security expression evaluates to
-     * false:
+     * @ngdoc directive
+     * @name w20CoreSecurity.directive:w20Security
+     * @restrict A
      *
+     * @description
+     *
+     * The w20Security directive hides the element when the specified security expression evaluates to
+     * false.
+     *
+     * @example
+     *
+     * ```
      *      <div data-w20-security="hasRole('realm1', 'role1')">
      *          ...
      *      </div>
-     *
-     * @name w20Security
-     * @memberOf w20CoreSecurity
-     * @w20doc directive
+     *```
      */
     w20CoreSecurity.directive('w20Security', [ 'SecurityExpressionService', function (securityExpressionService) {
         return {

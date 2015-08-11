@@ -124,7 +124,7 @@ define([
 
         beforeEach(function () {
 
-            angular.mock.module('w20Hypermedia');
+            angular.mock.module('w20CoreHypermedia');
 
             angular.mock.inject(function ($injector, _$rootScope_, _$http_) {
                 $rootScope = _$rootScope_;
@@ -248,7 +248,7 @@ define([
 
         beforeEach(function () {
 
-            angular.mock.module('w20Hypermedia');
+            angular.mock.module('w20CoreHypermedia');
 
             angular.mock.inject(function ($injector, _$rootScope_, _$resource_) {
                 $rootScope = _$rootScope_;
@@ -367,7 +367,7 @@ define([
 
         beforeEach(function () {
 
-            angular.mock.module('w20Hypermedia');
+            angular.mock.module('w20CoreHypermedia');
 
             angular.mock.inject(function ($injector, _$rootScope_, _$http_, _HomeService_) {
                 $rootScope = _$rootScope_;
