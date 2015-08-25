@@ -18,14 +18,17 @@ define([
 
     '[text]!{w20-ui}/templates/error-report.html',
 
+    '[framework]',
+    '[framework]!{bootstrap}/js/bootstrap',
+    '[framework]![css]!{bootstrap}/css/bootstrap',
+    '[framework]!{angular-bootstrap}/ui-bootstrap-tpls',
+
     '{w20-core}/modules/env',
     '{w20-core}/modules/culture',
     '{w20-core}/modules/security',
-    '{bootstrap}/js/bootstrap',
-    '[css]!{bootstrap}/css/bootstrap',
-    '[css]!{font-awesome}/css/font-awesome',
-    '{angular-bootstrap}/ui-bootstrap-tpls'
-], function (require, module, $, _, angular, errorReportTemplate) {
+
+    '[css]!{font-awesome}/css/font-awesome'
+], function (require, module, $, _, angular, errorReportTemplate, framework) {
     'use strict';
 
     /**
@@ -46,9 +49,13 @@ define([
      *
      * This module has no fragment definition section.
      */
-    var w20UI = angular.module('w20UI', ['ui.bootstrap', 'w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture']),
+    var w20UI = angular.module('w20UI', ['w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture']),
         config = module && module.config() || {},
         allNavigation = {};
+
+    if (framework.bootstrap) {
+        w20UI.requires.push('ui.bootstrap');
+    }
 
 
     /**
@@ -1145,27 +1152,31 @@ define([
         eventService.on('w20.security.attribute-filter-changed', buildAttributeFilterModel);
     }]);
 
-    w20UI.run(['EventService', 'CultureService', 'datepickerConfig', 'datepickerPopupConfig', function (eventService, cultureService, datepickerConfig, datepickerPopupConfig) {
-        datepickerConfig.formatDay = 'dd';
-        datepickerConfig.formatMonth = 'MMMM';
-        datepickerConfig.formatYear = 'yyyy';
-        datepickerConfig.formatDayHeader = 'ddd';
-        datepickerConfig.formatDayTitle = 'MMMM yyyy';
-        datepickerConfig.formatMonthTitle = 'yyyy';
+    if (framework.bootstrap) {
 
-        function updateDatePicker(culture) {
-            datepickerPopupConfig.datepickerPopup = culture.calendars.standard.patterns.d;
-            datepickerPopupConfig.currentText = cultureService.localize('w20.ui.datepicker.today');
-            datepickerPopupConfig.clearText = cultureService.localize('w20.ui.datepicker.clear');
-            datepickerPopupConfig.closeText = cultureService.localize('w20.ui.datepicker.close');
-        }
+        w20UI.run(['EventService', 'CultureService', 'datepickerConfig', 'datepickerPopupConfig', function (eventService, cultureService, datepickerConfig, datepickerPopupConfig) {
+            datepickerConfig.formatDay = 'dd';
+            datepickerConfig.formatMonth = 'MMMM';
+            datepickerConfig.formatYear = 'yyyy';
+            datepickerConfig.formatDayHeader = 'ddd';
+            datepickerConfig.formatDayTitle = 'MMMM yyyy';
+            datepickerConfig.formatMonthTitle = 'yyyy';
 
-        eventService.on('w20.culture.culture-changed', function (culture) {
-            updateDatePicker(culture);
-        });
+            function updateDatePicker(culture) {
+                datepickerPopupConfig.datepickerPopup = culture.calendars.standard.patterns.d;
+                datepickerPopupConfig.currentText = cultureService.localize('w20.ui.datepicker.today');
+                datepickerPopupConfig.clearText = cultureService.localize('w20.ui.datepicker.clear');
+                datepickerPopupConfig.closeText = cultureService.localize('w20.ui.datepicker.close');
+            }
 
-        updateDatePicker(cultureService.culture());
-    }]);
+            eventService.on('w20.culture.culture-changed', function (culture) {
+                updateDatePicker(culture);
+            });
+
+            updateDatePicker(cultureService.culture());
+        }]);
+
+    }
 
     return {
         angularModules: ['w20UI'],
