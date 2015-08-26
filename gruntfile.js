@@ -59,15 +59,15 @@ module.exports = function (grunt) {
         },
         ngdocs: {
             options: {
-                startPage: '/core',
+                startPage: '/core'
             },
             core: {
-                src: ['core/modules/**/*.js'],
+                src: ['core/modules/**/*.js', 'core/index.ngdoc'],
                 title: 'Core',
                 api: true
             },
             ui: {
-                src: ['ui/modules/**/*.js'],
+                src: ['ui/modules/**/*.js', 'ui/index.ngdoc'],
                 title: 'UI',
                 api: true
             }

@@ -1,0 +1,15 @@
+@ngdoc overview
+@name index
+
+@description
+
+# Core
+
+W20 Core provides the minimum requirements to run a W20 application, mainly:
+
+- An AMD infrastructure through RequireJS,
+- An MVC runtime through AngularJS,
+- Application loading and initialization,
+- A permission model which enables to reflect backend security,
+- Extensive culture support,
+- Various utilities.

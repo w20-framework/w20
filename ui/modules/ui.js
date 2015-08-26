@@ -60,7 +60,6 @@ define([
      * This service manages different aspect of the display such as entering/exiting fullscreen or registering
      * dynamic value for margin and padding on dedicated css classes.
      *
-     * TODO Explain how the content shift work and can be used with some example
      *
      */
     w20UI.factory('DisplayService', ['$window', '$log', function ($window, $log) {
@@ -258,6 +257,16 @@ define([
         };
     }]);
 
+    /**
+     * @ngdoc service
+     * @name w20UI.service:NavigationService
+     *
+     * @description
+     *
+     * This service provides an api for dealing with routes hierarchy in the application. It is used in themes
+     * to build the tree menu for instance.
+     *
+     */
     w20UI.factory('NavigationService', ['$route', 'SecurityExpressionService', 'EventService', function ($route, securityExpressionService, eventService) {
         var routeTree,
             expandedRouteCategories,
@@ -405,10 +414,34 @@ define([
         eventService.on('w20.security.attribute-filter-changed', refreshNavigation);
 
         return {
+            /**
+             * @ngdoc function
+             * @name w20UI.service:NavigationService#routeTree
+             * @methodOf w20UI.service:NavigationService
+             * @returns {Object} A map of routes hierarchically organized
+             *
+             * @description
+             *
+             * Returns the route hierarchy (i.e organized by categories).
+             *
+             */
             routeTree: function () {
                 return routeTree;
             },
 
+            /**
+             * @ngdoc function
+             * @name w20UI.service:NavigationService#computeSubTree
+             * @methodOf w20UI.service:NavigationService
+             * @param {Object} parentMenuTree The parent tree
+             * @returns {Object} The subtree of a parent tree
+             *
+             * @description
+             *
+             * Given a parent tree this function will compute the underlying subtree. This function is used to
+             * determine the deeper level of themes sidebar tree in a recursive way.
+             *
+             */
             computeSubTree: function (parentMenuTree) {
                 if (!parentMenuTree) {
                     return null;
@@ -422,34 +455,114 @@ define([
                     });
             },
 
+            /**
+             * @ngdoc function
+             * @name w20UI.service:NavigationService#expandedRouteCategories
+             * @methodOf w20UI.service:NavigationService
+             * @returns {Array} A list of the expanded route categories i.e the categories opened in a route menu of themes
+             *
+             * @description
+             *
+             * Return the list of the opened categories in a tree menu
+             *
+             */
             expandedRouteCategories: function () {
                 return expandedRouteCategories;
             },
 
+            /**
+             * @ngdoc function
+             * @name w20UI.service:NavigationService#topLevelRouteCategories
+             * @methodOf w20UI.service:NavigationService
+             * @returns {Array} A list of the top level categories
+             *
+             * @description
+             *
+             * The top level categories are the one that appear first in a menu before any tree are opened. This function
+             * return these top level categories.
+             *
+             */
             topLevelRouteCategories: function () {
                 return topLevelCategories;
             },
 
+            /**
+             * @ngdoc function
+             * @name w20UI.service:NavigationService#topLevelRoutes
+             * @methodOf w20UI.service:NavigationService
+             * @returns {Array} A list of the top level routes
+             *
+             * @description
+             *
+             * Routes that are not part of a category are top level routes. Returns a list of these routes.
+             *
+             */
             topLevelRoutes: function () {
                 return topLevelRoutes;
             },
 
+            /**
+             * @ngdoc function
+             * @name w20UI.service:NavigationService#routesFromCategory
+             * @methodOf w20UI.service:NavigationService
+             * @param {String} category The category from which to obtain all the available routes
+             * @returns {Array} A list of the visible routes of the supplied category
+             *
+             * @description
+             *
+             * Returns the list of all visible routes from a given category name.
+             *
+             */
             routesFromCategory: function (category) {
                 return _.filter($route.routes, function (route) {
                     return typeof route.category !== 'undefined' && route.category === category && isRouteVisible(route);
                 });
             },
 
+            /**
+             * @ngdoc function
+             * @name w20UI.service:NavigationService#routesFromCategory
+             * @methodOf w20UI.service:NavigationService
+             * @param {Object} route The route to check visibility of
+             * @returns {Boolean} The visibility status of the route
+             *
+             * @description
+             *
+             * Routes can be hidden (see security in w20CoreApplication). This function return the visibility state of a given
+             * route.
+             *
+             */
             isRouteVisible: function (route) {
                 return isRouteVisible(route);
             },
 
+            /**
+             * @ngdoc function
+             * @name w20UI.service:NavigationService#refreshNavigation
+             * @methodOf w20UI.service:NavigationService
+             *
+             * @description
+             *
+             * Refresh the routes hierarchy. This function is used on security event such as login/logout to refresh the available
+             * routes for instance.
+             *
+             */
             refreshNavigation: function () {
                 refreshNavigation();
             }
         };
     }]);
 
+    /**
+     * @ngdoc service
+     * @name w20UI.service:MenuService
+     *
+     * @description
+     *
+     * This service allows managing **"actions"** (topbar element) and **"sections"** (sidebar element) in themes that provides both or part
+     * of this navigation components.
+     *
+     */
     w20UI.factory('MenuService', ['SecurityExpressionService', 'AuthenticationService', 'AuthorizationService', 'CultureService',
         function (securityExpressionService, authenticationService, authorizationService, cultureService) {
 
@@ -512,11 +625,204 @@ define([
                     return itemTypes;
                 }
 
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#registerSectionType
+                 * @methodOf w20UI.service:MenuService
+                 * @param {String} type The name of the registered section type
+                 * @param {Object} config Configuration of the registered section type
+                 *
+                 * @description
+                 *
+                 * Register a new section type.
+                 *
+                 * @example
+                 *
+                 * In themes this is used to register the views and bookmark section
+                 *
+                 * ```
+                 *  menuService.registerSectionType('w20-views', { icon: 'fa fa-th-list' });
+                 *
+                 *  menuService.registerSectionType('w20-bookmark', { icon: 'fa fa-star' });
+                 *```
+                 */
+
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#registerActionType
+                 * @methodOf w20UI.service:MenuService
+                 * @param {String} type The name of the registered action type
+                 * @param {Object} config Configuration of the registered action type
+                 *
+                 * @description
+                 *
+                 * Register a new action type.
+                 *
+                 * @example
+                 *
+                 * In themes this is used to register the login and culture dropdown type action
+                 *
+                 * ```
+                 *  menuService.registerActionType('w20-login', {
+                 *       templateUrl: '{w20-ui}/templates/action-login.html',
+                 *       showFn: function () {
+                 *         return authenticationService.isAuthentifiable();
+                 *       }
+                 *   });
+                 *
+                 *  menuService.registerActionType('w20-culture', {
+                 *       templateUrl: '{w20-ui}/templates/action-culture.html',
+                 *       showFn: function () {
+                 *         return cultureService.availableCultures().length > 0;
+                 *       }
+                 *   });
+                 *```
+                 */
                 target['register' + itemName + 'Type'] = registerType;
+
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#addSection
+                 * @methodOf w20UI.service:MenuService
+                 * @param {String} name The name of the section to add
+                 * @param {String} type The section type (which should have been registered with registerSectionType)
+                 * @param {Object} config Configuration of the section to add
+                 *
+                 * @description
+                 *
+                 * Add a new section to the sidebar.
+                 *
+                 * @example
+                 *
+                 * In themes this is used to add the views sections which display routes.
+                 * The templateUrl provide a template to use.
+                 *
+                 * ```
+                 *  menuService.addSection('views', 'w20-views', {
+                 *      templateUrl: '{w20-business-theme}/templates/sidebar-views.html'
+                 *  });
+                 *
+                 *  // sidebar-views.html
+                 *  <nav data-ng-controller="W20btViewsController"> ... </nav>;
+                 *```
+                 */
+
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#addAction
+                 * @methodOf w20UI.service:MenuService
+                 * @param {String} name The name of the action to add
+                 * @param {String} type The action type (which should have been registered with registerActionType)
+                 * @param {Object} config Configuration of the action to add
+                 *
+                 * @description
+                 *
+                 * Add a new action to the topbar.
+                 *
+                 * @example
+                 *
+                 * In themes this is used to add the login action. The sortKey determine the position of the action.
+                 *
+                 * ```
+                 *  menuService.addAction('login', 'w20-login', { sortKey: 100 });
+                 *```
+                 */
                 target['add' + itemName] = add;
+
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#getSection
+                 * @methodOf w20UI.service:MenuService
+                 * @param {String} name The name of the section to find
+                 *
+                 * @description
+                 *
+                 * Get the section specified.
+                 *
+                 */
+
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#getAction
+                 * @methodOf w20UI.service:MenuService
+                 * @param {String} name The name of the action to find
+                 *
+                 * @description
+                 *
+                 * Get the action specified.
+                 *
+                 */
                 target['get' + itemName] = get;
+
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#removeSection
+                 * @methodOf w20UI.service:MenuService
+                 * @param {String} name The name of the section to remove
+                 *
+                 * @description
+                 *
+                 * Remove the section specified.
+                 *
+                 */
+
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#removeAction
+                 * @methodOf w20UI.service:MenuService
+                 * @param {String} name The name of the action to remove
+                 *
+                 * @description
+                 *
+                 * Remove the action specified.
+                 *
+                 */
                 target['remove' + itemName] = remove;
+
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#getSections
+                 * @methodOf w20UI.service:MenuService
+                 *
+                 * @description
+                 *
+                 * Get all available sections.
+                 *
+                 */
+
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#getActions
+                 * @methodOf w20UI.service:MenuService
+                 *
+                 * @description
+                 *
+                 * Get all available actions.
+                 *
+                 */
                 target['get' + itemName + 's'] = getAll;
+
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#getRegisteredSections
+                 * @methodOf w20UI.service:MenuService
+                 *
+                 * @description
+                 *
+                 * Get all registered sections.
+                 *
+                 */
+
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:MenuService#getRegisteredActions
+                 * @methodOf w20UI.service:MenuService
+                 *
+                 * @description
+                 *
+                 * Get all registered actions.
+                 *
+                 */
                 target['getRegistered' + itemName + 's'] = getRegistered;
             }
 
@@ -576,6 +882,15 @@ define([
             return service;
         }]);
 
+    /**
+     * @ngdoc service
+     * @name w20UI.service:BookmarkService
+     *
+     * @description
+     *
+     * This service allows managing routes bookmarks. Bookmarked routes are persisted in a localstorage namespace **"w20-bookmark"**
+     *
+     */
     w20UI.factory('BookmarkService', ['CultureService', 'StateService', 'ApplicationService', '$window',
         function (cultureService, stateService) {
 
@@ -610,6 +925,25 @@ define([
             landingRoute = persistence.getLandingRoute() || {};
 
             return {
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:BookmarkService#addBookmark
+                 * @methodOf w20UI.service:BookmarkService
+                 * @param {String} bookmarkName The name of the bookmark.
+                 * @param {Object} bookmark The bookmark (i.e a route object)
+                 *
+                 * @description
+                 *
+                 * Add a new persistent bookmark.
+                 *
+                 * @exemple
+                 *
+                 *```
+                 * // route is an angular route from $route.routes
+                 * bookmarkService.addBookmark(route.i18n, route);
+                 *```
+                 *
+                 */
                 addBookmark: function (bookmarkName, bookmark) {
                     if (!(bookmarkName in bookmarkMap)) {
                         bookmarkMap[bookmarkName] = _.extend(bookmark, {
@@ -619,21 +953,65 @@ define([
                         persistence.persistBookmarks();
                     }
                 },
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:BookmarkService#getBookmark
+                 * @methodOf w20UI.service:BookmarkService
+                 * @param {String} bookmarkName The name of the bookmark.
+                 * @returns {Object} The bookmark (i.e a route object)
+                 *
+                 * @description
+                 *
+                 * Get a bookmark
+                 */
                 getBookmark: function (bookmarkName) {
                     return bookmarkMap[bookmarkName] || false;
                 },
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:BookmarkService#getBookmark
+                 * @methodOf w20UI.service:BookmarkService
+                 * @returns {Object} A map of all bookmarks ({'bookmark-name': route})
+                 *
+                 * @description
+                 *
+                 * Get all bookmarks
+                 */
                 getAllBookmarks: function () {
                     return bookmarkMap;
                 },
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:BookmarkService#removeBookmark
+                 * @methodOf w20UI.service:BookmarkService
+                 * @param {String} bookmarkName The name of the bookmark.
+                 *
+                 * @description
+                 *
+                 * Remove a bookmark (both from session and persistence)
+                 */
                 removeBookmark: function (bookmarkName) {
                     delete bookmarkMap[bookmarkName];
                     persistence.persistBookmarks();
                 },
+                /**
+                 * @ngdoc function
+                 * @name w20UI.service:BookmarkService#reset
+                 * @methodOf w20UI.service:BookmarkService
+                 *
+                 * @description
+                 *
+                 * Remove all bookmarks (both session and persistence)
+                 */
                 reset: function () {
                     bookmarkMap = {};
                     persistence.removeBookmarks();
                     this.removeLandingRoute();
                 },
+
+                /*
+                Unused at the moment  : allow to set the landing route when app start based on a bookmark
+                 */
                 setLandingRoute: function (bookmarkName) {
                     landingRoute = this.getBookmark(bookmarkName);
                     persistence.persistLandingRoute(landingRoute);
@@ -649,12 +1027,15 @@ define([
         }]);
 
     /**
+     * @ngdoc directive
+     * @name w20UI.directive:w20ErrorReport
+     * @restrict A
+     *
+     * @description
+     *
      * To use the error report, include <code> &lt;div data-w20-error-report &gt;&lt;/div&gt; </code> in your index.html
      * just before the end of the body tag.
      *
-     * @name w20ErrorReport
-     * @memberOf w20UI
-     * @w20doc directive
      */
     w20UI.directive('w20ErrorReport', ['$rootScope', function ($rootScope) {
         return {

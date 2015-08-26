@@ -19,6 +19,12 @@ define([
     'use strict';
 
     /**
+     * @ngdoc object
+     * @name w20UIText
+     * @require w20CoreUtils
+     *
+     * @description
+     *
      * This module provides text services and directives for publishing content.
      *
      * Configuration
@@ -31,17 +37,17 @@ define([
      *
      * This module has no fragment definition section.
      *
-     * @name w20UIText
-     * @module
      */
     var w20UIText = angular.module('w20UIText', [ 'w20CoreUtils' ]);
 
     /**
-     * This service provides various text manipulation functions.
+     * @ngdoc service
+     * @name w20UIText.service:TextService
      *
-     * @name TextService
-     * @memberOf w20UIText
-     * @w20doc service
+     * @description
+     *
+     * This service provides text manipulation functions.
+     *
      */
     w20UIText.factory('TextService', [function() {
         var converter = new showdown.Converter(),
@@ -50,13 +56,15 @@ define([
 
         return {
             /**
-             * Convert markdown text to html.
-             *
-             * @function
-             * @name TextService#markdown
-             * @memberOf TextService
+             * @ngdoc function
+             * @name w20UIText.service:TextService#markdown
+             * @methodOf w20UIText.service:TextService
              * @param {String} value The markdown text to convert.
              * @return {String} The HTML text converted.
+             *
+             * @description
+             *
+             * Convert markdown text to html.
              */
             markdown: function(value) {
                 return converter.makeHtml(value).replace(placeholderRegexp, function (all, attr, link) {
@@ -67,11 +75,19 @@ define([
     }]);
 
     /**
+     * @ngdoc directive
+     * @name w20UIText.directive:w20Markdown
+     * @restrict A
+     *
+     * @description
+     *
      * This directive converts the element markdown content to HTML.
      *
-     * @name w20Markdown
-     * @w20doc directive
-     * @memberOf w20UIText
+     * @example
+     *
+     * ```
+     * <div data-w20-mardown> ... </div>
+     * ```
      */
     w20UIText.directive('w20Markdown', ['TextService', 'EventService', function (textService, eventService) {
         return {
@@ -106,12 +122,14 @@ define([
     }]);
 
     /**
+     * @ngdoc filter
+     * @name w20UIText.filter:markdown
+     *
+     * @description
+     *
      * This filter convert the input string from markdown text to HTML.
      * It takes no argument.
      *
-     * @name markdown
-     * @w20doc filter
-     * @memberOf w20UIText
      */
     w20UIText.filter('markdown', ['TextService', function (textService) {
         return function(value) {

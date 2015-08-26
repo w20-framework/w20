@@ -26,6 +26,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc object
+     * @name w20UINotifications
+     *
+     * @description
+     *
      * This module provides end-user notifications. The notifications appear on the top right of the page.
      * Several level of importance can be used : notify, warn or alert user. It is also possible to deactivate built
      * in notification to keep only those that you explicitly specify.
@@ -43,40 +48,48 @@ define([
      *
      * This module has no fragment definition section.
      *
-     * @name w20UINotifications
-     * @module
      */
     var w20UINotifications = angular.module('w20UINotifications', ['w20CoreEnv', 'w20UI', 'ngSanitize']),
         _config = _module && _module.config() || {};
 
     /**
+     * @ngdoc service
+     * @name w20UINotifications.service:NotificationHistoryService
+     *
+     * @description
+     *
      * This service provides an API to manage persisted user notifications.
      *
-     * @name NotificationHistoryService
-     * @memberOf w20UINotifications
-     * @w20doc service
      */
     w20UINotifications.factory('NotificationHistoryService', ['StateService', 'MenuService', function (stateService, menuService) {
         var lastId = 0,
             notificationsState = stateService.state('notifications', 'history', []),
             service = {
                 /**
+                 * @ngdoc function
+                 * @name w20UINotifications.service:NotificationHistoryService#getNotifications
+                 * @methodOf w20UINotifications.service:NotificationHistoryService
+                 * @returns {Array} the list of notifications
+                 *
+                 * @description
+                 *
                  * Return the entire list of notifications.
                  *
-                 * @name NotificationHistoryService#getNotifications
-                 * @memberOf NotificationHistoryService
-                 * @function
                  */
                 getNotifications: function () {
                     return notificationsState.value();
                 },
                 /**
+                 * @ngdoc function
+                 * @name w20UINotifications.service:NotificationHistoryService#getNotification
+                 * @methodOf w20UINotifications.service:NotificationHistoryService
+                 * @param {Number} id The id of the required notification
+                 * @returns {Array} the notification or undefined if not found.
+                 *
+                 * @description
+                 *
                  * Return the notification or undefined if not found.
                  *
-                 * @name NotificationHistoryService#getNotification
-                 * @memberOf NotificationHistoryService
-                 * @function
-                 * @param {Number} id The id of the required notification
                  */
                 getNotification: function (id) {
                     return _.find(notificationsState.value(), function (notification) {
@@ -84,18 +97,19 @@ define([
                     });
                 },
                 /**
-                 * Add a new notification. The option object in parameter allows configuration.
-                 * - type: The type of notifications :'info', 'warn', 'alert'.
-                 * - content: The content of the notification : string.
-                 * - link: An hyperlink associated with the notification.
-                 *
-                 * @name NotificationHistoryService#addNotification
-                 * @memberOf NotificationHistoryService
-                 * @function
+                 * @ngdoc function
+                 * @name w20UINotifications.service:NotificationHistoryService#addNotification
+                 * @methodOf w20UINotifications.service:NotificationHistoryService
                  * @param {String} type The notification type (info, warn or alert).
                  * @param {String} content The notification content.
                  * @param {String} link The notification link (optional).
                  * @param {Date} date The notification date (optional).
+                 * @returns {Number} the notification id
+                 *
+                 * @description
+                 *
+                 * Add a new notification
+                 *
                  */
                 addNotification: function (type, content, link, date) {
                     var notification = {
@@ -112,22 +126,28 @@ define([
                     return notification.id;
                 },
                 /**
+                 * @ngdoc function
+                 * @name w20UINotifications.service:NotificationHistoryService#clearNotifications
+                 * @methodOf w20UINotifications.service:NotificationHistoryService
+                 *
+                 * @description
+                 *
                  * Delete all notifications in the history.
                  *
-                 * @name NotificationHistoryService#deleteNotifications
-                 * @memberOf NotificationHistoryService
-                 * @function
                  */
                 clearNotifications: function () {
                     notificationsState.value([]);
                 },
                 /**
+                 * @ngdoc function
+                 * @name w20UINotifications.service:NotificationHistoryService#deleteNotification
+                 * @methodOf w20UINotifications.service:NotificationHistoryService
+                 * @param {Number} id of the notification to delete
+                 *
+                 * @description
+                 *
                  * Delete the specified notification by id.
                  *
-                 * @name NotificationHistoryService#deleteNotification
-                 * @memberOf NotificationHistoryService
-                 * @function
-                 * @param {Number} id of the notification to delete
                  */
                 deleteNotification: function (id) {
                     _.remove(notificationsState.value(), function (notification) {
@@ -148,13 +168,15 @@ define([
     }]);
 
     /**
+     * @ngdoc service
+     * @name w20UINotifications.service:NotificationService
+     *
+     * @description
+     *
      * This service provides an API to display notifications to the end-user. Three severities are available (normal,
      * warning and alert). Notifications can be internal to the window or be displayed as system notifications by the
      * browser.
      *
-     * @name NotificationService
-     * @memberOf w20UINotifications
-     * @w20doc service
      */
     w20UINotifications.factory('NotificationService', ['ApplicationService', 'NotificationHistoryService', 'CultureService', '$window',
         function (applicationService, notificationHistoryService, cultureService, $window) {
@@ -203,15 +225,18 @@ define([
 
             return {
                 /**
-                 * Display a normal notification with the specified parameters.
-                 *
-                 * @name NotificationService#notify
-                 * @memberOf NotificationService
-                 * @function
+                 * @ngdoc function
+                 * @name w20UINotifications.service:NotificationService#notify
+                 * @methodOf w20UINotifications.service:NotificationService
                  * @param {String} text The text to display in the notification
                  * @param {Boolean} system True if the notification should be a system one, false otherwise.
                  * @param {Object} options The options object to pass to the underlying implementation (jGrowl).
                  * @param {Boolean} persistent Should the notification be persisted.
+                 *
+                 * @description
+                 *
+                 * Display a normal notification with the specified parameters.
+                 *
                  */
                 notify: function (text, system, options, persistent) {
                     growl(text, _.extend({
@@ -225,15 +250,18 @@ define([
                 },
 
                 /**
-                 * Display a warning notification with the specified parameters.
-                 *
-                 * @name NotificationService#warn
-                 * @memberOf NotificationService
-                 * @function
+                 * @ngdoc function
+                 * @name w20UINotifications.service:NotificationService#warn
+                 * @methodOf w20UINotifications.service:NotificationService
                  * @param {String} text The text to display in the notification
                  * @param {Boolean} system True if the notification should be a system one, false otherwise.
                  * @param {Object} options The options object to pass to the underlying implementation (jGrowl).
                  * @param {Boolean} persistent Should the notification be persisted.
+                 *
+                 * @description
+                 *
+                 * Display a warning notification with the specified parameters.
+                 *
                  */
                 warn: function (text, system, options, persistent) {
                     growl(text, _.extend({
@@ -247,15 +275,18 @@ define([
                 },
 
                 /**
-                 * Display an alert notification with the specified parameters.
-                 *
-                 * @name NotificationService#alert
-                 * @memberOf NotificationService
-                 * @function
+                 * @ngdoc function
+                 * @name w20UINotifications.service:NotificationService#alert
+                 * @methodOf w20UINotifications.service:NotificationService
                  * @param {String} text The text to display in the notification
                  * @param {Boolean} system True if the notification should be a system one, false otherwise.
                  * @param {Object} options The options object to pass to the underlying implementation (jGrowl).
                  * @param {Boolean} persistent Should the notification be persisted.
+                 *
+                 * @description
+                 *
+                 * Display an alert notification with the specified parameters.
+                 *
                  */
                 alert: function (text, system, options, persistent) {
                     growl(text, _.extend({
