@@ -18,6 +18,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc directive
+     * @name w20DatavizCharts.directive:w20MultibarChart
+     *
+     * @description
+     *
      * The multibar chart is used to compare different series in a bar representation following the X axis.
      *
      * Configuration
@@ -246,23 +251,11 @@ define([
      *
      *  See X axis. Replace property "xName" by "yName".
      *
-     *
-     * @name w20DatavizCharts
-     * @w20doc module
-     */
-
-    /**
      * The w20MultibarChart directive allows you to declare the chart on your html markup and specify the configuration object to be used in your controller.
      * <div class="alert alert-info"> You must indicate a unique id for the chart </div>
      *
      *     <div id="multibar" data-w20-multibar-chart="multibarConfig"></div>
      *
-     *
-     *
-     *
-     * @name w20MultibarChart
-     * @memberOf w20DatavizCharts
-     * @w20doc directive
      */
     common.ngModule.directive('w20MultibarChart', [function () {
         return {

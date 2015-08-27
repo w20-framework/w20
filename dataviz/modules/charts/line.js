@@ -18,6 +18,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc directive
+     * @name w20DatavizCharts.directive:w20LineChart
+     *
+     * @description
+     *
      * The line chart is used to plot series as line function.
      *
      * Configuration
@@ -282,9 +287,6 @@ define([
      *
      *
      *
-     * @name w20LineChart
-     * @memberOf w20DatavizCharts
-     * @w20doc directive
      *
      *
      */

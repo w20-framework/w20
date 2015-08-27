@@ -18,6 +18,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc directive
+     * @name w20DatavizCharts.directive:w20PieChart
+     *
+     * @description
+     *
      * The pie chart is used to represent proportion between series.
      *
      * Configuration
@@ -180,33 +185,14 @@ define([
      *            <td>Numeric</td>
      *            <td>Ratio between the hole and edge of donut (Default 0.5)</td>
      *        </tr>
-     *
-     *
-     *
-     *
-     *
-     *
      *    </tbody>
      * </table>
      *
      *
-     *
-     * @name w20DatavizCharts
-     * @w20doc module
-     */
-
-    /**
      * The w20PieChart directive allows you to declare the chart on your html markup and specify the configuration object to be used in your controller.
      * <div class="alert alert-info"> You must indicate a unique id for the chart </div>
      *
      *     <div id="pie" data-w20-pie-chart="pieConfig"></div>
-     *
-     *
-     *
-     *
-     * @name w20PieChart
-     * @memberOf w20DatavizCharts
-     * @w20doc directive
      *
      *
      */

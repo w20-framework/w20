@@ -17,6 +17,7 @@ define([
 ], function (angular, d3, nv, common) {
     'use strict';
 
+    // todo not working atm
     common.ngModule.directive('w20HistoricalBarChart', ['$window', '$timeout', function ($window, $timeout) {
         return {
             restrict: 'A',

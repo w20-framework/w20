@@ -18,6 +18,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc directive
+     * @name w20DatavizCharts.directive:w20LinePlusBarChart
+     *
+     * @description
+     *
      * The line plus bar chart is used to represent series by lines and bars on the same area..
      *
      * Configuration
@@ -230,14 +235,7 @@ define([
      *
      *
      *
-     *
-     * @name w20LinePlusBarChart
-     * @memberOf w20DatavizCharts
-     * @w20doc directive
-     *
-     *
      */
-
     common.ngModule.directive('w20LinePlusBarChart', [function () {
         return {
             restrict: 'A',

@@ -14,12 +14,6 @@ define([
 ], function (angular, d3) {
     'use strict';
 
-    /**
-     * Used to configure charts axis
-     * @param chart the charts configured
-     * @param scope chart's scope
-     * @param attrs chart's attributes
-     */
 
     // execute "fisheye" (magnifying) view for some charts (ex. scatter)
     (function () {
@@ -417,6 +411,14 @@ define([
     }
 
     return {
+        /**
+         * @ngdoc object
+         * @name w20DatavizCharts
+         *
+         * @description
+         *
+         * Provide directives for NVD3 components
+         */
         ngModule: angular.module('w20DatavizCharts', []),
         ngModuleName: 'w20DatavizCharts',
         configureXaxis: configureXaxis,
