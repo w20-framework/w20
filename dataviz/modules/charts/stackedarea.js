@@ -18,6 +18,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc directive
+     * @name w20DatavizCharts.directive:w20StackedAreaChart
+     *
+     * @description
+     *
      * The stacked area chart is used to compare different series according to their surface area.
      *
      * Configuration
@@ -223,23 +228,10 @@ define([
      *
      *  See X axis. Replace property "xName" by "yName".
      *
-     *
-     * @name w20DatavizCharts
-     * @w20doc module
-     */
-
-    /**
      * The w20StackedAreaChart directive allows you to declare the chart on your html markup and specify the configuration object to be used in your controller.
      * <div class="alert alert-info"> You must indicate a unique id for the chart </div>
      *
      *     <div id="stackedArea" data-w20-stacked-area-chart="stackedAreaConfig"></div>
-     *
-     *
-     *
-     *
-     * @name w20StackedAreaChart
-     * @memberOf w20DatavizCharts
-     * @w20doc directive
      *
      *
      */

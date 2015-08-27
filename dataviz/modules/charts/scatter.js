@@ -18,6 +18,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc directive
+     * @name w20DatavizCharts.directive:w20ScatterChart
+     *
+     * @description
+     *
      * The scatter chart is used to compare different series between 3 values : X and Y axis + size of data.
      *
      * Configuration
@@ -275,23 +280,11 @@ define([
      *
      *  See X axis. Replace property "xName" by "yName".
      *
-     *
-     * @name w20DatavizCharts
-     * @w20doc module
-     */
-
-    /**
      * The w20ScatterChart directive allows you to declare the chart on your html markup and specify the configuration object to be used in your controller.
      * <div class="alert alert-info"> You must indicate a unique id for the chart </div>
      *
      *     <div id="scatter" data-w20-scatter-chart="scatterConfig"></div>
      *
-     *
-     *
-     *
-     * @name w20ScatterChart
-     * @memberOf w20DatavizCharts
-     * @w20doc directive
      *
      *
      */

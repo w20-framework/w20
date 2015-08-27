@@ -70,6 +70,11 @@ module.exports = function (grunt) {
                 src: ['ui/modules/**/*.js', 'ui/index.ngdoc'],
                 title: 'UI',
                 api: true
+            },
+            dataviz: {
+                src: ['dataviz/modules/**/*.js', 'dataviz/index.ngdoc'],
+                title: 'Dataviz',
+                api: true
             }
         },
         connect: {

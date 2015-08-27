@@ -18,6 +18,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc directive
+     * @name w20DatavizCharts.directive:w20MultibarHorizontalChart
+     *
+     * @description
+     *
      * The multibar horizontal chart is used to compare different series in a horizontal bar representation.
      *
      * Configuration
@@ -222,7 +227,6 @@ define([
      *            <td>Integer</td>
      *            <td>Size of the gap between labels to resolve overlapping issue</td>
      *        </tr>
-     *
      *    </tbody>
      *  </table>
      *
@@ -231,22 +235,12 @@ define([
      *  See X axis. Replace property "xName" by "yName".
      *
      *
-     * @name w20DatavizCharts
-     * @w20doc module
-     */
-
-    /**
      * The w20MultiBarHorizontalChart directive allows you to declare the chart on your html markup and specify the configuration object to be used in your controller.
      * <div class="alert alert-info"> You must indicate a unique id for the chart </div>
      *
      *     <div id="multibarhorizontal" data-w20-multi-bar-horizontal-chart="multibarHorizontalConfig"></div>
      *
      *
-     *
-     *
-     * @name w20MultibarHorizontalChart
-     * @memberOf w20DatavizCharts
-     * @w20doc directive
      *
      *
      */

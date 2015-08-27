@@ -18,6 +18,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc directive
+     * @name w20DatavizCharts.directive:w20DiscreteBarChart
+     *
+     * @description
+     *
      * The discretebar chart is used to compare different series in a bar representation.
      *
      * Configuration
@@ -242,9 +247,6 @@ define([
      *
      *
      *
-     * @name w20DiscreteBarChart
-     * @memberOf w20DatavizCharts
-     * @w20doc directive
      *
      *
      */

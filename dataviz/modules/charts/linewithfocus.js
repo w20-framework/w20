@@ -18,6 +18,11 @@ define([
     'use strict';
 
     /**
+     * @ngdoc directive
+     * @name w20DatavizCharts.directive:w20LineWithFocus
+     *
+     * @description
+     *
      * The line with focus chart is used to explore series on a long range of values. You can restrict the range with
      * the chart below the main chart to render data in a more precise way.
      *
@@ -220,11 +225,6 @@ define([
      *  For the small focusing chart. See X axis. Replace property 'xName' with 'y2Name'.
      *
      *
-     * @name w20DatavizCharts
-     * @w20doc module
-     */
-
-    /**
      * The w20LineWithFocusChart directive allows you to declare the chart on your html markup and specify the configuration object to be used in your controller.
      * <div class="alert alert-info"> You must indicate a unique id for the chart </div>
      *
@@ -233,13 +233,7 @@ define([
      *
      *
      *
-     * @name w20LineWithFocusChart
-     * @memberOf w20DatavizCharts
-     * @w20doc directive
-     *
-     *
      */
-
     common.ngModule.directive('w20LineWithFocusChart', [function () {
         return {
             restrict: 'A',
