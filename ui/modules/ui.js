@@ -18,7 +18,6 @@ define([
 
     '[text]!{w20-ui}/templates/error-report.html',
 
-    '[framework]',
     '[framework]!{bootstrap}/js/bootstrap',
     '[framework]![css]!{bootstrap}/css/bootstrap',
     '[framework]!{angular-bootstrap}/ui-bootstrap-tpls',
@@ -28,7 +27,7 @@ define([
     '{w20-core}/modules/security',
 
     '[css]!{font-awesome}/css/font-awesome'
-], function (require, module, $, _, angular, errorReportTemplate, framework) {
+], function (require, module, $, _, angular, errorReportTemplate) {
     'use strict';
 
     /**
@@ -49,14 +48,9 @@ define([
      *
      * This module has no fragment definition section.
      */
-    var w20UI = angular.module('w20UI', ['w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture']),
+    var w20UI = angular.module('w20UI', ['w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture', 'w20CSSFramework']),
         config = module && module.config() || {},
         allNavigation = {};
-
-    if (framework.bootstrap) {
-        w20UI.requires.push('ui.bootstrap');
-    }
-
 
     /**
      * @ngdoc service
@@ -1151,32 +1145,6 @@ define([
         eventService.on('w20.security.role-filter-changed', buildRoleFilterModel);
         eventService.on('w20.security.attribute-filter-changed', buildAttributeFilterModel);
     }]);
-
-    if (framework.bootstrap) {
-
-        w20UI.run(['EventService', 'CultureService', 'datepickerConfig', 'datepickerPopupConfig', function (eventService, cultureService, datepickerConfig, datepickerPopupConfig) {
-            datepickerConfig.formatDay = 'dd';
-            datepickerConfig.formatMonth = 'MMMM';
-            datepickerConfig.formatYear = 'yyyy';
-            datepickerConfig.formatDayHeader = 'ddd';
-            datepickerConfig.formatDayTitle = 'MMMM yyyy';
-            datepickerConfig.formatMonthTitle = 'yyyy';
-
-            function updateDatePicker(culture) {
-                datepickerPopupConfig.datepickerPopup = culture.calendars.standard.patterns.d;
-                datepickerPopupConfig.currentText = cultureService.localize('w20.ui.datepicker.today');
-                datepickerPopupConfig.clearText = cultureService.localize('w20.ui.datepicker.clear');
-                datepickerPopupConfig.closeText = cultureService.localize('w20.ui.datepicker.close');
-            }
-
-            eventService.on('w20.culture.culture-changed', function (culture) {
-                updateDatePicker(culture);
-            });
-
-            updateDatePicker(cultureService.culture());
-        }]);
-
-    }
 
     return {
         angularModules: ['w20UI'],
