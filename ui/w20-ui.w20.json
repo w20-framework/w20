@@ -82,25 +82,17 @@
         },
 
         "paths": {
-            "{angular-ui-grid}": "${components-path:bower_components}/angular-ui-grid",
-            "{angular-ui-select}": "${components-path:bower_components}/angular-ui-select/dist",
             "{require-css}": "${components-path:bower_components}/require-css",
-            "{bootstrap}": "${components-path:bower_components}/bootstrap/dist",
-            "{angular-bootstrap}": "${components-path:bower_components}/angular-bootstrap",
             "{font-awesome}": "${components-path:bower_components}/font-awesome",
             "{jgrowl}": "${components-path:bower_components}/jgrowl",
-            "showdown": "${components-path:bower_components}/showdown/dist/showdown"
+            "showdown": "${components-path:bower_components}/showdown/dist/showdown",
+            "{angular-ui-grid}": "${components-path:bower_components}/angular-ui-grid",
+            "{angular-ui-select}": "${components-path:bower_components}/angular-ui-select/dist"
         },
 
         "shim" : {
             "{jgrowl}/jquery.jgrowl":[
                 "jquery"
-            ],
-            "{bootstrap}/js/bootstrap" : [
-                "jquery"
-            ],
-            "{angular-bootstrap}/ui-bootstrap-tpls" : [
-                "{angular}/angular"
             ],
             "{angular-ui-grid}/ui-grid" : [
                 "{angular}/angular",

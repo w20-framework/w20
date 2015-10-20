@@ -36,6 +36,8 @@
     "require-css": "0.1.8",
     "showdown": "1.2.1",
 
+    "angular-material": "^0.11.4",
+
     "nvd3": "1.8.1",
 
     "angulartics": "0.17.2",

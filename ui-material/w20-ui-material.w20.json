@@ -1,0 +1,46 @@
+{
+  "id":"w20-ui-material",
+  "name":"W20 Material",
+  "description":"W20 Angular-Material framework provider",
+
+  "modules" : {
+    "framework" : {
+      "path" : "{w20-ui-material}/modules/framework",
+      "autoload" : true,
+      "configSchema": {
+        "title": "CSS Framework module configuration",
+        "type": "object",
+        "additionalProperties": false
+      }
+    }
+  },
+
+  "requireConfig" : {
+    "map": {
+      "*": {
+        "{framework}": "{w20-ui-material}"
+      }
+    },
+
+    "paths": {
+      "{angular-material}": "${components-path:bower_components}/angular-material",
+      "{angular-animate}": "${components-path:bower_components}/angular-animate",
+      "{angular-aria}": "${components-path:bower_components}/angular-aria"
+    },
+
+    "shim": {
+      "{angular-material}/angular-material": [
+        "{angular}/angular",
+        "{angular-animate}/angular-animate",
+        "{angular-aria}/angular-aria"
+      ],
+      "{angular-animate}/angular-animate": [
+        "{angular}/angular"
+      ],
+      "{angular-aria}/angular-aria": [
+        "{angular}/angular"
+      ]
+    }
+  }
+
+}

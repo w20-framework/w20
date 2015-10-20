@@ -16,16 +16,16 @@ define([
     '{lodash}/lodash',
     '{angular}/angular',
 
-    '[text]!{w20-ui}/templates/error-report.html',
+    '[text]!{framework}/templates/error-report.html',
+    '{framework}/modules/framework',
 
     '{w20-core}/modules/env',
     '{w20-core}/modules/culture',
     '{w20-core}/modules/security',
-    '{bootstrap}/js/bootstrap',
-    '[css]!{bootstrap}/css/bootstrap',
-    '[css]!{font-awesome}/css/font-awesome',
-    '{angular-bootstrap}/ui-bootstrap-tpls'
-], function (require, module, $, _, angular, errorReportTemplate) {
+
+    '[css]!{font-awesome}/css/font-awesome'
+
+], function (require, module, $, _, angular, errorReportTemplate, framework) {
     'use strict';
 
     /**
@@ -46,10 +46,9 @@ define([
      *
      * This module has no fragment definition section.
      */
-    var w20UI = angular.module('w20UI', ['ui.bootstrap', 'w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture']),
+    var w20UI = angular.module('w20UI', ['w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture', 'w20CSSFramework']),
         config = module && module.config() || {},
         allNavigation = {};
-
 
     /**
      * @ngdoc service
@@ -836,36 +835,36 @@ define([
             service.registerSectionType('w20-section', {});
 
             service.registerActionType('w20-login', {
-                templateUrl: '{w20-ui}/templates/action-login.html',
+                templateUrl: '{framework}/templates/action-login.html',
                 showFn: function () {
                     return authenticationService.isAuthentifiable();
                 }
             });
 
             service.registerActionType('w20-logout', {
-                templateUrl: '{w20-ui}/templates/action-logout.html',
+                templateUrl: '{framework}/templates/action-logout.html',
                 showFn: function () {
                     return authenticationService.isAuthentifiable() && authenticationService.subjectAuthenticated();
                 }
             });
 
             service.registerActionType('w20-link', {
-                templateUrl: '{w20-ui}/templates/action-link.html'
+                templateUrl: '{framework}/templates/action-link.html'
             });
 
             service.registerActionType('w20-culture', {
-                templateUrl: '{w20-ui}/templates/action-culture.html',
+                templateUrl: '{framework}/templates/action-culture.html',
                 showFn: function () {
                     return cultureService.availableCultures().length > 0;
                 }
             });
 
             service.registerActionType('w20-connectivity', {
-                templateUrl: '{w20-ui}/templates/action-connectivity.html'
+                templateUrl: '{framework}/templates/action-connectivity.html'
             });
 
             service.registerActionType('w20-profile', {
-                templateUrl: '{w20-ui}/templates/action-profile.html',
+                templateUrl: '{framework}/templates/action-profile.html',
                 showFn: function () {
                     return authenticationService.isAuthentifiable();
                 }
@@ -1037,13 +1036,14 @@ define([
      * just before the end of the body tag.
      *
      */
-    w20UI.directive('w20ErrorReport', ['$rootScope', function ($rootScope) {
+    w20UI.directive('w20ErrorReport', ['$rootScope', '$injector', function ($rootScope, $injector) {
         return {
             template: errorReportTemplate,
             replace: true,
             restrict: 'A',
             scope: false,
-            link: function () {
+            link: function (scope, element, attrs) {
+
                 function formatStack(arg) {
                     if (typeof arg === 'undefined') {
                         return 'No stack trace';
@@ -1052,10 +1052,25 @@ define([
                     return $.trim(arg.replace(/^(?!at).*$/m, '')).replace(/\n/g, '<br/>');
                 }
 
+                scope.hideModal = true;
+
                 $rootScope.$on('w20.core.application.error-occurred', function (event, errors) {
-                    $('#w20ErrorReportMessage').html(errors[0].exception.message);
-                    $('#w20ErrorReportStack').html(formatStack(errors[0].exception.stack));
-                    $('#w20ErrorReport').modal('show');
+                    if (framework.name === 'bootstrap') {
+                        $('#w20ErrorReportMessage').html(errors[0].exception.message);
+                        $('#w20ErrorReportStack').html(formatStack(errors[0].exception.stack));
+                        $('#w20ErrorReport').modal('show');
+                    }
+                    if (framework.name === 'material') {
+                        $injector.get('$mdDialog').show({
+                            template: errorReportTemplate,
+                            parent: angular.element(document.body),
+                            clickOutsideToClose:true,
+                            controller: ['$scope', function ($scope) {
+                                $scope.message = errors[0].exception.message;
+                                $scope.stacktrace = errors[0].exception.stack;
+                            }]
+                        });
+                    }
                 });
             }
         };
@@ -1143,28 +1158,6 @@ define([
 
         eventService.on('w20.security.role-filter-changed', buildRoleFilterModel);
         eventService.on('w20.security.attribute-filter-changed', buildAttributeFilterModel);
-    }]);
-
-    w20UI.run(['EventService', 'CultureService', 'datepickerConfig', 'datepickerPopupConfig', function (eventService, cultureService, datepickerConfig, datepickerPopupConfig) {
-        datepickerConfig.formatDay = 'dd';
-        datepickerConfig.formatMonth = 'MMMM';
-        datepickerConfig.formatYear = 'yyyy';
-        datepickerConfig.formatDayHeader = 'ddd';
-        datepickerConfig.formatDayTitle = 'MMMM yyyy';
-        datepickerConfig.formatMonthTitle = 'yyyy';
-
-        function updateDatePicker(culture) {
-            datepickerPopupConfig.datepickerPopup = culture.calendars.standard.patterns.d;
-            datepickerPopupConfig.currentText = cultureService.localize('w20.ui.datepicker.today');
-            datepickerPopupConfig.clearText = cultureService.localize('w20.ui.datepicker.clear');
-            datepickerPopupConfig.closeText = cultureService.localize('w20.ui.datepicker.close');
-        }
-
-        eventService.on('w20.culture.culture-changed', function (culture) {
-            updateDatePicker(culture);
-        });
-
-        updateDatePicker(cultureService.culture());
     }]);
 
     return {
