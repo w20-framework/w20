@@ -1,0 +1,40 @@
+{
+  "id":"w20-ui-bootstrap",
+  "name":"W20 Bootstrap",
+  "description":"W20 bootstrap framework provider",
+
+  "modules" : {
+    "framework" : {
+      "path" : "{w20-ui-bootstrap}/modules/framework",
+      "autoload" : true,
+      "configSchema": {
+        "title": "CSS Framework module configuration",
+        "type": "object",
+        "additionalProperties": false
+      }
+    }
+  },
+
+  "requireConfig" : {
+    "map": {
+      "*": {
+        "{framework}": "{w20-ui-bootstrap}"
+      }
+    },
+
+    "paths": {
+      "{bootstrap}": "${components-path:bower_components}/bootstrap/dist",
+      "{angular-bootstrap}": "${components-path:bower_components}/angular-bootstrap"
+    },
+
+    "shim" : {
+      "{bootstrap}/js/bootstrap" : [
+        "jquery"
+      ],
+      "{angular-bootstrap}/ui-bootstrap-tpls" : [
+        "{angular}/angular"
+      ]
+    }
+  }
+
+}

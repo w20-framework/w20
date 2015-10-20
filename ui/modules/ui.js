@@ -16,18 +16,16 @@ define([
     '{lodash}/lodash',
     '{angular}/angular',
 
-    '[text]!{w20-ui}/templates/error-report.html',
-
-    '[framework]!{bootstrap}/js/bootstrap',
-    '[framework]![css]!{bootstrap}/css/bootstrap',
-    '[framework]!{angular-bootstrap}/ui-bootstrap-tpls',
+    '[text]!{framework}/templates/error-report.html',
+    '{framework}/modules/framework',
 
     '{w20-core}/modules/env',
     '{w20-core}/modules/culture',
     '{w20-core}/modules/security',
 
     '[css]!{font-awesome}/css/font-awesome'
-], function (require, module, $, _, angular, errorReportTemplate) {
+
+], function (require, module, $, _, angular, errorReportTemplate, framework) {
     'use strict';
 
     /**
@@ -837,36 +835,36 @@ define([
             service.registerSectionType('w20-section', {});
 
             service.registerActionType('w20-login', {
-                templateUrl: '{w20-ui}/templates/action-login.html',
+                templateUrl: '{framework}/templates/action-login.html',
                 showFn: function () {
                     return authenticationService.isAuthentifiable();
                 }
             });
 
             service.registerActionType('w20-logout', {
-                templateUrl: '{w20-ui}/templates/action-logout.html',
+                templateUrl: '{framework}/templates/action-logout.html',
                 showFn: function () {
                     return authenticationService.isAuthentifiable() && authenticationService.subjectAuthenticated();
                 }
             });
 
             service.registerActionType('w20-link', {
-                templateUrl: '{w20-ui}/templates/action-link.html'
+                templateUrl: '{framework}/templates/action-link.html'
             });
 
             service.registerActionType('w20-culture', {
-                templateUrl: '{w20-ui}/templates/action-culture.html',
+                templateUrl: '{framework}/templates/action-culture.html',
                 showFn: function () {
                     return cultureService.availableCultures().length > 0;
                 }
             });
 
             service.registerActionType('w20-connectivity', {
-                templateUrl: '{w20-ui}/templates/action-connectivity.html'
+                templateUrl: '{framework}/templates/action-connectivity.html'
             });
 
             service.registerActionType('w20-profile', {
-                templateUrl: '{w20-ui}/templates/action-profile.html',
+                templateUrl: '{framework}/templates/action-profile.html',
                 showFn: function () {
                     return authenticationService.isAuthentifiable();
                 }
@@ -1038,13 +1036,14 @@ define([
      * just before the end of the body tag.
      *
      */
-    w20UI.directive('w20ErrorReport', ['$rootScope', function ($rootScope) {
+    w20UI.directive('w20ErrorReport', ['$rootScope', '$injector', function ($rootScope, $injector) {
         return {
             template: errorReportTemplate,
             replace: true,
             restrict: 'A',
             scope: false,
-            link: function () {
+            link: function (scope, element, attrs) {
+
                 function formatStack(arg) {
                     if (typeof arg === 'undefined') {
                         return 'No stack trace';
@@ -1053,10 +1052,25 @@ define([
                     return $.trim(arg.replace(/^(?!at).*$/m, '')).replace(/\n/g, '<br/>');
                 }
 
+                scope.hideModal = true;
+
                 $rootScope.$on('w20.core.application.error-occurred', function (event, errors) {
-                    $('#w20ErrorReportMessage').html(errors[0].exception.message);
-                    $('#w20ErrorReportStack').html(formatStack(errors[0].exception.stack));
-                    $('#w20ErrorReport').modal('show');
+                    if (framework.name === 'bootstrap') {
+                        $('#w20ErrorReportMessage').html(errors[0].exception.message);
+                        $('#w20ErrorReportStack').html(formatStack(errors[0].exception.stack));
+                        $('#w20ErrorReport').modal('show');
+                    }
+                    if (framework.name === 'material') {
+                        $injector.get('$mdDialog').show({
+                            template: errorReportTemplate,
+                            parent: angular.element(document.body),
+                            clickOutsideToClose:true,
+                            controller: ['$scope', function ($scope) {
+                                $scope.message = errors[0].exception.message;
+                                $scope.stacktrace = errors[0].exception.stack;
+                            }]
+                        });
+                    }
                 });
             }
         };

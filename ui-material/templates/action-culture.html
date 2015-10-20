@@ -1,0 +1,12 @@
+<md-menu ng-controller="w20MaterialCultureMenuController">
+    <md-button aria-label="Change culture preference" ng-click="openMenu($mdOpenMenu, $event)">
+        <i class="fa fa-globe fa-2x"></i> {{ currentCulture().nativeName | firstUpperCase }}
+    </md-button>
+    <md-menu-content width="4">
+        <md-menu-item ng-repeat="culture in availableCultures()">
+            <md-button ng-click="switchCulture(culture.name)">
+                <i class="fa fa-globe"></i> {{ culture.nativeName | firstUpperCase }}
+            </md-button>
+        </md-menu-item>
+    </md-menu-content>
+</md-menu>

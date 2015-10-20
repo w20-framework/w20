@@ -11,15 +11,20 @@
 define([
     'module',
     '{angular}/angular',
+    '{framework}/modules/framework',
+
     '{angular-ui-select}/select',
     '[css]!{angular-ui-select}/select'
-], function (module, angular) {
+
+], function (module, angular, framework) {
     'use strict';
 
     var w20UISelect = angular.module('w20UISelect', ['ui.select']);
 
     w20UISelect.config(['uiSelectConfig', function (uiSelectConfig) {
-        uiSelectConfig.theme = 'bootstrap';
+        if (framework.name === 'bootstrap') {
+            uiSelectConfig.theme = 'bootstrap';
+        }
     }]);
 
     return {

@@ -9,17 +9,29 @@
  */
 
 define([
+    'require',
     'module',
-    '{angular}/angular'
-], function (module, angular) {
+
+    'jquery',
+    '{lodash}/lodash',
+    '{angular}/angular',
+
+    '{bootstrap}/js/bootstrap',
+    '[css]!{bootstrap}/css/bootstrap',
+    '{angular-bootstrap}/ui-bootstrap-tpls',
+
+    '{w20-core}/modules/env',
+    '{w20-core}/modules/culture',
+    '{w20-core}/modules/security'
+
+], function (require, module, $, _, angular) {
     'use strict';
 
-    function loadBootstrapFramework (id, require, load, config) {
+    var w20CSSFramework = angular.module('w20CSSFramework', ['ui.bootstrap', 'w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture']),
+        moduleConfig = module && module.config() || {};
 
-        w20CSSFramework.requires.push('ui.bootstrap');
-
-        w20CSSFramework.run(['EventService', 'CultureService', 'datepickerConfig', 'datepickerPopupConfig',
-            function (eventService, cultureService, datepickerConfig, datepickerPopupConfig) {
+    w20CSSFramework.run(['EventService', 'CultureService', 'datepickerConfig', 'datepickerPopupConfig',
+        function (eventService, cultureService, datepickerConfig, datepickerPopupConfig) {
 
             datepickerConfig.formatDay = 'dd';
             datepickerConfig.formatMonth = 'MMMM';
@@ -42,32 +54,10 @@ define([
             updateDatePicker(cultureService.culture());
         }]);
 
-        require([id], load);
-    }
-
-    var w20CSSFramework = angular.module('w20CSSFramework', ['w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture']),
-        moduleConfig = module && module.config() || {},
-        loadBootstrap = true;
-
-    if (typeof moduleConfig.bootstrap !== 'undefined') {
-        loadBootstrap = moduleConfig.bootstrap;
-    }
-
     return {
         angularModules: ['w20CSSFramework'],
-        get bootstrap() {
-            return loadBootstrap;
-        },
-        load: function (id, require, load, config) {
-            if (config.isBuild) {
-                load();
-            } else {
-                if (loadBootstrap) {
-                    loadBootstrapFramework(id, require, load, config);
-                } else {
-                    load();
-                }
-            }
+        get name () {
+            return 'bootstrap';
         }
     };
 });

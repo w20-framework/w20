@@ -1,0 +1,21 @@
+<md-dialog ng-cloak ng-hide="hideModal">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{ 'w20.ui.errorreport.title' | localize }}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()"></md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content style="max-width:800px; max-height:810px;">
+            <div class="md-dialog-content">
+                <h4>{{ 'w20.ui.errorreport.message' | localize }}</h4>
+                <p>
+                    <strong id="w20ErrorReportMessage">{{ message }}</strong>
+                </p>
+                <h4>{{ 'w20.ui.errorreport.location' | localize }}</h4>
+                <p id="w20ErrorReportStack"> {{ stacktrace }}</p>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>
