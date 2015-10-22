@@ -1,8 +1,0 @@
-<li data-ng-controller="W20LoginActionController">
-    <a data-ng-if="!subjectAuthenticated()" data-ng-click="authenticate()"><i class="glyphicon glyphicon-user"></i> {{ 'w20.ui.action.login' | localize }}</a>
-    <a data-ng-if="subjectAuthenticated()" data-ng-switch data-on="subjectType()">
-        <span data-ng-switch-when="user"><i class="icon-user icon-white glyphicon glyphicon-user"></i> {{ subjectPrincipals().fullName || subjectId() }}</span>
-        <span data-ng-switch-when="device"><i class="icon-hdd icon-white glyphicon glyphicon-hdd"></i> {{ subjectId() }}</span>
-        <span data-ng-switch-when="unknown"><i class="icon-question-sign icon-white glyphicon glyphicon-question-sign"></i> {{ subjectId() }}</span>
-    </a>
-</li>

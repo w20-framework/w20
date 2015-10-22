@@ -22,16 +22,7 @@ module.exports = function (grunt) {
         ],
         jshint: {
             core: {
-                src: ['core/modules/**/*.js']
-            },
-            dataviz: {
-                src: ['dataviz/modules/**/*.js']
-            },
-            extra: {
-                src: ['extra/modules/**/*.js']
-            },
-            ui: {
-                src: ['ui/modules/**/*.js']
+                src: ['modules/**/*.js']
             }
         },
         bower: {
@@ -62,18 +53,8 @@ module.exports = function (grunt) {
                 startPage: '/core'
             },
             core: {
-                src: ['core/modules/**/*.js', 'core/index.ngdoc'],
+                src: ['modules/**/*.js', 'index.ngdoc'],
                 title: 'Core',
-                api: true
-            },
-            ui: {
-                src: ['ui/modules/**/*.js', 'ui/index.ngdoc'],
-                title: 'UI',
-                api: true
-            },
-            dataviz: {
-                src: ['dataviz/modules/**/*.js', 'dataviz/index.ngdoc'],
-                title: 'Dataviz',
                 api: true
             }
         },

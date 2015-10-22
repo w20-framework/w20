@@ -1,5 +1,5 @@
 {
-    "../../w20/w20-core/w20-core.w20.json" : {
+    "../../w20-core.w20.json" : {
         "modules" : {
             "application":{
                 "id":"w20-basic-sample",
@@ -12,14 +12,6 @@
             }
         }
     },
-
-    "../../w20/w20-ui/w20-ui.w20.json" : {
-        "modules" : {
-            "grid":{}
-        }
-    },
-
-    "../../w20/w20-simple-theme/w20-simple-theme.w20.json" : {},
 
     "basic/basic.w20.json" : {}
 }

@@ -1,5 +1,5 @@
 {
-    "../../w20/w20-core/w20-core.w20.json" : {
+    "../../w20-core.w20.json" : {
         "modules" : {
             "application":{
                 "id":"w20-simple-sample",
@@ -8,10 +8,6 @@
             "culture":{}
         }
     },
-
-    "../../w20/w20-ui/w20-ui.w20.json" : {},
-
-    "../../w20/w20-simple-theme/w20-simple-theme.w20.json" : {},
 
     "": {
         "routes": {

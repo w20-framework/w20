@@ -162,13 +162,67 @@
                     }
                 }
             }
+        },
+        "notifications" : {
+            "path" : "{w20-core}/modules/notifications",
+            "configSchema": {
+                "title": "Notifications module configuration",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "disableNotifications": {
+                        "description": "Disable the built-in notifications (like login, logout, or page access error)",
+                        "type": "boolean"
+                    },
+                    "position": {
+                        "description": "Specify the screen position of notifications (bottom-left, bottom-right, top-right, top-left)",
+                        "type": "string"
+                    },
+                    "limit": {
+                        "description": "Specify the maximum number of notifications displayed simultaneously",
+                        "type": "integer"
+                    },
+                    "options": {
+                        "description": "Specify the default options for each level of notification",
+                        "type": "object"
+                    }
+                }
+            }
+        },
+        "text" : {
+            "path" : "{w20-core}/modules/text",
+            "configSchema": {
+                "title": "Text module configuration",
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+        "ui" : {
+            "path" : "{w20-core}/modules/ui",
+            "autoload" : true,
+            "configSchema": {
+                "title": "UI module configuration",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "expandedRouteCategories": {
+                        "description": "Array of initially expanded route categories",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
 
     "requireConfig": {
         "map": {
             "*": {
-                "[text]": "{requirejs-text}/text"
+                "[text]": "{requirejs-text}/text",
+                "[css]": "{require-css}/css",
+                "[optional]": "{w20-core}/modules/optional"
             }
         },
 
@@ -182,8 +236,11 @@
             "{tv4}": "${components-path:bower_components}/tv4",
             "{requirejs-text}": "${components-path:bower_components}/requirejs-text",
             "{requirejs}": "${components-path:bower_components}/requirejs",
+            "{require-css}": "${components-path:bower_components}/require-css",
             "{uri.js}": "${components-path:bower_components}/uri.js/src",
             "jquery": "${components-path:bower_components}/jquery/dist/jquery",
+            "{jgrowl}": "${components-path:bower_components}/jgrowl",
+            "showdown": "${components-path:bower_components}/showdown/dist/showdown",
             "w20": "empty:"
         },
 
@@ -206,7 +263,15 @@
             },
             "{uri.js}/URITemplate": {
                 "deps": ["{uri.js}/URI"]
-            }
+            },
+            "{jgrowl}/jquery.jgrowl":[
+                "jquery"
+            ]
         }
+    },
+
+    "i18n": {
+        "en" : [ "{w20-core}/i18n/messages-en.json" ],
+        "fr" : [ "{w20-core}/i18n/messages-fr.json" ]
     }
 }

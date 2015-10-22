@@ -11,7 +11,7 @@
 define([
     '{angular}/angular',
     '{w20-core}/modules/application',
-    '{w20-ui}/modules/ui',
+    '{w20-core}/modules/ui',
     '{angular-mocks}/angular-mocks'
 ], function (angular, application) {
     'use strict';
@@ -23,7 +23,7 @@ define([
             displayService;
 
         beforeEach(function () {
-            angular.mock.module('w20UI');
+            angular.mock.module('w20CoreUI');
 
             angular.mock.inject(function (_$injector_, _$rootScope_, _$compile_) {
                 $injector = _$injector_;
@@ -181,7 +181,7 @@ define([
                     }
                 }
             }, function () {
-                angular.mock.module('w20UI');
+                angular.mock.module('w20CoreUI');
 
                 angular.mock.inject(function (_$injector_, _$rootScope_, _$compile_, _$route_) {
                     $injector = _$injector_;
@@ -301,7 +301,7 @@ define([
             menuService;
 
         beforeEach(function () {
-            angular.mock.module('w20UI');
+            angular.mock.module('w20CoreUI');
 
             angular.mock.inject(function (_$injector_, _$rootScope_, _$compile_) {
                 $injector = _$injector_;
@@ -431,7 +431,7 @@ define([
                     }
                 }
             }, function () {
-                angular.mock.module('w20UI');
+                angular.mock.module('w20CoreUI');
 
                 angular.mock.inject(function (_$injector_, _$rootScope_, _$compile_, _$route_) {
                     $injector = _$injector_;

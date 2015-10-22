@@ -16,21 +16,19 @@ define([
     '{lodash}/lodash',
     '{angular}/angular',
 
-    '[text]!{w20-ui}/templates/error-report.html',
+    '[optional]![text]!{css-framework}/templates/error-report.html',
+    '[optional]!{css-framework}/modules/css-framework',
 
     '{w20-core}/modules/env',
     '{w20-core}/modules/culture',
-    '{w20-core}/modules/security',
-    '{bootstrap}/js/bootstrap',
-    '[css]!{bootstrap}/css/bootstrap',
-    '[css]!{font-awesome}/css/font-awesome',
-    '{angular-bootstrap}/ui-bootstrap-tpls'
-], function (require, module, $, _, angular, errorReportTemplate) {
+    '{w20-core}/modules/security'
+
+], function (require, module, $, _, angular, errorReportTemplate, framework) {
     'use strict';
 
     /**
      * @ngdoc object
-     * @name w20UI
+     * @name w20CoreUI
      *
      * @description
      *
@@ -46,14 +44,13 @@ define([
      *
      * This module has no fragment definition section.
      */
-    var w20UI = angular.module('w20UI', ['ui.bootstrap', 'w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture']),
+    var w20CoreUI = angular.module('w20CoreUI', ['w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture']),
         config = module && module.config() || {},
         allNavigation = {};
 
-
     /**
      * @ngdoc service
-     * @name w20UI.service:DisplayService
+     * @name w20CoreUI.service:DisplayService
      *
      * @description
      *
@@ -62,7 +59,7 @@ define([
      *
      *
      */
-    w20UI.factory('DisplayService', ['$window', '$log', function ($window, $log) {
+    w20CoreUI.factory('DisplayService', ['$window', '$log', function ($window, $log) {
         function getCSSRule(ruleName) {
             var styleSheet = $window.document.styleSheets[0];
             var i = 0;
@@ -109,8 +106,8 @@ define([
         return {
             /**
              * @ngdoc function
-             * @name w20UI.service:DisplayService#enterFullScreen
-             * @methodOf w20UI.service:DisplayService
+             * @name w20CoreUI.service:DisplayService#enterFullScreen
+             * @methodOf w20CoreUI.service:DisplayService
              * @param {Object} element Asynchronously requests that the element be made full-screen.
              * It's not guaranteed that the element will be put into full-screen mode.
              *
@@ -137,8 +134,8 @@ define([
             },
             /**
              * @ngdoc function
-             * @name w20UI.service:DisplayService#exitFullScreen
-             * @methodOf w20UI.service:DisplayService
+             * @name w20CoreUI.service:DisplayService#exitFullScreen
+             * @methodOf w20CoreUI.service:DisplayService
              *
              * @description
              *
@@ -156,8 +153,8 @@ define([
 
             /**
              * @ngdoc function
-             * @name w20UI.service:DisplayService#registerContentShiftCallback
-             * @methodOf w20UI.service:DisplayService
+             * @name w20CoreUI.service:DisplayService#registerContentShiftCallback
+             * @methodOf w20CoreUI.service:DisplayService
              * @param {Function} callback A function that return an array of length 4 corresponding, in the order, to
              * a top, right, bottom and left css content shift that will be summed to any previous content shift value
              * registered by this same method.
@@ -204,8 +201,8 @@ define([
 
             /**
              * ngdoc function
-             * @name w20UI.service:DisplayService#computeContentShift
-             * @methodOf w20UI.service:DisplayService
+             * @name w20CoreUI.service:DisplayService#computeContentShift
+             * @methodOf w20CoreUI.service:DisplayService
              *
              * @description
              *
@@ -259,7 +256,7 @@ define([
 
     /**
      * @ngdoc service
-     * @name w20UI.service:NavigationService
+     * @name w20CoreUI.service:NavigationService
      *
      * @description
      *
@@ -267,7 +264,7 @@ define([
      * to build the tree menu for instance.
      *
      */
-    w20UI.factory('NavigationService', ['$route', 'SecurityExpressionService', 'EventService', function ($route, securityExpressionService, eventService) {
+    w20CoreUI.factory('NavigationService', ['$route', 'SecurityExpressionService', 'EventService', function ($route, securityExpressionService, eventService) {
         var routeTree,
             expandedRouteCategories,
             topLevelCategories,
@@ -416,8 +413,8 @@ define([
         return {
             /**
              * @ngdoc function
-             * @name w20UI.service:NavigationService#routeTree
-             * @methodOf w20UI.service:NavigationService
+             * @name w20CoreUI.service:NavigationService#routeTree
+             * @methodOf w20CoreUI.service:NavigationService
              * @returns {Object} A map of routes hierarchically organized
              *
              * @description
@@ -431,8 +428,8 @@ define([
 
             /**
              * @ngdoc function
-             * @name w20UI.service:NavigationService#computeSubTree
-             * @methodOf w20UI.service:NavigationService
+             * @name w20CoreUI.service:NavigationService#computeSubTree
+             * @methodOf w20CoreUI.service:NavigationService
              * @param {Object} parentMenuTree The parent tree
              * @returns {Object} The subtree of a parent tree
              *
@@ -457,8 +454,8 @@ define([
 
             /**
              * @ngdoc function
-             * @name w20UI.service:NavigationService#expandedRouteCategories
-             * @methodOf w20UI.service:NavigationService
+             * @name w20CoreUI.service:NavigationService#expandedRouteCategories
+             * @methodOf w20CoreUI.service:NavigationService
              * @returns {Array} A list of the expanded route categories i.e the categories opened in a route menu of themes
              *
              * @description
@@ -472,8 +469,8 @@ define([
 
             /**
              * @ngdoc function
-             * @name w20UI.service:NavigationService#topLevelRouteCategories
-             * @methodOf w20UI.service:NavigationService
+             * @name w20CoreUI.service:NavigationService#topLevelRouteCategories
+             * @methodOf w20CoreUI.service:NavigationService
              * @returns {Array} A list of the top level categories
              *
              * @description
@@ -488,8 +485,8 @@ define([
 
             /**
              * @ngdoc function
-             * @name w20UI.service:NavigationService#topLevelRoutes
-             * @methodOf w20UI.service:NavigationService
+             * @name w20CoreUI.service:NavigationService#topLevelRoutes
+             * @methodOf w20CoreUI.service:NavigationService
              * @returns {Array} A list of the top level routes
              *
              * @description
@@ -503,8 +500,8 @@ define([
 
             /**
              * @ngdoc function
-             * @name w20UI.service:NavigationService#routesFromCategory
-             * @methodOf w20UI.service:NavigationService
+             * @name w20CoreUI.service:NavigationService#routesFromCategory
+             * @methodOf w20CoreUI.service:NavigationService
              * @param {String} category The category from which to obtain all the available routes
              * @returns {Array} A list of the visible routes of the supplied category
              *
@@ -521,8 +518,8 @@ define([
 
             /**
              * @ngdoc function
-             * @name w20UI.service:NavigationService#routesFromCategory
-             * @methodOf w20UI.service:NavigationService
+             * @name w20CoreUI.service:NavigationService#routesFromCategory
+             * @methodOf w20CoreUI.service:NavigationService
              * @param {Object} route The route to check visibility of
              * @returns {Boolean} The visibility status of the route
              *
@@ -538,8 +535,8 @@ define([
 
             /**
              * @ngdoc function
-             * @name w20UI.service:NavigationService#refreshNavigation
-             * @methodOf w20UI.service:NavigationService
+             * @name w20CoreUI.service:NavigationService#refreshNavigation
+             * @methodOf w20CoreUI.service:NavigationService
              *
              * @description
              *
@@ -555,7 +552,7 @@ define([
 
     /**
      * @ngdoc service
-     * @name w20UI.service:MenuService
+     * @name w20CoreUI.service:MenuService
      *
      * @description
      *
@@ -563,7 +560,7 @@ define([
      * of this navigation components.
      *
      */
-    w20UI.factory('MenuService', ['SecurityExpressionService', 'AuthenticationService', 'AuthorizationService', 'CultureService',
+    w20CoreUI.factory('MenuService', ['SecurityExpressionService', 'AuthenticationService', 'AuthorizationService', 'CultureService',
         function (securityExpressionService, authenticationService, authorizationService, cultureService) {
 
             function buildItemSubservice(target, itemName) {
@@ -627,8 +624,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#registerSectionType
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#registerSectionType
+                 * @methodOf w20CoreUI.service:MenuService
                  * @param {String} type The name of the registered section type
                  * @param {Object} config Configuration of the registered section type
                  *
@@ -649,8 +646,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#registerActionType
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#registerActionType
+                 * @methodOf w20CoreUI.service:MenuService
                  * @param {String} type The name of the registered action type
                  * @param {Object} config Configuration of the registered action type
                  *
@@ -664,14 +661,14 @@ define([
                  *
                  * ```
                  *  menuService.registerActionType('w20-login', {
-                 *       templateUrl: '{w20-ui}/templates/action-login.html',
+                 *       templateUrl: '{css-framework}/templates/action-login.html',
                  *       showFn: function () {
                  *         return authenticationService.isAuthentifiable();
                  *       }
                  *   });
                  *
                  *  menuService.registerActionType('w20-culture', {
-                 *       templateUrl: '{w20-ui}/templates/action-culture.html',
+                 *       templateUrl: '{css-framework}/templates/action-culture.html',
                  *       showFn: function () {
                  *         return cultureService.availableCultures().length > 0;
                  *       }
@@ -682,8 +679,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#addSection
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#addSection
+                 * @methodOf w20CoreUI.service:MenuService
                  * @param {String} name The name of the section to add
                  * @param {String} type The section type (which should have been registered with registerSectionType)
                  * @param {Object} config Configuration of the section to add
@@ -709,8 +706,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#addAction
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#addAction
+                 * @methodOf w20CoreUI.service:MenuService
                  * @param {String} name The name of the action to add
                  * @param {String} type The action type (which should have been registered with registerActionType)
                  * @param {Object} config Configuration of the action to add
@@ -731,8 +728,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#getSection
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#getSection
+                 * @methodOf w20CoreUI.service:MenuService
                  * @param {String} name The name of the section to find
                  *
                  * @description
@@ -743,8 +740,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#getAction
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#getAction
+                 * @methodOf w20CoreUI.service:MenuService
                  * @param {String} name The name of the action to find
                  *
                  * @description
@@ -756,8 +753,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#removeSection
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#removeSection
+                 * @methodOf w20CoreUI.service:MenuService
                  * @param {String} name The name of the section to remove
                  *
                  * @description
@@ -768,8 +765,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#removeAction
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#removeAction
+                 * @methodOf w20CoreUI.service:MenuService
                  * @param {String} name The name of the action to remove
                  *
                  * @description
@@ -781,8 +778,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#getSections
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#getSections
+                 * @methodOf w20CoreUI.service:MenuService
                  *
                  * @description
                  *
@@ -792,8 +789,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#getActions
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#getActions
+                 * @methodOf w20CoreUI.service:MenuService
                  *
                  * @description
                  *
@@ -804,8 +801,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#getRegisteredSections
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#getRegisteredSections
+                 * @methodOf w20CoreUI.service:MenuService
                  *
                  * @description
                  *
@@ -815,8 +812,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:MenuService#getRegisteredActions
-                 * @methodOf w20UI.service:MenuService
+                 * @name w20CoreUI.service:MenuService#getRegisteredActions
+                 * @methodOf w20CoreUI.service:MenuService
                  *
                  * @description
                  *
@@ -836,36 +833,36 @@ define([
             service.registerSectionType('w20-section', {});
 
             service.registerActionType('w20-login', {
-                templateUrl: '{w20-ui}/templates/action-login.html',
+                templateUrl: '{css-framework}/templates/action-login.html',
                 showFn: function () {
                     return authenticationService.isAuthentifiable();
                 }
             });
 
             service.registerActionType('w20-logout', {
-                templateUrl: '{w20-ui}/templates/action-logout.html',
+                templateUrl: '{css-framework}/templates/action-logout.html',
                 showFn: function () {
                     return authenticationService.isAuthentifiable() && authenticationService.subjectAuthenticated();
                 }
             });
 
             service.registerActionType('w20-link', {
-                templateUrl: '{w20-ui}/templates/action-link.html'
+                templateUrl: '{css-framework}/templates/action-link.html'
             });
 
             service.registerActionType('w20-culture', {
-                templateUrl: '{w20-ui}/templates/action-culture.html',
+                templateUrl: '{css-framework}/templates/action-culture.html',
                 showFn: function () {
                     return cultureService.availableCultures().length > 0;
                 }
             });
 
             service.registerActionType('w20-connectivity', {
-                templateUrl: '{w20-ui}/templates/action-connectivity.html'
+                templateUrl: '{css-framework}/templates/action-connectivity.html'
             });
 
             service.registerActionType('w20-profile', {
-                templateUrl: '{w20-ui}/templates/action-profile.html',
+                templateUrl: '{css-framework}/templates/action-profile.html',
                 showFn: function () {
                     return authenticationService.isAuthentifiable();
                 }
@@ -884,14 +881,14 @@ define([
 
     /**
      * @ngdoc service
-     * @name w20UI.service:BookmarkService
+     * @name w20CoreUI.service:BookmarkService
      *
      * @description
      *
      * This service allows managing routes bookmarks. Bookmarked routes are persisted in a localstorage namespace **"w20-bookmark"**
      *
      */
-    w20UI.factory('BookmarkService', ['CultureService', 'StateService', 'ApplicationService', '$window',
+    w20CoreUI.factory('BookmarkService', ['CultureService', 'StateService', 'ApplicationService', '$window',
         function (cultureService, stateService) {
 
             var namespace = {name: 'w20-bookmark', keys: {bookmarks: 'bookmarkMap', landingRoute: 'landingRoute'}},
@@ -927,8 +924,8 @@ define([
             return {
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:BookmarkService#addBookmark
-                 * @methodOf w20UI.service:BookmarkService
+                 * @name w20CoreUI.service:BookmarkService#addBookmark
+                 * @methodOf w20CoreUI.service:BookmarkService
                  * @param {String} bookmarkName The name of the bookmark.
                  * @param {Object} bookmark The bookmark (i.e a route object)
                  *
@@ -955,8 +952,8 @@ define([
                 },
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:BookmarkService#getBookmark
-                 * @methodOf w20UI.service:BookmarkService
+                 * @name w20CoreUI.service:BookmarkService#getBookmark
+                 * @methodOf w20CoreUI.service:BookmarkService
                  * @param {String} bookmarkName The name of the bookmark.
                  * @returns {Object} The bookmark (i.e a route object)
                  *
@@ -969,8 +966,8 @@ define([
                 },
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:BookmarkService#getBookmark
-                 * @methodOf w20UI.service:BookmarkService
+                 * @name w20CoreUI.service:BookmarkService#getBookmark
+                 * @methodOf w20CoreUI.service:BookmarkService
                  * @returns {Object} A map of all bookmarks ({'bookmark-name': route})
                  *
                  * @description
@@ -982,8 +979,8 @@ define([
                 },
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:BookmarkService#removeBookmark
-                 * @methodOf w20UI.service:BookmarkService
+                 * @name w20CoreUI.service:BookmarkService#removeBookmark
+                 * @methodOf w20CoreUI.service:BookmarkService
                  * @param {String} bookmarkName The name of the bookmark.
                  *
                  * @description
@@ -996,8 +993,8 @@ define([
                 },
                 /**
                  * @ngdoc function
-                 * @name w20UI.service:BookmarkService#reset
-                 * @methodOf w20UI.service:BookmarkService
+                 * @name w20CoreUI.service:BookmarkService#reset
+                 * @methodOf w20CoreUI.service:BookmarkService
                  *
                  * @description
                  *
@@ -1010,7 +1007,7 @@ define([
                 },
 
                 /*
-                Unused at the moment  : allow to set the landing route when app start based on a bookmark
+                 Unused at the moment  : allow to set the landing route when app start based on a bookmark
                  */
                 setLandingRoute: function (bookmarkName) {
                     landingRoute = this.getBookmark(bookmarkName);
@@ -1028,7 +1025,7 @@ define([
 
     /**
      * @ngdoc directive
-     * @name w20UI.directive:w20ErrorReport
+     * @name w20CoreUI.directive:w20ErrorReport
      * @restrict A
      *
      * @description
@@ -1037,13 +1034,14 @@ define([
      * just before the end of the body tag.
      *
      */
-    w20UI.directive('w20ErrorReport', ['$rootScope', function ($rootScope) {
+    w20CoreUI.directive('w20ErrorReport', ['$rootScope', '$injector', function ($rootScope, $injector) {
         return {
-            template: errorReportTemplate,
+            template: typeof errorReportTemplate === 'string' ? errorReportTemplate : '',
             replace: true,
             restrict: 'A',
             scope: false,
-            link: function () {
+            link: function (scope, element, attrs) {
+
                 function formatStack(arg) {
                     if (typeof arg === 'undefined') {
                         return 'No stack trace';
@@ -1052,16 +1050,33 @@ define([
                     return $.trim(arg.replace(/^(?!at).*$/m, '')).replace(/\n/g, '<br/>');
                 }
 
+                scope.hideModal = true;
+
                 $rootScope.$on('w20.core.application.error-occurred', function (event, errors) {
-                    $('#w20ErrorReportMessage').html(errors[0].exception.message);
-                    $('#w20ErrorReportStack').html(formatStack(errors[0].exception.stack));
-                    $('#w20ErrorReport').modal('show');
+
+                    if (framework.name === 'bootstrap-2' || framework.name === 'bootstrap-3') {
+                        $('#w20ErrorReportMessage').html(errors[0].exception.message);
+                        $('#w20ErrorReportStack').html(formatStack(errors[0].exception.stack));
+                        $('#w20ErrorReport').modal('show');
+                    }
+
+                    if (framework.name === 'material') {
+                        $injector.get('$mdDialog').show({
+                            template: errorReportTemplate,
+                            parent: angular.element(document.body),
+                            clickOutsideToClose:true,
+                            controller: ['$scope', function ($scope) {
+                                $scope.message = errors[0].exception.message;
+                                $scope.stacktrace = errors[0].exception.stack;
+                            }]
+                        });
+                    }
                 });
             }
         };
     }]);
 
-    w20UI.controller('W20LoginActionController', ['$scope', 'AuthenticationService', function ($scope, authenticationService) {
+    w20CoreUI.controller('W20LoginActionController', ['$scope', 'AuthenticationService', function ($scope, authenticationService) {
         $scope.isAuthentifiable = authenticationService.isAuthentifiable;
         $scope.subjectAuthenticated = authenticationService.subjectAuthenticated;
         $scope.authenticate = authenticationService.authenticate;
@@ -1071,13 +1086,13 @@ define([
         $scope.subjectPrincipals = authenticationService.subjectPrincipals;
     }]);
 
-    w20UI.controller('W20LogoutActionController', ['$scope', 'AuthenticationService', function ($scope, authenticationService) {
+    w20CoreUI.controller('W20LogoutActionController', ['$scope', 'AuthenticationService', function ($scope, authenticationService) {
         $scope.isAuthentifiable = authenticationService.isAuthentifiable;
         $scope.subjectAuthenticated = authenticationService.subjectAuthenticated;
         $scope.deauthenticate = authenticationService.deauthenticate;
     }]);
 
-    w20UI.controller('W20CultureActionController', ['$scope', 'CultureService', function ($scope, cultureService) {
+    w20CoreUI.controller('W20CultureActionController', ['$scope', 'CultureService', function ($scope, cultureService) {
         $scope.currentCulture = function () {
             return cultureService.culture();
         };
@@ -1089,14 +1104,14 @@ define([
         $scope.availableCultures = cultureService.availableCultures;
     }]);
 
-    w20UI.controller('W20ConnectivityActionController', ['$scope', 'ConnectivityService', function ($scope, connectivityService) {
+    w20CoreUI.controller('W20ConnectivityActionController', ['$scope', 'ConnectivityService', function ($scope, connectivityService) {
         $scope.checkConnectivity = connectivityService.check;
         $scope.state = function () {
             return connectivityService.state().online ? 'online' : 'offline';
         };
     }]);
 
-    w20UI.controller('W20ProfileActionController', ['$scope', 'AuthenticationService', 'AuthorizationService', 'EventService', function ($scope, authenticationService, authorizationService, eventService) {
+    w20CoreUI.controller('W20ProfileActionController', ['$scope', 'AuthenticationService', 'AuthorizationService', 'EventService', function ($scope, authenticationService, authorizationService, eventService) {
         $scope.subjectAuthenticated = authenticationService.subjectAuthenticated;
         $scope.subjectPrincipal = authenticationService.subjectPrincipal;
         $scope.subjectId = authenticationService.subjectId;
@@ -1145,30 +1160,8 @@ define([
         eventService.on('w20.security.attribute-filter-changed', buildAttributeFilterModel);
     }]);
 
-    w20UI.run(['EventService', 'CultureService', 'datepickerConfig', 'datepickerPopupConfig', function (eventService, cultureService, datepickerConfig, datepickerPopupConfig) {
-        datepickerConfig.formatDay = 'dd';
-        datepickerConfig.formatMonth = 'MMMM';
-        datepickerConfig.formatYear = 'yyyy';
-        datepickerConfig.formatDayHeader = 'ddd';
-        datepickerConfig.formatDayTitle = 'MMMM yyyy';
-        datepickerConfig.formatMonthTitle = 'yyyy';
-
-        function updateDatePicker(culture) {
-            datepickerPopupConfig.datepickerPopup = culture.calendars.standard.patterns.d;
-            datepickerPopupConfig.currentText = cultureService.localize('w20.ui.datepicker.today');
-            datepickerPopupConfig.clearText = cultureService.localize('w20.ui.datepicker.clear');
-            datepickerPopupConfig.closeText = cultureService.localize('w20.ui.datepicker.close');
-        }
-
-        eventService.on('w20.culture.culture-changed', function (culture) {
-            updateDatePicker(culture);
-        });
-
-        updateDatePicker(cultureService.culture());
-    }]);
-
     return {
-        angularModules: ['w20UI'],
+        angularModules: ['w20CoreUI'],
         lifecycle: {
             pre: function (modules, fragments, callback) {
                 var navigationsToLoad = [];

@@ -13,14 +13,14 @@ define([
     'jquery',
     '{angular}/angular',
     '{w20-core}/modules/application',
-    'showdown',
+    '',
     '{w20-core}/modules/utils'
 ], function (_require, $, angular, w20CoreApplication, showdown) {
     'use strict';
 
     /**
      * @ngdoc object
-     * @name w20UIText
+     * @name w20CoreText
      * @require w20CoreUtils
      *
      * @description
@@ -38,18 +38,18 @@ define([
      * This module has no fragment definition section.
      *
      */
-    var w20UIText = angular.module('w20UIText', [ 'w20CoreUtils' ]);
+    var w20CoreText = angular.module('w20CoreText', [ 'w20CoreUtils' ]);
 
     /**
      * @ngdoc service
-     * @name w20UIText.service:TextService
+     * @name w20CoreText.service:TextService
      *
      * @description
      *
      * This service provides text manipulation functions.
      *
      */
-    w20UIText.factory('TextService', [function() {
+    w20CoreText.factory('TextService', [function() {
         var converter = new showdown.Converter(),
             placeholderRegexp = new RegExp('(src|href)="(.*{.+}[^"]*)"', 'g');
 
@@ -57,8 +57,8 @@ define([
         return {
             /**
              * @ngdoc function
-             * @name w20UIText.service:TextService#markdown
-             * @methodOf w20UIText.service:TextService
+             * @name w20CoreText.service:TextService#markdown
+             * @methodOf w20CoreText.service:TextService
              * @param {String} value The markdown text to convert.
              * @return {String} The HTML text converted.
              *
@@ -76,7 +76,7 @@ define([
 
     /**
      * @ngdoc directive
-     * @name w20UIText.directive:w20Markdown
+     * @name w20CoreText.directive:w20Markdown
      * @restrict A
      *
      * @description
@@ -89,7 +89,7 @@ define([
      * <div data-w20-mardown> ... </div>
      * ```
      */
-    w20UIText.directive('w20Markdown', ['TextService', 'EventService', function (textService, eventService) {
+    w20CoreText.directive('w20Markdown', ['TextService', 'EventService', function (textService, eventService) {
         return {
             replace: false,
             transclude: false,
@@ -123,7 +123,7 @@ define([
 
     /**
      * @ngdoc filter
-     * @name w20UIText.filter:markdown
+     * @name w20CoreText.filter:markdown
      *
      * @description
      *
@@ -131,7 +131,7 @@ define([
      * It takes no argument.
      *
      */
-    w20UIText.filter('markdown', ['TextService', function (textService) {
+    w20CoreText.filter('markdown', ['TextService', function (textService) {
         return function(value) {
             if (value) {
                 return textService.markdown(value);
@@ -147,6 +147,6 @@ define([
     });
 
     return {
-        angularModules:[ 'w20UIText' ]
+        angularModules:[ 'w20CoreText' ]
     };
 });

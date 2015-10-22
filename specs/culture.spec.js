@@ -28,8 +28,8 @@ define([
                 'test-fragment': {
                     definition: {
                         'i18n': {
-                            'en-GB': ['base/core/mocks/mock-en.i18n.json'],
-                            'fr-FR': ['base/core/mocks/mock-fr.i18n.json']
+                            'en-GB': ['base/mocks/mock-en.i18n.json'],
+                            'fr-FR': ['base/mocks/mock-fr.i18n.json']
                         }
                     }
                 }

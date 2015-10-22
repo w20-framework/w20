@@ -18,7 +18,7 @@ define([
     '{angular-sanitize}/angular-sanitize',
 
     '{w20-core}/modules/env',
-    '{w20-ui}/modules/ui',
+    '{w20-core}/modules/ui',
 
     '{jgrowl}/jquery.jgrowl',
     '[css]!{jgrowl}/jquery.jgrowl'
@@ -27,7 +27,7 @@ define([
 
     /**
      * @ngdoc object
-     * @name w20UINotifications
+     * @name w20CoreNotifications
      *
      * @description
      *
@@ -49,26 +49,26 @@ define([
      * This module has no fragment definition section.
      *
      */
-    var w20UINotifications = angular.module('w20UINotifications', ['w20CoreEnv', 'w20UI', 'ngSanitize']),
+    var w20CoreNotifications = angular.module('w20CoreNotifications', ['w20CoreEnv', 'w20CoreUI', 'ngSanitize']),
         _config = _module && _module.config() || {};
 
     /**
      * @ngdoc service
-     * @name w20UINotifications.service:NotificationHistoryService
+     * @name w20CoreNotifications.service:NotificationHistoryService
      *
      * @description
      *
      * This service provides an API to manage persisted user notifications.
      *
      */
-    w20UINotifications.factory('NotificationHistoryService', ['StateService', 'MenuService', function (stateService, menuService) {
+    w20CoreNotifications.factory('NotificationHistoryService', ['StateService', 'MenuService', function (stateService, menuService) {
         var lastId = 0,
             notificationsState = stateService.state('notifications', 'history', []),
             service = {
                 /**
                  * @ngdoc function
-                 * @name w20UINotifications.service:NotificationHistoryService#getNotifications
-                 * @methodOf w20UINotifications.service:NotificationHistoryService
+                 * @name w20CoreNotifications.service:NotificationHistoryService#getNotifications
+                 * @methodOf w20CoreNotifications.service:NotificationHistoryService
                  * @returns {Array} the list of notifications
                  *
                  * @description
@@ -81,8 +81,8 @@ define([
                 },
                 /**
                  * @ngdoc function
-                 * @name w20UINotifications.service:NotificationHistoryService#getNotification
-                 * @methodOf w20UINotifications.service:NotificationHistoryService
+                 * @name w20CoreNotifications.service:NotificationHistoryService#getNotification
+                 * @methodOf w20CoreNotifications.service:NotificationHistoryService
                  * @param {Number} id The id of the required notification
                  * @returns {Array} the notification or undefined if not found.
                  *
@@ -98,8 +98,8 @@ define([
                 },
                 /**
                  * @ngdoc function
-                 * @name w20UINotifications.service:NotificationHistoryService#addNotification
-                 * @methodOf w20UINotifications.service:NotificationHistoryService
+                 * @name w20CoreNotifications.service:NotificationHistoryService#addNotification
+                 * @methodOf w20CoreNotifications.service:NotificationHistoryService
                  * @param {String} type The notification type (info, warn or alert).
                  * @param {String} content The notification content.
                  * @param {String} link The notification link (optional).
@@ -127,8 +127,8 @@ define([
                 },
                 /**
                  * @ngdoc function
-                 * @name w20UINotifications.service:NotificationHistoryService#clearNotifications
-                 * @methodOf w20UINotifications.service:NotificationHistoryService
+                 * @name w20CoreNotifications.service:NotificationHistoryService#clearNotifications
+                 * @methodOf w20CoreNotifications.service:NotificationHistoryService
                  *
                  * @description
                  *
@@ -140,8 +140,8 @@ define([
                 },
                 /**
                  * @ngdoc function
-                 * @name w20UINotifications.service:NotificationHistoryService#deleteNotification
-                 * @methodOf w20UINotifications.service:NotificationHistoryService
+                 * @name w20CoreNotifications.service:NotificationHistoryService#deleteNotification
+                 * @methodOf w20CoreNotifications.service:NotificationHistoryService
                  * @param {Number} id of the notification to delete
                  *
                  * @description
@@ -169,7 +169,7 @@ define([
 
     /**
      * @ngdoc service
-     * @name w20UINotifications.service:NotificationService
+     * @name w20CoreNotifications.service:NotificationService
      *
      * @description
      *
@@ -178,7 +178,7 @@ define([
      * browser.
      *
      */
-    w20UINotifications.factory('NotificationService', ['ApplicationService', 'NotificationHistoryService', 'CultureService', '$window',
+    w20CoreNotifications.factory('NotificationService', ['ApplicationService', 'NotificationHistoryService', 'CultureService', '$window',
         function (applicationService, notificationHistoryService, cultureService, $window) {
 
             var checkSystemNotificationsPermission = function (callback) {
@@ -213,7 +213,7 @@ define([
                     if (!checkSystemNotificationsPermission(function () {
                             new $window.Notification(options.header, { /* jshint nonew:false */
                                 body: text,
-                                icon: require.toUrl('{w20-ui}/images/notifications/' + icon + '.png')
+                                icon: require.toUrl('{w20-core}/images/notifications/' + icon + '.png')
                             });
                         })) {
                         $.jGrowl(text, updatedOptions);
@@ -226,8 +226,8 @@ define([
             return {
                 /**
                  * @ngdoc function
-                 * @name w20UINotifications.service:NotificationService#notify
-                 * @methodOf w20UINotifications.service:NotificationService
+                 * @name w20CoreNotifications.service:NotificationService#notify
+                 * @methodOf w20CoreNotifications.service:NotificationService
                  * @param {String} text The text to display in the notification
                  * @param {Boolean} system True if the notification should be a system one, false otherwise.
                  * @param {Object} options The options object to pass to the underlying implementation (jGrowl).
@@ -251,8 +251,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UINotifications.service:NotificationService#warn
-                 * @methodOf w20UINotifications.service:NotificationService
+                 * @name w20CoreNotifications.service:NotificationService#warn
+                 * @methodOf w20CoreNotifications.service:NotificationService
                  * @param {String} text The text to display in the notification
                  * @param {Boolean} system True if the notification should be a system one, false otherwise.
                  * @param {Object} options The options object to pass to the underlying implementation (jGrowl).
@@ -276,8 +276,8 @@ define([
 
                 /**
                  * @ngdoc function
-                 * @name w20UINotifications.service:NotificationService#alert
-                 * @methodOf w20UINotifications.service:NotificationService
+                 * @name w20CoreNotifications.service:NotificationService#alert
+                 * @methodOf w20CoreNotifications.service:NotificationService
                  * @param {String} text The text to display in the notification
                  * @param {Boolean} system True if the notification should be a system one, false otherwise.
                  * @param {Object} options The options object to pass to the underlying implementation (jGrowl).
@@ -301,7 +301,7 @@ define([
             };
         }]);
 
-    w20UINotifications.run(['NotificationService', 'EventService', 'CultureService', function (notificationService, eventService, cultureService) {
+    w20CoreNotifications.run(['NotificationService', 'EventService', 'CultureService', function (notificationService, eventService, cultureService) {
         $.jGrowl.defaults.closerTemplate = '<div>' + cultureService.localize('w20.ui.notifications.closeall') + '</div>';
         $.jGrowl.defaults.position = _config.position || 'bottom-right';
         $.jGrowl.defaults.pool = _config.limit || 0;
@@ -344,6 +344,6 @@ define([
     }]);
 
     return {
-        angularModules: ['w20UINotifications']
+        angularModules: ['w20CoreNotifications']
     };
 });

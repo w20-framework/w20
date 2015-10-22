@@ -11,7 +11,7 @@
 define([
     '{angular}/angular',
     '{lodash}/lodash',
-    '{w20-ui}/modules/notifications',
+    '{w20-core}/modules/notifications',
     '{angular-mocks}/angular-mocks'
 ], function (angular, _) {
     'use strict';
@@ -30,7 +30,7 @@ define([
             };
 
         beforeEach(function () {
-            angular.mock.module('w20UINotifications');
+            angular.mock.module('w20CoreNotifications');
 
             angular.mock.inject(function (_$injector_, _$rootScope_, _$compile_) {
                 $injector = _$injector_;
