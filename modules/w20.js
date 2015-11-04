@@ -428,7 +428,7 @@ define([ 'module' ], function (module) {
 
     var requireApplication = (function () {
         return function (w20, modulesToRequire, callback) {
-            console.log("requiring modules " + modulesToRequire);
+            console.log('requiring modules ' + modulesToRequire);
 
             require([ '{tv4}/tv4' ].concat(modulesToRequire), function (tv4) {
                 var definedModules = require.s.contexts._.defined,
@@ -439,7 +439,7 @@ define([ 'module' ], function (module) {
                     });
 
                 // Validate configuration now that the validator (tv4) is loaded
-                console.log("validating modules configuration");
+                console.log('validating modules configuration');
 
                 for (var fragmentName in allModules) {
                     if (allModules.hasOwnProperty(fragmentName)) {

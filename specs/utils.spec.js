@@ -306,7 +306,7 @@ define([
             var path = './utils.spec.js', result;
             result = $filter('path')(path);
 
-            expect(result).toEqual('/base/core/modules/utils.spec.js');
+            expect(result).toEqual('/base/modules/utils.spec.js');
 
         });
     });

@@ -1,10 +1,11 @@
-// Dynamic JS module declaration
 define([
     'require',
-    '{w20-core}/libext/angular/angular',
+    '{angular}/angular/angular',
     '{w20-core}/modules/culture',
-    '{w20-core}/libext/angular/angular-resource'
+    '{angular-resource}/angular-resource'
 ], function (require, angular) {
+    'use strict';
+
     // Angular module declaration with a dependency on ngResource (because we use $resource in this module)
     var module = angular.module('user', [ 'ngResource', 'w20CoreCulture' ]);
 
@@ -48,9 +49,11 @@ define([
         // This function loads users from a resource
         $scope.loadUsers = function () {
             Users.query(function (result) {
-                for (var i = 0; i < result.length; i++)
-                    if (result[i].id > userId)
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].id > userId) {
                         userId = result[i].maxid;
+                    }
+                }
                 $scope.users = result;
             });
         };

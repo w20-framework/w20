@@ -1,4 +1,10 @@
-define([ '{w20-core}/libext/angular/angular', '{w20-core}/libext/angular/angular-resource' ], function() {
+define([
+	'{angular}/angular/angular',
+	'{angular-resource}/angular-resource'
+
+], function (angular) {
+	'use strict';
+
 	var module = angular.module('content', [ 'ngResource' ]);
 
 	module.factory('ContentService', function() {
@@ -11,14 +17,14 @@ define([ '{w20-core}/libext/angular/angular', '{w20-core}/libext/angular/angular
 
 	module.controller('ContentController', [ '$scope', 'ContentService', function($scope, contentService) {
 		$scope.users = [ {
-			firstName : "Robert",
-			lastName : "SMITH"
+			firstName : 'Robert',
+			lastName : 'SMITH'
 		}, {
-			firstName : "Mary",
-			lastName : "POPPINS"
+			firstName : 'Mary',
+			lastName : 'POPPINS'
 		}, {
-			firstName : "John",
-			lastName : "CONNOR"
+			firstName : 'John',
+			lastName : 'CONNOR'
 		} ];
 	} ]);
 

@@ -18,7 +18,7 @@ for (var file in window.__karma__.files) {
 
 window.w20 = {
     configuration: {
-        '/base/core/w20-core.w20.json': {
+        '/base/w20-core.w20.json': {
             modules: {
                 application: {
                     id: 'w20-test',
@@ -31,35 +31,10 @@ window.w20 = {
                     ],
                     default: 'en-GB'
                 },
-                hypermedia: {}
-            },
-            vars: {
-                'components-path': '/base/bower_components'
-            }
-        },
-        '/base/ui/w20-ui.w20.json': {
-            modules: {
                 ui: {
                     'expandedRouteCategories': ['category1.category11']
                 },
-                grid: {},
-                select: {}
-            },
-            vars: {
-                'components-path': '/base/bower_components'
-            }
-        },
-        'base/extra/w20-extra.w20.json': {
-            modules: {
-                analytics: {
-                    provider: 'piwik',
-                    virtualPageViews: true,
-                    settings: {
-                        jsUrl: '/base/extra/specs/mock-piwik.js',
-                        trackerUrl: 'url/of/tracker.url',
-                        siteId: 1
-                    }
-                }
+                hypermedia: {}
             },
             vars: {
                 'components-path': '/base/bower_components'
@@ -79,6 +54,6 @@ requirejs.config({
     }
 });
 
-requirejs([ '/base/core/modules/w20.js' ]);
+requirejs([ '/base/modules/w20.js' ]);
 
 

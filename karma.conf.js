@@ -16,28 +16,20 @@ module.exports = function(config) {
         frameworks: [ 'jasmine', 'requirejs' ],
         files: [
             'test-main.js',
-
-            { pattern: 'core/**/*.js*', included: false },
-            { pattern: 'dataviz/**/*.js*', included: false },
-            { pattern: 'extra/**/*.js*', included: false },
-            { pattern: 'touch/**/*.js*', included: false },
-            { pattern: 'ui/**/*.js*', included: false },
-            { pattern: 'ui/**/*.html', included: false },
+            { pattern: '*.json', included: false },
+            { pattern: 'mocks/**/*.json', included: false },
+            { pattern: 'specs/**/*.js', included: false },
+            { pattern: 'modules/**/*.js*', included: false },
             { pattern: 'bower_components/**/*', included: false }
         ],
         preprocessors: {
-            'core/modules/*.js': 'coverage',
-            'dataviz/modules/*.js': 'coverage',
-            'extra/modules/*.js': 'coverage',
-            'extra/modules/providers/*.js': 'coverage',
-            'touch/modules/*.js': 'coverage',
-            'ui/modules/*.js': 'coverage'
+            'modules/*.js': 'coverage'
         },
         reporters: ['dots', 'coverage' ],
         coverageReporter: {
-            type: "lcov",
-            dir: "coverage/",
-            subdir: "."
+            type: 'lcov',
+            dir: 'coverage/',
+            subdir: '.'
         },
         port: 9876,
         colors: true,

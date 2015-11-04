@@ -40,21 +40,21 @@ define([
      *
      *      "hypermedia": {
      *          // a map of APIs name to the actual url of the API exposing a JSON-HOME document
-                api: {},
-                // Automatically transform all responses served as application/hal+json
-                interceptAll: true
-                // The name of the property used to reference resources links. Default to the one used in the HAL specification.
-                linksKey: '_links'
-                // The name of the property used to reference resources links url. Default to the one used in the HAL specification.
-                linksHrefKey: 'href',
-                // The name of the property used to reference resources self links. Default to the one used in the HAL specification.
-                linksSelfLinkName: 'self',
-                // The name of the property used to reference resources embedded resources. Default to the one used in the HAL specification.
-                embeddedKey: '_embedded',
-                // The name of the property to add to $resource objects to retrieve embedded resources.
-                embeddedNewKey: '$embedded',
-                // The name of the property to add to $resource objects to retrieve resources links.
-                resourcesKey: '$links',
+     *           api: {},
+     *           // Automatically transform all responses served as application/hal+json
+     *           interceptAll: true
+     *           // The name of the property used to reference resources links. Default to the one used in the HAL specification.
+     *           linksKey: '_links'
+     *           // The name of the property used to reference resources links url. Default to the one used in the HAL specification.
+     *           linksHrefKey: 'href',
+     *           // The name of the property used to reference resources self links. Default to the one used in the HAL specification.
+     *           linksSelfLinkName: 'self',
+     *           // The name of the property used to reference resources embedded resources. Default to the one used in the HAL specification.
+     *           embeddedKey: '_embedded',
+     *           // The name of the property to add to $resource objects to retrieve embedded resources.
+     *           embeddedNewKey: '$embedded',
+     *           // The name of the property to add to $resource objects to retrieve resources links.
+     *           resourcesKey: '$links',
      *      }
      */
     var w20CoreHypermedia = angular.module('w20CoreHypermedia', ['ngResource']),
@@ -975,7 +975,7 @@ define([
                     })
                     .finally(function () {
 
-                        callback(module);
+                        callback(modules);
 
                     });
 

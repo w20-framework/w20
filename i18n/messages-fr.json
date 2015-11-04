@@ -1,0 +1,34 @@
+{
+    "w20.ui.notifications.route.error" : "Erreur lors du changement de vue vers \"{0}\".<br/>Cause : {1}",
+    "w20.ui.notifications.route.error.reason.unknown" : "Inconnue",
+    "w20.ui.notifications.route.error.reason.httpstatus" : "Code HTTP {0}",
+    "w20.ui.notifications.route.error.reason.notfound" : "Non trouvé (HTTP 404)",
+    "w20.ui.notifications.route.error.reason.forbidden" : "Interdit (HTTP 403)",
+    "w20.ui.notifications.route.error.reason.denied" : "Non autorisé",
+    "w20.ui.notifications.login.authenticated" : "Vous êtes maintenant connecté en tant que {0}.",
+    "w20.ui.notifications.login.deauthenticated" : "Vous êtes maintenant déconnecté.",
+    "w20.ui.notifications.login.failed" : "Impossible de s'authentifier.",
+    "w20.ui.notifications.history": "Historique",
+    "w20.ui.notifications.dismissAll": "effacer tout",
+    "w20.ui.notifications.severity.notification": "Notification",
+    "w20.ui.notifications.severity.warning": "Avertissement",
+    "w20.ui.notifications.severity.alert": "Alerte !",
+    "w20.ui.notifications.closeall": "[ fermer tout ]",
+    "w20.ui.notifications.replayed": "rejoué",
+
+    "w20.ui.action.login" : "Connexion",
+    "w20.ui.action.logout" : "Déconnexion",
+    "w20.ui.action.connectivity.unknown": "Connectivité inconnue",
+    "w20.ui.action.connectivity.online": "En ligne",
+    "w20.ui.action.connectivity.offline": "Hors ligne",
+    "w20.ui.action.profile.restrict-roles": "Restreindre les roles à:",
+    "w20.ui.action.profile.restrict-attributes": "Restreindre les attributs à:",
+
+    "w20.ui.errorreport.title": "Rapport d'erreur",
+    "w20.ui.errorreport.message": "Message",
+    "w20.ui.errorreport.location": "Localisation",
+    "w20.ui.errorreport.cause": "Cause",
+    "w20.ui.errorreport.dismiss": "Fermer",
+
+    "w20.ui.action.profile.title": "Rôles et attributs utilisateur"
+}
