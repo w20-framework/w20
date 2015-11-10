@@ -657,7 +657,7 @@ define([
      */
     function toAbsoluteLinks(data, originUrl) {
 
-        var host = stripTrailingSlash(getHost(originUrl));
+        var host = getHost(stripTrailingSlash(originUrl));
 
         function prefixLinks(links) {
             if (host) {
