@@ -14,7 +14,7 @@ define([
     'require',
 
     '{angular}/angular',
-    '{uri.js}/URITemplate',
+    '{uri-templates}/uri-templates',
 
     '{angular-resource}/angular-resource'
 
@@ -220,7 +220,7 @@ define([
                     }
                     else {
                         var url = new URITemplate(homeResource['href-template']);
-                        url = url.expand(parameters);
+                        url = url.fill(parameters);
                         return $resource(url, undefined, actions, options);
                     }
                 }
@@ -326,7 +326,7 @@ define([
                     // process the url and call the resources function with the given parameters
                     if (link.templated) {
                         url = new URITemplate(link[config.linksHrefKey]);
-                        url = url.expand(parameters);
+                        url = url.fill(parameters);
                         // set parameters to undefined since they are resolved by the uri template expansion,
                         // otherwise it will duplicate parameters
                         parameters = undefined;

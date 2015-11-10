@@ -237,7 +237,7 @@
             "{requirejs-text}": "${components-path:bower_components}/requirejs-text",
             "{requirejs}": "${components-path:bower_components}/requirejs",
             "{require-css}": "${components-path:bower_components}/require-css",
-            "{uri.js}": "${components-path:bower_components}/uri.js/src",
+            "{uri-templates}": "${components-path:bower_components}/uri-templates",
             "jquery": "${components-path:bower_components}/jquery/dist/jquery",
             "{jgrowl}": "${components-path:bower_components}/jgrowl",
             "showdown": "${components-path:bower_components}/showdown/dist/showdown",
@@ -260,9 +260,6 @@
             },
             "{tv4}/tv4": {
                 "exports": "tv4"
-            },
-            "{uri.js}/URITemplate": {
-                "deps": ["{uri.js}/URI"]
             },
             "{jgrowl}/jquery.jgrowl":[
                 "jquery"
