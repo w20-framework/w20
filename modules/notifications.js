@@ -240,7 +240,7 @@ define([
                  */
                 notify: function (text, system, options, persistent) {
                     growl(text, _.extend({
-                        header: cultureService.localize('w20.ui.notifications.severity.notification'),
+                        header: cultureService.localize('w20.core.notifications.severity.notification'),
                         life: 3000
                     }, _config.options && _config.options.notify || {}, options), 'icon-info-sign', 'jGrowl-notification', system);
 
@@ -265,7 +265,7 @@ define([
                  */
                 warn: function (text, system, options, persistent) {
                     growl(text, _.extend({
-                        header: cultureService.localize('w20.ui.notifications.severity.warning'),
+                        header: cultureService.localize('w20.core.notifications.severity.warning'),
                         life: 10000
                     }, _config.options && _config.options.warn || {}, options), 'icon-warning-sign', 'jGrowl-warning', system);
 
@@ -290,7 +290,7 @@ define([
                  */
                 alert: function (text, system, options, persistent) {
                     growl(text, _.extend({
-                        header: cultureService.localize('w20.ui.notifications.severity.alert'),
+                        header: cultureService.localize('w20.core.notifications.severity.alert'),
                         sticky: true
                     }, _config.options && _config.options.alert || {}, options), 'icon-exclamation-sign', 'jGrowl-alert', system);
 
@@ -302,43 +302,43 @@ define([
         }]);
 
     w20CoreNotifications.run(['NotificationService', 'EventService', 'CultureService', function (notificationService, eventService, cultureService) {
-        $.jGrowl.defaults.closerTemplate = '<div>' + cultureService.localize('w20.ui.notifications.closeall') + '</div>';
+        $.jGrowl.defaults.closerTemplate = '<div>' + cultureService.localize('w20.core.notifications.closeall') + '</div>';
         $.jGrowl.defaults.position = _config.position || 'bottom-right';
         $.jGrowl.defaults.pool = _config.limit || 0;
 
         // Add route change notifications
         if (!_config.disableNotifications) {
             eventService.on('$routeChangeError', ['CultureService', 'NotificationService', '$args', function (cultureService, notificationService, $args) {
-                var reason = cultureService.localize('w20.ui.notifications.route.error.reason.unknown'),
+                var reason = cultureService.localize('w20.core.notifications.route.error.reason.unknown'),
                     current = $args[0], rejection = $args[2];
 
                 if (typeof rejection === 'object') {
                     if (typeof rejection.status !== 'undefined') {
                         if (rejection.status === 404) {
-                            reason = cultureService.localize('w20.ui.notifications.route.error.reason.notfound');
+                            reason = cultureService.localize('w20.core.notifications.route.error.reason.notfound');
                         } else if (rejection.status === 403) {
-                            reason = cultureService.localize('w20.ui.notifications.route.error.reason.forbidden');
+                            reason = cultureService.localize('w20.core.notifications.route.error.reason.forbidden');
                         } else {
-                            reason = cultureService.localize('w20.ui.notifications.route.error.reason.httpstatus', [rejection.status]);
+                            reason = cultureService.localize('w20.core.notifications.route.error.reason.httpstatus', [rejection.status]);
                         }
                     }
                 } else if (typeof rejection === 'string') {
-                    reason = cultureService.localize('w20.ui.notifications.route.error.reason.' + rejection);
+                    reason = cultureService.localize('w20.core.notifications.route.error.reason.' + rejection);
                 }
 
-                notificationService.warn(cultureService.localize('w20.ui.notifications.route.error', [cultureService.displayName(current.$$route), reason]));
+                notificationService.warn(cultureService.localize('w20.core.notifications.route.error', [cultureService.displayName(current.$$route), reason]));
             }]);
 
             eventService.on('w20.security.authenticated', ['CultureService', 'AuthenticationService', 'NotificationService', '$args', function (cultureService, authenticationService, notificationService, $args) {
-                notificationService.notify(cultureService.localize('w20.ui.notifications.login.authenticated', [$args[0].id]));
+                notificationService.notify(cultureService.localize('w20.core.notifications.login.authenticated', [$args[0].id]));
             }]);
 
             eventService.on('w20.security.deauthenticated', ['CultureService', 'NotificationService', function (cultureService, notificationService) {
-                notificationService.notify(cultureService.localize('w20.ui.notifications.login.deauthenticated'));
+                notificationService.notify(cultureService.localize('w20.core.notifications.login.deauthenticated'));
             }]);
 
             eventService.on('w20.security.failed-authentication', ['CultureService', 'NotificationService', function (cultureService, notificationService) {
-                notificationService.warn(cultureService.localize('w20.ui.notifications.login.failed'));
+                notificationService.warn(cultureService.localize('w20.core.notifications.login.failed'));
             }]);
         }
     }]);
