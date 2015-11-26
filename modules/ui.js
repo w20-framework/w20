@@ -32,7 +32,7 @@ define([
      *
      * @description
      *
-     * This module manages the UI. It provides Bootstrap 3 and UI-Bootstrap libraries. It is automatically loaded.
+     * This module provides basic UI services. It loads the configured CSS framework.
      *
      * Configuration
      * -------------
