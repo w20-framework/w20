@@ -1,6 +1,6 @@
 {
   "name": "w20",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "ignore": [
     ".*",
     "*.iml",
@@ -27,11 +27,9 @@
     "requirejs": "2.1.19",
     "requirejs-text": "2.0.14",
     "tv4": "1.1.12",
-
     "jgrowl": "1.4.3",
     "require-css": "0.1.8",
     "showdown": "1.2.1",
-
     "uri-templates": "~0.1"
   },
   "devDependencies": {
