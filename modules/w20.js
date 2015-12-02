@@ -9,7 +9,7 @@
  */
 
 /* global require: false */
-define([ 'module' ], function (module) {
+define(['module'], function (module) {
     'use strict';
 
     var W20_DEBUG_MODE = 'W20_DEBUG_MODE!';
@@ -67,15 +67,45 @@ define([ 'module' ], function (module) {
         };
     })();
 
+    function getCookie(name) {
+        var c = document.cookie, v = 0, cookies = {};
+        if (document.cookie.match(/^\s*\$Version=(?:"1"|1);\s*(.*)/)) {
+            c = RegExp.$1;
+            v = 1;
+        }
+        if (v === 0) {
+            c.split(/[,;]/).map(function (cookie) {
+                var parts = cookie.split(/=/, 2),
+                    name = decodeURIComponent(parts[0].trimLeft()),
+                    value = parts.length > 1 ? decodeURIComponent(parts[1].trimRight()) : null;
+                cookies[name] = value;
+            });
+        } else {
+            c.match(/(?:^|\s+)([!#$%&'*+\-.0-9A-Z^`a-z|~]+)=([!#$%&'*+\-.0-9A-Z^`a-z|~]*|"(?:[\x20-\x7E\x80\xFF]|\\[\x00-\x7F])*")(?=\s*[,;]|$)/g).map(function ($0, $1) {
+                var name = $0,
+                    value = $1.charAt(0) === '"' ? $1.substr(1, -1).replace(/\\(.)/g, "$1") : $1;
+                cookies[name] = value;
+            });
+        }
+        return cookies[name];
+    }
+
     // This function retrieve the contents of multiple resources asynchronously
-    var getContents = (function() {
+    var getContents = (function () {
         function fetch(url, index, callback, errback) {
-            var xhr = new XMLHttpRequest();
+            var xhr = new XMLHttpRequest(),
+                xsrfToken = getCookie('XSRF-TOKEN');
+
             xhr.open('GET', url, true);
 
-            //Allow overrides specified in config
+            // Allow overrides specified in config
             if ('withCredentials' in xhr) {
                 xhr.withCredentials = w20Object.corsWithCredentials;
+            }
+
+            // Put the XSRF header if the token is available
+            if (xsrfToken) {
+                xhr.setRequestHeader("X-XSRF-TOKEN", xsrfToken);
             }
 
             xhr.onreadystatechange = function () {
@@ -97,7 +127,7 @@ define([ 'module' ], function (module) {
             xhr.send(null);
         }
 
-        return function(urls, callback, errback) {
+        return function (urls, callback, errback) {
             var count = urls.length,
                 results = [];
 
@@ -117,9 +147,9 @@ define([ 'module' ], function (module) {
                     fetch(urls[i], i, success, failure);
                 }
             } else {
-                fetch(urls, 0, function(data) {
+                fetch(urls, 0, function (data) {
                     callback(data);
-                }, function(err) {
+                }, function (err) {
                     errback(err);
                 });
             }
@@ -127,7 +157,7 @@ define([ 'module' ], function (module) {
     })();
 
     // This function formats Error objects in a human readable string
-    var formatError = (function() {
+    var formatError = (function () {
         return function (arg) {
             if (arg instanceof Error) {
                 if (arg.stack) {
@@ -141,9 +171,10 @@ define([ 'module' ], function (module) {
     })();
 
     // Cross-browser log function
-    (function() {
+    (function () {
         var method;
-        var noop = function () {};
+        var noop = function () {
+        };
         var methods = [
             'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
             'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
@@ -181,7 +212,7 @@ define([ 'module' ], function (module) {
                 return;
             }
 
-            var constrainedType = { info: 'I', warning: 'W', error: 'E', timeout: 'T' }[type] || 'E',
+            var constrainedType = {info: 'I', warning: 'W', error: 'E', timeout: 'T'}[type] || 'E',
                 detailContent,
                 cloakElement = window.document.getElementById('w20-loading-cloak'),
                 changeLevel = function (newLevel) {
@@ -294,31 +325,49 @@ define([ 'module' ], function (module) {
     var useBundles = false,
         allModules = {},
         w20Object = {
-        console: console,
-        requireConfig: {
-            baseUrl: '.',
-            config: {},
-            paths: {},
-            map: {},
-            bundles: {},
-            waitSeconds: 30
-        },
-        ready: false,
-        corsWithCredentials: false,
-        reloadInDebug: function() {
-            window.name = W20_DEBUG_MODE + window.name;
-            window.location.reload();
-        }
-    };
+            console: console,
+            requireConfig: {
+                baseUrl: '.',
+                config: {
+                    '{requirejs-text}/text': {
+                        onXhr: function (xhr) {
+                            var xsrfToken = getCookie('XSRF-TOKEN');
 
-    w20Object.debug = w20Object.debug || (function() {
-        if (new RegExp('^' + W20_DEBUG_MODE).test(window.name)) {
-            window.name = window.name.replace(W20_DEBUG_MODE, '');
-            return true;
-        } else {
-            return false;
-        }
-    })();
+                            if ('withCredentials' in xhr) {
+                                xhr.withCredentials = w20Object.corsWithCredentials;
+                            }
+
+                            if (xsrfToken) {
+                                xhr.setRequestHeader("X-XSRF-TOKEN", xsrfToken);
+                            }
+                        },
+
+                        useXhr: function () {
+                            return true;
+                        }
+                    }
+                },
+                paths: {},
+                map: {},
+                bundles: {},
+                waitSeconds: 30
+            },
+            ready: false,
+            corsWithCredentials: false,
+            reloadInDebug: function () {
+                window.name = W20_DEBUG_MODE + window.name;
+                window.location.reload();
+            }
+        };
+
+    w20Object.debug = w20Object.debug || (function () {
+            if (new RegExp('^' + W20_DEBUG_MODE).test(window.name)) {
+                window.name = window.name.replace(W20_DEBUG_MODE, '');
+                return true;
+            } else {
+                return false;
+            }
+        })();
 
     w20Object = mergeObjects(w20Object, window.w20 || {});
 
@@ -430,7 +479,7 @@ define([ 'module' ], function (module) {
         return function (w20, modulesToRequire, callback) {
             console.log('requiring modules ' + modulesToRequire);
 
-            require([ '{tv4}/tv4' ].concat(modulesToRequire), function (tv4) {
+            require(['{tv4}/tv4'].concat(modulesToRequire), function (tv4) {
                 var definedModules = require.s.contexts._.defined,
                     modulesRequired = Object.keys(definedModules).map(function (elt) {
                         return definedModules[elt];
@@ -615,7 +664,7 @@ define([ 'module' ], function (module) {
 
     var loadConfiguration = (function () {
         return function (callback) {
-            function initialize(configText)  {
+            function initialize(configText) {
                 var fragmentsToLoad = [],
                     fragmentConfigs = [],
                     loadedFragments = {},
@@ -651,7 +700,7 @@ define([ 'module' ], function (module) {
                         if (fragment === '') {
                             // anonymous inline fragment
                             loadedFragments[''] = {
-                                definition: mergeObjects(loadedConfiguration[fragment], { id: '' }),
+                                definition: mergeObjects(loadedConfiguration[fragment], {id: ''}),
                                 configuration: {}
                             };
                         } else {
@@ -673,7 +722,7 @@ define([ 'module' ], function (module) {
                             __fragmentDefinition;
 
                         try {
-                            __fragmentDefinition = JSON.parse(replacePlaceholders(manifests[i], mergeObjects(__fragmentConfig.vars || {}, { fragmentRoot: __fragmentRoot })));
+                            __fragmentDefinition = JSON.parse(replacePlaceholders(manifests[i], mergeObjects(__fragmentConfig.vars || {}, {fragmentRoot: __fragmentRoot})));
                         } catch (e) {
                             // jshint loopfunc:true
                             report('error', 'invalid fragment manifest at ' + __fragmentUrl, function () {
@@ -789,7 +838,7 @@ define([ 'module' ], function (module) {
                         report('error', 'Configuration error(s) occurred, cannot continue', undefined, true);
                     }
 
-                    define('w20', function() {
+                    define('w20', function () {
                         return w20Object;
                     });
 
@@ -799,12 +848,16 @@ define([ 'module' ], function (module) {
                     w20Object.fragments = loadedFragments;
 
                     callback(w20Object, modulesToLoad);
+                }, function () {
+                    report('error', 'Unable to fetch fragment manifest at ' + fragmentsToLoad, undefined, true);
                 });
             }
 
             if (typeof w20Object.configuration === 'string') {
                 getContents(w20Object.configuration, function (configText) {
                     initialize(configText);
+                }, function () {
+                    report('error', 'Unable to fetch W20 configuration at ' + w20Object.configuration, undefined, true);
                 });
             } else {
                 initialize();
@@ -818,7 +871,8 @@ define([ 'module' ], function (module) {
     if (w20Object.debug) {
         console.warn('debug mode is on');
     } else {
-        var noop = function() {};
+        var noop = function () {
+        };
         console.log = noop;
         console.trace = noop;
         console.time = noop;
@@ -840,25 +894,25 @@ define([ 'module' ], function (module) {
 
         console.time('modules require duration');
         requireApplication(w20, modules, w20Object.callback || function (modulesToRequire, modulesRequired) {
-            console.timeEnd('modules require duration');
+                console.timeEnd('modules require duration');
 
-            console.time('application initialization duration');
-            startApplication(w20, modulesToRequire, modulesRequired, function () {
-                console.timeEnd('application initialization duration');
+                console.time('application initialization duration');
+                startApplication(w20, modulesToRequire, modulesRequired, function () {
+                    console.timeEnd('application initialization duration');
 
-                requireErrorHandler.restore(w20);
-                loadingScreen.disable(w20);
+                    requireErrorHandler.restore(w20);
+                    loadingScreen.disable(w20);
 
-                w20Object.ready = true;
+                    w20Object.ready = true;
 
-                if (typeof window.jQuery !== 'undefined') {
-                    window.jQuery(window.document).trigger('w20ready');
-                }
+                    if (typeof window.jQuery !== 'undefined') {
+                        window.jQuery(window.document).trigger('w20ready');
+                    }
 
-                console.info('w20 application ready');
-                console.timeEnd('startup process duration');
+                    console.info('w20 application ready');
+                    console.timeEnd('startup process duration');
+                });
             });
-        });
     });
 
     return w20Object;
