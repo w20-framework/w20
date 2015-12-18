@@ -76,15 +76,12 @@ define(['module'], function (module) {
         if (v === 0) {
             c.split(/[,;]/).map(function (cookie) {
                 var parts = cookie.split(/=/, 2),
-                    name = decodeURIComponent(parts[0].trimLeft()),
-                    value = parts.length > 1 ? decodeURIComponent(parts[1].trimRight()) : null;
-                cookies[name] = value;
+                    name = decodeURIComponent(parts[0].trimLeft());
+                cookies[name] = parts.length > 1 ? decodeURIComponent(parts[1].trimRight()) : null;
             });
         } else {
             c.match(/(?:^|\s+)([!#$%&'*+\-.0-9A-Z^`a-z|~]+)=([!#$%&'*+\-.0-9A-Z^`a-z|~]*|"(?:[\x20-\x7E\x80\xFF]|\\[\x00-\x7F])*")(?=\s*[,;]|$)/g).map(function ($0, $1) {
-                var name = $0,
-                    value = $1.charAt(0) === '"' ? $1.substr(1, -1).replace(/\\(.)/g, "$1") : $1;
-                cookies[name] = value;
+                cookies[$0] = $1.charAt(0) === '"' ? $1.substr(1, -1).replace(/\\(.)/g, "$1") : $1;
             });
         }
         return cookies[name];
@@ -371,7 +368,7 @@ define(['module'], function (module) {
 
     w20Object = mergeObjects(w20Object, window.w20 || {});
 
-    if (typeof w20Object.configuration !== 'object') {
+    if (typeof w20Object.configuration === 'undefined') {
         var htmlElt = window.document.getElementsByTagName('html'),
             attr;
 
@@ -664,35 +661,41 @@ define(['module'], function (module) {
 
     var loadConfiguration = (function () {
         return function (callback) {
-            function initialize(configText) {
+            function initialize(config) {
                 var fragmentsToLoad = [],
                     fragmentConfigs = [],
                     loadedFragments = {},
-                    modulesToLoad = [];
+                    modulesToLoad = [],
+                    loadedConfiguration;
 
                 if (w20Object.appVersion) {
                     w20Object.requireConfig.urlArgs = '__v=' + w20Object.appVersion;
                 }
 
-                var loadedConfiguration;
-                try {
-                    loadedConfiguration = !configText ? w20Object.configuration || {} : JSON.parse(replacePlaceholders(configText, function (value, defaultvalue) {
-                        var result = window.localStorage.getItem(value);
+                if (typeof config === 'object') {
+                    loadedConfiguration = config;
+                } else if (typeof config === 'string') {
+                    try {
+                        loadedConfiguration = JSON.parse(replacePlaceholders(config, function (value, defaultValue) {
+                            var result = window.localStorage.getItem(value);
 
-                        if (result === null) {
-                            if (typeof defaultvalue === 'undefined') {
-                                return undefined;
-                            } else {
-                                window.localStorage.setItem(value, defaultvalue);
-                                return defaultvalue;
+                            if (result === null) {
+                                if (typeof defaultValue === 'undefined') {
+                                    return undefined;
+                                } else {
+                                    window.localStorage.setItem(value, defaultValue);
+                                    return defaultValue;
+                                }
                             }
-                        }
-                        return result;
-                    }));
-                } catch (e) {
-                    report('error', 'Error when parsing configuration', function () {
-                        return formatError(e);
-                    }, true);
+                            return result;
+                        }));
+                    } catch (e) {
+                        report('error', 'Error when parsing configuration', function () {
+                            return formatError(e);
+                        }, true);
+                    }
+                } else {
+                    report('error', 'W20 configuration must be be defined either as a "configuration" object in the "w20" global object or as an URL to fetch in the "data-w20-app" attribute of the "html" element', undefined, true);
                 }
 
                 for (var fragment in loadedConfiguration) {
@@ -849,7 +852,7 @@ define(['module'], function (module) {
 
                     callback(w20Object, modulesToLoad);
                 }, function () {
-                    report('error', 'Unable to fetch fragment manifest at ' + fragmentsToLoad, undefined, true);
+                    report('error', 'Unable to fetch fragment manifest from ' + fragmentsToLoad, undefined, true);
                 });
             }
 
@@ -857,10 +860,10 @@ define(['module'], function (module) {
                 getContents(w20Object.configuration, function (configText) {
                     initialize(configText);
                 }, function () {
-                    report('error', 'Unable to fetch W20 configuration at ' + w20Object.configuration, undefined, true);
+                    report('error', 'Unable to fetch W20 configuration from ' + w20Object.configuration, undefined, true);
                 });
             } else {
-                initialize();
+                initialize(w20Object.configuration);
             }
         };
     })();
