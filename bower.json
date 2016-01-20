@@ -17,11 +17,11 @@
   ],
   "dependencies": {
     "jquery": "~2.1.4",
-    "angular": "~1.4",
-    "angular-route": "~1.4",
-    "angular-sanitize": "~1.4",
-    "angular-resource": "~1.4",
-    "angular-messages": "~1.4",
+    "angular": "~1.4.8",
+    "angular-route": "~1.4.8",
+    "angular-sanitize": "~1.4.8",
+    "angular-resource": "~1.4.8",
+    "angular-messages": "~1.4.8",
     "globalize": "~0.1.1",
     "lodash": "~2.4.2",
     "requirejs": "~2.1.19",
@@ -30,9 +30,9 @@
     "jgrowl": "~1.4.3",
     "require-css": "~0.1.8",
     "showdown": "~1.2.1",
-    "uri-templates": "~0.1"
+    "uri-templates": "~0.1.9"
   },
   "devDependencies": {
-    "angular-mocks": "~1.4"
+    "angular-mocks": "~1.4.8"
   }
 }

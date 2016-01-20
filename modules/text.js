@@ -13,7 +13,7 @@ define([
     'jquery',
     '{angular}/angular',
     '{w20-core}/modules/application',
-    '',
+    'showdown',
     '{w20-core}/modules/utils'
 ], function (_require, $, angular, w20CoreApplication, showdown) {
     'use strict';
