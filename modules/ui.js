@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2013-2015 by The SeedStack authors. All rights reserved.
- *
- * This file is part of SeedStack, An enterprise-oriented full development stack.
+ * Copyright (c) 2013-2016, The SeedStack authors <http://seedstack.org>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -200,7 +198,7 @@ define([
             },
 
             /**
-             * ngdoc function
+             * @ngdoc function
              * @name w20CoreUI.service:DisplayService#computeContentShift
              * @methodOf w20CoreUI.service:DisplayService
              *
@@ -251,6 +249,17 @@ define([
                 }
             },
 
+            /**
+             * @ngdoc function
+             * @name w20CoreUI.service:DisplayService#getContentShift
+             * @methodOf w20CoreUI.service:DisplayService
+             * @returns {Object} An object containing top, right, bottom and left attributes denoting content shift values.
+             *
+             * @description
+             *
+             * Returns the current values of content shift.
+             *
+             */
             getContentShift: function() {
                 return {
                     top: currentContentShift[0],
