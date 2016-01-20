@@ -87,7 +87,7 @@ define([
         }
 
         var shiftCallbacks = [],
-            oldContentShift = [0, 0, 0, 0],
+            currentContentShift = [0, 0, 0, 0],
             shiftClasses = {
                 'top-shift-padding': addCSSRule('.w20-top-shift-padding'),
                 'top-shift-margin': addCSSRule('.w20-top-shift-margin'),
@@ -210,7 +210,7 @@ define([
              *
              */
             computeContentShift: function () {
-                var contentShift = _.reduce(_.map(shiftCallbacks, function (callback) {
+                var newContentShift = _.reduce(_.map(shiftCallbacks, function (callback) {
                     return callback();
                 }), function (memory, element) {
                     memory[0] += element[0];
@@ -222,34 +222,42 @@ define([
                 }, [0, 0, 0, 0]);
 
 
-                if (contentShift[0] !== oldContentShift[0]) {
-                    shiftClasses['top-shift-padding'].style.setProperty('padding-top', contentShift[0] + 'px', 'important');
-                    shiftClasses['top-shift-margin'].style.setProperty('margin-top', contentShift[0] + 'px', 'important');
-                    shiftClasses['top-shift'].style.setProperty('top', contentShift[0] + 'px', 'important');
-                    oldContentShift[0] = contentShift[0];
+                if (newContentShift[0] !== currentContentShift[0]) {
+                    shiftClasses['top-shift-padding'].style.setProperty('padding-top', newContentShift[0] + 'px', 'important');
+                    shiftClasses['top-shift-margin'].style.setProperty('margin-top', newContentShift[0] + 'px', 'important');
+                    shiftClasses['top-shift'].style.setProperty('top', newContentShift[0] + 'px', 'important');
+                    currentContentShift[0] = newContentShift[0];
                 }
 
-                if (contentShift[1] !== oldContentShift[1]) {
-                    shiftClasses['right-shift-padding'].style.setProperty('padding-right', contentShift[1] + 'px', 'important');
-                    shiftClasses['right-shift-margin'].style.setProperty('margin-right', contentShift[1] + 'px', 'important');
-                    shiftClasses['right-shift'].style.setProperty('right', contentShift[1] + 'px', 'important');
-                    oldContentShift[1] = contentShift[1];
+                if (newContentShift[1] !== currentContentShift[1]) {
+                    shiftClasses['right-shift-padding'].style.setProperty('padding-right', newContentShift[1] + 'px', 'important');
+                    shiftClasses['right-shift-margin'].style.setProperty('margin-right', newContentShift[1] + 'px', 'important');
+                    shiftClasses['right-shift'].style.setProperty('right', newContentShift[1] + 'px', 'important');
+                    currentContentShift[1] = newContentShift[1];
                 }
 
-                if (contentShift[2] !== oldContentShift[2]) {
-                    shiftClasses['bottom-shift-padding'].style.setProperty('padding-bottom', contentShift[2] + 'px', 'important');
-                    shiftClasses['bottom-shift-margin'].style.setProperty('margin-bottom', contentShift[2] + 'px', 'important');
-                    shiftClasses['bottom-shift'].style.setProperty('bottom', contentShift[2] + 'px', 'important');
-                    oldContentShift[2] = contentShift[2];
+                if (newContentShift[2] !== currentContentShift[2]) {
+                    shiftClasses['bottom-shift-padding'].style.setProperty('padding-bottom', newContentShift[2] + 'px', 'important');
+                    shiftClasses['bottom-shift-margin'].style.setProperty('margin-bottom', newContentShift[2] + 'px', 'important');
+                    shiftClasses['bottom-shift'].style.setProperty('bottom', newContentShift[2] + 'px', 'important');
+                    currentContentShift[2] = newContentShift[2];
                 }
 
-                if (contentShift[3] !== oldContentShift[3]) {
-                    shiftClasses['left-shift-padding'].style.setProperty('padding-left', contentShift[3] + 'px', 'important');
-                    shiftClasses['left-shift-margin'].style.setProperty('margin-left', contentShift[3] + 'px', 'important');
-                    shiftClasses['left-shift'].style.setProperty('left', contentShift[3] + 'px', 'important');
-                    oldContentShift[3] = contentShift[3];
+                if (newContentShift[3] !== currentContentShift[3]) {
+                    shiftClasses['left-shift-padding'].style.setProperty('padding-left', newContentShift[3] + 'px', 'important');
+                    shiftClasses['left-shift-margin'].style.setProperty('margin-left', newContentShift[3] + 'px', 'important');
+                    shiftClasses['left-shift'].style.setProperty('left', newContentShift[3] + 'px', 'important');
+                    currentContentShift[3] = newContentShift[3];
                 }
+            },
 
+            getContentShift: function() {
+                return {
+                    top: currentContentShift[0],
+                    right: currentContentShift[1],
+                    bottom: currentContentShift[2],
+                    left: currentContentShift[3]
+                };
             }
         };
     }]);
@@ -1040,7 +1048,7 @@ define([
             replace: true,
             restrict: 'A',
             scope: false,
-            link: function (scope, element, attrs) {
+            link: function (scope) {
 
                 function formatStack(arg) {
                     if (typeof arg === 'undefined') {
