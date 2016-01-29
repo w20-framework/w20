@@ -334,7 +334,7 @@ define([
 
                 deferred = $q.all(authProviders.map(function (provider) {
                     return provider.authenticate(credentials);
-                }).concat(deferred === null ? [] : [ deferred ])).then(function (subjects) {
+                }).concat(deferred === null ? [] : [deferred])).then(function (subjects) {
                     authorizationService.clear();
                     currentSubject = processSubjects(subjects);
                     authorizationService.seal();
@@ -342,8 +342,8 @@ define([
                     deferred = null;
 
                     $log.info('subject ' + currentSubject.id + ' authenticated on realm(s): ' + subjects.map(function (elt) {
-                        return elt.realm;
-                    }));
+                            return elt.realm;
+                        }));
 
                     /**
                      * @ngdoc event
@@ -402,7 +402,7 @@ define([
             deauthenticate: function () {
                 deferred = $q.all(authProviders.map(function (provider) {
                     return provider.deauthenticate();
-                }).concat(deferred === null ? [] : [ deferred ])).then(function (realms) {
+                }).concat(deferred === null ? [] : [deferred])).then(function (realms) {
                     currentSubject = null;
                     authorizationService.clear();
 
@@ -462,7 +462,7 @@ define([
 
                 deferred = $q.all(authProviders.map(function (provider) {
                     return provider.refresh();
-                }).concat(deferred === null ? [] : [ deferred ])).then(function (subjects) {
+                }).concat(deferred === null ? [] : [deferred])).then(function (subjects) {
                     authorizationService.clear();
                     currentSubject = processSubjects(subjects);
                     authorizationService.seal();
@@ -470,8 +470,8 @@ define([
                     deferred = null;
 
                     $log.info('subject ' + currentSubject.id + ' refreshed on realm(s): ' + subjects.map(function (elt) {
-                        return elt.realm;
-                    }));
+                            return elt.realm;
+                        }));
 
                     /**
                      * @ngdoc event
@@ -526,7 +526,7 @@ define([
      * The AuthorizationService provides an API to check for currently authenticated subject authorizations.
      *
      */
-    w20CoreSecurity.factory('AuthorizationService', [ '$log', 'StateService', 'EventService', function ($log, stateService, eventService) {
+    w20CoreSecurity.factory('AuthorizationService', ['$log', 'StateService', 'EventService', function ($log, stateService, eventService) {
         var currentRoles = {},
             currentPermissions = {},
             unifiedRoles = {},
@@ -538,12 +538,12 @@ define([
 
         function mergeAttributes(destination, source) {
             _.each(source, function (value, key) {
-                destination[key] = _.union(destination[key] || [], value instanceof Array ? value : [ value ]);
+                destination[key] = _.union(destination[key] || [], value instanceof Array ? value : [value]);
             });
 
             _.each(destination, function (value, key) {
                 if (!source || !source[key]) {
-                    destination[key] = _.union(destination[key] || [], [ '*' ]);
+                    destination[key] = _.union(destination[key] || [], ['*']);
                 }
             });
         }
@@ -558,7 +558,7 @@ define([
                             node = parent[value] = {};
                         }
 
-                        node.$roles = _.union(node.$roles, [ role ]);
+                        node.$roles = _.union(node.$roles, [role]);
 
                         if (typeof node.$attributes === 'undefined') {
                             node.$attributes = {};
@@ -585,7 +585,7 @@ define([
         }
 
         function checkWithAttributeFilter(attributes) {
-            return !(_.keys(attributeFilter).length > 0 && !_.find(attributeFilter, function(valueToCheck, attributeToCheck) {
+            return !(_.keys(attributeFilter).length > 0 && !_.find(attributeFilter, function (valueToCheck, attributeToCheck) {
                 if (attributes && attributes[attributeToCheck]) {
                     return _.contains(attributes[attributeToCheck], '*') || _.contains(attributes[attributeToCheck], valueToCheck);
                 } else {
@@ -605,7 +605,7 @@ define([
              *
              * Get every available roles
              */
-            getRoles: function() {
+            getRoles: function () {
                 return _.keys(unifiedRoles);
             },
 
@@ -619,11 +619,11 @@ define([
              *
              * Get every attributes and their associated value
              */
-            getAttributes: function() {
+            getAttributes: function () {
                 var result = {};
-                _.each(unifiedRoles, function(unifiedRole) {
-                    _.each(unifiedRole.$attributes, function(values, attribute) {
-                        result[attribute] = _.union(result[attribute] || {}, _.filter(values, function(elt) {
+                _.each(unifiedRoles, function (unifiedRole) {
+                    _.each(unifiedRole.$attributes, function (values, attribute) {
+                        result[attribute] = _.union(result[attribute] || {}, _.filter(values, function (elt) {
                             return elt !== '*';
                         }));
                     });
@@ -642,7 +642,7 @@ define([
              *
              * Allow to restrict user roles by setting a filter of roles
              */
-            setRoleFilter: function(value) {
+            setRoleFilter: function (value) {
                 var invalidRoles = _.difference(value, this.getRoles());
 
                 if (invalidRoles.length > 0) {
@@ -685,7 +685,7 @@ define([
              *
              * Get the role filter
              */
-            getRoleFilter: function() {
+            getRoleFilter: function () {
                 return roleFilter;
             },
 
@@ -699,11 +699,11 @@ define([
              *
              * Allow to restrict user security attributes
              */
-            setAttributeFilter: function(value) {
+            setAttributeFilter: function (value) {
                 var validAttributes = this.getAttributes(),
                     invalidAttributes = {};
 
-                _.each(value, function(attrValue, attrName) {
+                _.each(value, function (attrValue, attrName) {
                     if (!_.contains(validAttributes[attrName], attrValue)) {
                         invalidAttributes[attrName] = attrValue;
                     }
@@ -748,7 +748,7 @@ define([
              *
              * Get the security attribute filter
              */
-            getAttributeFilter: function() {
+            getAttributeFilter: function () {
                 return attributeFilter;
             },
 
@@ -817,7 +817,7 @@ define([
                     }
 
                     if (values.length === 0) {
-                        var result = _.any(parent.$roles, function(role) {
+                        var result = _.any(parent.$roles, function (role) {
                                 return checkWithRoleFilter(currentRoles[realm][role] && currentRoles[realm][role].$unifiedRole);
                             }) && checkWithAttributeFilter(parent.$attributes);
 
@@ -825,8 +825,8 @@ define([
                             return result; // no attribute check, return the result as-is
                         } else {
                             return result && _.all(attributes, function (value, attribute) {
-                                return _.contains(parent.$attributes[attribute], '*') || _.contains(parent.$attributes[attribute], value);
-                            });
+                                    return _.contains(parent.$attributes[attribute], '*') || _.contains(parent.$attributes[attribute], value);
+                                });
                         }
                     }
 
@@ -861,7 +861,7 @@ define([
              * Clear every roles and authorizations
              *
              */
-            clear: function() {
+            clear: function () {
                 currentRoles = {};
                 unifiedRoles = {};
                 currentPermissions = {};
@@ -882,7 +882,7 @@ define([
              * Merge subject permissions to realm permissions
              *
              */
-            addSubjectAuthorizations: function(realm, subject) {
+            addSubjectAuthorizations: function (realm, subject) {
                 if (sealed) {
                     throw new Error('AuthorizationService is sealed, cannot add further subject authorizations');
                 }
@@ -930,7 +930,7 @@ define([
              * Seal the AuthorizationService (an object sealed cannot be modified)
              *
              */
-            seal: function() {
+            seal: function () {
                 if (sealed) {
                     throw new Error('AuthorizationService is already sealed');
                 }
@@ -939,27 +939,27 @@ define([
                     _.each(config.roleMapping, function (definition, name) {
                         var mergedAttributes = {};
 
-                        if (_.all(definition, function(role, realm) {
-                            var realRole = currentRoles[realm] && currentRoles[realm][role];
-                            if (realRole) {
-                                _.map(realRole.$attributes, function (values, attribute) {
-                                    mergedAttributes[attribute] = _.union(values, mergedAttributes[attribute] || []);
-                                });
+                        if (_.all(definition, function (role, realm) {
+                                var realRole = currentRoles[realm] && currentRoles[realm][role];
+                                if (realRole) {
+                                    _.map(realRole.$attributes, function (values, attribute) {
+                                        mergedAttributes[attribute] = _.union(values, mergedAttributes[attribute] || []);
+                                    });
 
-                                realRole.$unifiedRole = name;
+                                    realRole.$unifiedRole = name;
 
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        })) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            })) {
                             unifiedRoles[name] = {
                                 $attributes: mergedAttributes
                             };
                         }
                     });
                 } else if (_.keys(currentRoles).length === 1) {
-                    _.each(currentRoles[_.keys(currentRoles)[0]], function(roleDefinition, roleName) {
+                    _.each(currentRoles[_.keys(currentRoles)[0]], function (roleDefinition, roleName) {
                         unifiedRoles[roleName] = {
                             $attributes: roleDefinition.$attributes
                         };
@@ -1003,7 +1003,7 @@ define([
      * The SecurityExpressionService provides an API to evaluate a security expression.
      *
      */
-    w20CoreSecurity.factory('SecurityExpressionService', [ '$interpolate', 'AuthenticationService', 'AuthorizationService', function ($interpolate, authenticationService, authorizationService) {
+    w20CoreSecurity.factory('SecurityExpressionService', ['$interpolate', 'AuthenticationService', 'AuthorizationService', function ($interpolate, authenticationService, authorizationService) {
         var cache = {};
 
         return {
@@ -1060,7 +1060,7 @@ define([
      *      </div>
      *```
      */
-    w20CoreSecurity.directive('w20Security', [ 'SecurityExpressionService', function (securityExpressionService) {
+    w20CoreSecurity.directive('w20Security', ['SecurityExpressionService', function (securityExpressionService) {
         return {
             restrict: 'A',
             scope: false,
@@ -1074,32 +1074,44 @@ define([
         };
     }]);
 
-    w20CoreSecurity.run([ 'AuthenticationService', 'ApplicationService', 'EventService', '$location', function (authenticationService, applicationService, eventService, $location) {
-        if (typeof config.redirectAfterLogin === 'string') {
-            eventService.on('w20.security.authenticated', function () {
-                $location.path(config.redirectAfterLogin);
-            });
-        }
+    w20CoreSecurity.run(['AuthenticationService', 'ApplicationService', 'EventService', 'StateService', '$location',
+        function (authenticationService, applicationService, eventService, stateService, $location) {
 
-        if (typeof config.redirectAfterLogout === 'string') {
-            eventService.on('w20.security.deauthenticated', function () {
-                $location.path(config.redirectAfterLogout);
-            });
-        }
-
-        _.each(allRealms, function (definition, realm) {
-            var providerFactory = allProviders[definition.provider];
-            if (typeof providerFactory === 'undefined') {
-                throw new Error('Unknown authentication provider ' + definition.provider);
+            function inBrowserSession (state) {
+                var sessionState = stateService.state('session', 'isActive', false, true);
+                return typeof state !== 'boolean' ? sessionState.value() : sessionState.value(state);
             }
 
-            authenticationService.addProvider(realm, providerFactory, definition.config);
-        });
+            var notInBrowserSession = !inBrowserSession();
 
-        if (config.autoLogin) {
-            authenticationService.authenticate();
-        }
-    }]);
+            if (typeof config.redirectAfterLogin === 'string') {
+                eventService.on('w20.security.authenticated', function () {
+                    if (notInBrowserSession) {
+                        $location.path(config.redirectAfterLogin);
+                        inBrowserSession(true);
+                    }
+                });
+            }
+
+            if (typeof config.redirectAfterLogout === 'string') {
+                eventService.on('w20.security.deauthenticated', function () {
+                    $location.path(config.redirectAfterLogout);
+                });
+            }
+
+            _.each(allRealms, function (definition, realm) {
+                var providerFactory = allProviders[definition.provider];
+                if (typeof providerFactory === 'undefined') {
+                    throw new Error('Unknown authentication provider ' + definition.provider);
+                }
+
+                authenticationService.addProvider(realm, providerFactory, definition.config);
+            });
+
+            if (config.autoLogin) {
+                authenticationService.authenticate();
+            }
+        }]);
 
     return {
         angularModules: ['w20CoreSecurity'],
