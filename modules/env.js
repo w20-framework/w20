@@ -92,6 +92,7 @@ define([
              * @param {String} namespace The namespace of the state.
              * @param {String} key The key of the state.
              * @param {String} defaultvalue The default value when the state is first initialized.
+             * @param {Boolean} session Specify if this state should be session scoped (using sessionStorage)
              * @return {Object} The state object.
              * @returns {Object} The state object
              *
@@ -105,7 +106,7 @@ define([
              * * state.save() : explicitely save the value (useful when altering inner properties of a complex object and not replacing the value instance).
              *
              */
-            state: function (namespace, key, defaultvalue) {
+            state: function (namespace, key, defaultvalue, session) {
                 if (typeof namespace === 'undefined') {
                     throw new Error('Module argument is required for using a state, got undefined');
                 }
@@ -113,10 +114,19 @@ define([
                     throw new Error('Key argument is required for using a state, got undefined');
                 }
 
-                var prefix = 'w20.state.' + applicationService.applicationId + '.' + namespace;
+                var prefix = 'w20.state.' + applicationService.applicationId + '.' + namespace,
+                    storage = session ? $window.sessionStorage : $window.localStorage;
+
+                if (!storage) {
+                    console.warn('Storage system not available in this environment');
+                    storage = {
+                        getItem: angular.noop,
+                        setItem: angular.noop
+                    };
+                }
 
                 if (typeof states[namespace] === 'undefined') {
-                    states[namespace] = angular.fromJson($window.localStorage.getItem(prefix)) || {};
+                    states[namespace] = angular.fromJson(storage.getItem(prefix)) || {};
                 }
                 if (typeof states[namespace][key] === 'undefined') {
                     states[namespace][key] = defaultvalue;
@@ -129,13 +139,13 @@ define([
                         }
                         else {
                             states[namespace][key] = value;
-                            $window.localStorage.setItem(prefix, angular.toJson(states[namespace]));
+                            storage.setItem(prefix, angular.toJson(states[namespace]));
                             return undefined;
                         }
                     },
 
                     save: function () {
-                        $window.localStorage.setItem(prefix, angular.toJson(states[namespace]));
+                        storage.setItem(prefix, angular.toJson(states[namespace]));
                     }
                 };
             },
