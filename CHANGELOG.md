@@ -1,3 +1,7 @@
+# Version 2.2.1 (2016-02-08)
+
+* [fix] Prevent redirection after login from applying if browsing session is already active (like after a full page refresh).
+
 # Version 2.2.0 (2016-01-21)
 
 * [new] Improve error handling when the configuration resource is corrupt.
