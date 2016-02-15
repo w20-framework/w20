@@ -74,8 +74,8 @@ define(['module'], function (module) {
         if (v === 0) {
             c.split(/[,;]/).map(function (cookie) {
                 var parts = cookie.split(/=/, 2),
-                    name = decodeURIComponent(parts[0].trimLeft());
-                cookies[name] = parts.length > 1 ? decodeURIComponent(parts[1].trimRight()) : null;
+                    name = decodeURIComponent(parts[0].replace(/^\s+/, ""));
+                cookies[name] = parts.length > 1 ? decodeURIComponent(parts[1].replace(/\s+$/, "")) : null;
             });
         } else {
             c.match(/(?:^|\s+)([!#$%&'*+\-.0-9A-Z^`a-z|~]+)=([!#$%&'*+\-.0-9A-Z^`a-z|~]*|"(?:[\x20-\x7E\x80\xFF]|\\[\x00-\x7F])*")(?=\s*[,;]|$)/g).map(function ($0, $1) {
