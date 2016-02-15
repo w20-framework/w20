@@ -1,3 +1,7 @@
+# Version 2.2.2 (2016-02-15)
+
+* [fix] Remove usage of non-standard `trimLeft` and `trimRight` functions in `w20.js`
+
 # Version 2.2.1 (2016-02-08)
 
 * [fix] Prevent redirection after login from applying if browsing session is already active (like after a full page refresh).
