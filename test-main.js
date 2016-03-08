@@ -37,6 +37,9 @@ window.w20 = {
             vars: {
                 'components-path': '/base/bower_components'
             }
+        },
+        '/base/optional-fragment.w20.json': {
+            optional: true
         }
     },
     deps: tests,

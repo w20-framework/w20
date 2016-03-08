@@ -133,8 +133,15 @@ define(['module'], function (module) {
                 }
             }
 
-            function failure(err) {
-                throw err;
+            function failure(err, index) {
+                if (typeof errback === 'function') {
+                    errback(err, index);
+                    if (--count === 0) {
+                        callback(results);
+                    }
+                } else {
+                    throw err;
+                }
             }
 
             if (urls instanceof Array) {
@@ -142,10 +149,12 @@ define(['module'], function (module) {
                     fetch(urls[i], i, success, failure);
                 }
             } else {
-                fetch(urls, 0, function (data) {
-                    callback(data);
-                }, function (err) {
-                    errback(err);
+                fetch(urls, 0, function (data, index) {
+                    callback(data, index);
+                }, function (err, index) {
+                    if (typeof errback === 'function') {
+                        errback(err, index);
+                    }
                 });
             }
         };
@@ -207,24 +216,18 @@ define(['module'], function (module) {
                 return;
             }
 
-            var constrainedType = {info: 'I', warning: 'W', error: 'E', timeout: 'T'}[type] || 'E',
+            var constrainedType = {info: 'info', warn: 'warn', error: 'error'}[type] || 'error',
                 detailContent,
                 cloakElement = window.document.getElementById('w20-loading-cloak'),
-                changeLevel = function (newLevel) {
-                    if (newLevel === 'I') {
+                computeLevel = function (newLevel) {
+                    if (newLevel === 'info') {
+                        return;
+                    }
+                    if (newLevel === 'warn' && errorLevel === 'error') {
                         return;
                     }
 
-                    if (newLevel === 'W' && (errorLevel === 'E' || errorLevel === 'T')) {
-                        return;
-                    }
-
-                    if (newLevel === 'E' && (errorLevel === 'T')) {
-                        return;
-                    }
-
-                    window.document.getElementById('w20-error-content').setAttribute('class', 'failure failure-' + newLevel);
-                    errorLevel = newLevel;
+                    return newLevel;
                 };
 
             if (typeof detail !== 'undefined') {
@@ -235,19 +238,20 @@ define(['module'], function (module) {
                 }
             }
 
-            console.error(message + (typeof detailContent !== 'undefined' ? '\n' + detailContent : ''));
+            console[constrainedType](message + (typeof detailContent !== 'undefined' ? '\n' + detailContent : ''));
 
             if (cloakElement !== null) {
                 if (errorLevel === null) {
                     cloakElement.innerHTML = '<div id="w20-error-content" class="failure failure-' + constrainedType + '"><span class="title">Error report</span><div id="w20-error-detail" class="detail"><ul id="w20-error-detail-list"></ul></span></div><button class="retry" onclick="window.document.location.reload()">Retry</button></div></div>';
                     errorLevel = constrainedType;
                 } else {
-                    changeLevel(constrainedType);
+                    errorLevel = computeLevel(constrainedType);
+                    window.document.getElementById('w20-error-content').setAttribute('class', 'failure failure-' + errorLevel);
                 }
 
                 var detailListElement = window.document.getElementById('w20-error-detail-list'),
                     detailElement = window.document.getElementById('w20-error-detail');
-                detailListElement.innerHTML = detailListElement.innerHTML + '<li>[' + constrainedType + '] ' + message + (typeof detailContent !== 'undefined' ? ' <blockquote>' + detailContent.replace(/\n/g, '<br/>').replace(/\t/g, '&emsp;&emsp;') + '</blockquote>' : '') + '</li>';
+                detailListElement.innerHTML = detailListElement.innerHTML + '<li>[' + constrainedType.substring(0, 1).toUpperCase() + '] ' + message + (typeof detailContent !== 'undefined' ? ' <blockquote>' + detailContent.replace(/\n/g, '<br/>').replace(/\t/g, '&emsp;&emsp;') + '</blockquote>' : '') + '</li>';
                 detailElement.scrollTop = detailElement.scrollHeight;
             }
 
@@ -270,10 +274,10 @@ define(['module'], function (module) {
                         // Do nothing here (error has already been shown)
                     });
                 }
-                report('error', 'A fatal error occured, aborting startup');
-                report('info', 'If it is the first time you see this error, clear your browser cache before retrying');
+                report('error', 'A fatal error occurred, aborting startup');
+                report('info', 'If this is the first time you see this error, clear your browser cache before retrying');
                 requireErrorHandler.disable(); // to avoid requirejs error handler re-catching this error
-                throw new Error();
+                throw new Error('abort');
             }
         };
     })();
@@ -383,7 +387,7 @@ define(['module'], function (module) {
                 var timeout = parseInt(attr);
 
                 if (isNaN(timeout)) {
-                    report('warning', 'unable to parse data-w20-timeout value, using default timeout');
+                    report('warn', 'unable to parse data-w20-timeout value, using default timeout');
                 } else {
                     w20Object.requireConfig.waitSeconds = timeout;
                 }
@@ -451,7 +455,7 @@ define(['module'], function (module) {
                         info.type = 'unknown';
                     }
 
-                    report('error', 'A loading error occured', info.details, true, info);
+                    report('error', 'A loading error occurred', info.details, true, info);
                 };
             },
 
@@ -570,7 +574,7 @@ define(['module'], function (module) {
             }
 
             currentTimeout = window.setTimeout(function () {
-                report('timeout', 'Timeout during preparation phase !', function () {
+                report('error', 'Timeout during preparation phase !', function () {
                     var list = '';
                     for (var theModule in preModules) {
                         if (preModules.hasOwnProperty(theModule)) {
@@ -597,7 +601,7 @@ define(['module'], function (module) {
                                 preModules = undefined;
 
                                 currentTimeout = window.setTimeout(function () {
-                                    report('timeout', 'Timeout during running phase !', function () {
+                                    report('error', 'Timeout during running phase !', function () {
                                         var list = '';
                                         for (var theModule in runModules) {
                                             if (runModules.hasOwnProperty(theModule)) {
@@ -698,16 +702,22 @@ define(['module'], function (module) {
 
                 for (var fragment in loadedConfiguration) {
                     if (loadedConfiguration.hasOwnProperty(fragment)) {
+                        var fragmentLoadedConfiguration = loadedConfiguration[fragment];
+
+                        if (typeof fragmentLoadedConfiguration !== 'object') {
+                            report('error', 'Configuration of fragment ' + fragment + ' is not of object type', undefined, true);
+                        }
+
                         if (fragment === '') {
                             // anonymous inline fragment
                             loadedFragments[''] = {
-                                definition: mergeObjects(loadedConfiguration[fragment], {id: ''}),
+                                definition: mergeObjects(fragmentLoadedConfiguration, {id: ''}),
                                 configuration: {}
                             };
                         } else {
                             // named external fragment
                             fragmentsToLoad.push(fragment);
-                            fragmentConfigs.push(loadedConfiguration[fragment]);
+                            fragmentConfigs.push(fragmentLoadedConfiguration);
                         }
                     }
                 }
@@ -849,8 +859,12 @@ define(['module'], function (module) {
                     w20Object.fragments = loadedFragments;
 
                     callback(w20Object, modulesToLoad);
-                }, function () {
-                    report('error', 'Unable to fetch fragment manifest from ' + fragmentsToLoad, undefined, true);
+                }, function (error, index) {
+                    if (fragmentConfigs[index].optional) {
+                        report('warn', "Could not load optional fragment " + fragmentsToLoad[index]);
+                    } else {
+                        report('error', 'Could not fetch fragment manifest from ' + fragmentsToLoad[index], undefined, true);
+                    }
                 });
             }
 
@@ -858,7 +872,7 @@ define(['module'], function (module) {
                 getContents(w20Object.configuration, function (configText) {
                     initialize(configText);
                 }, function () {
-                    report('error', 'Unable to fetch W20 configuration from ' + w20Object.configuration, undefined, true);
+                    report('error', 'Could not fetch W20 configuration from ' + w20Object.configuration, undefined, true);
                 });
             } else {
                 initialize(w20Object.configuration);

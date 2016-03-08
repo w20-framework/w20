@@ -1,3 +1,7 @@
+# Version 2.2.3 (?)
+
+* [new] Add the ability to specify an `optional` attribute to any fragment configuration, allowing application to load anyway.
+
 # Version 2.2.2 (2016-02-15)
 
 * [fix] Remove usage of non-standard `trimLeft` and `trimRight` functions in `w20.js`
