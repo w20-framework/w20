@@ -938,7 +938,7 @@ define([
                     apiHost = getHost(toAbsoluteUrl(apiUrl, ''));
 
                     apiPromises.push(
-                        $http({ method: 'GET', url: apiUrl, headers: { 'accept': 'application/json-home' } })
+                        $http({ method: 'GET', url: apiUrl, headers: { 'accept': 'application/json-home, application/json' } })
 
                             .success(function (home) {
 
