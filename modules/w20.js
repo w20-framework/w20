@@ -135,7 +135,7 @@ define(['module'], function (module) {
 
             function failure(err, index) {
                 if (typeof errback === 'function') {
-                    errback(err, index)
+                    errback(err, index);
                     if (--count === 0) {
                         callback(results);
                     }
@@ -251,7 +251,7 @@ define(['module'], function (module) {
 
                 var detailListElement = window.document.getElementById('w20-error-detail-list'),
                     detailElement = window.document.getElementById('w20-error-detail');
-                detailListElement.innerHTML = detailListElement.innerHTML + '<li>[' + constrainedType + '] ' + message + (typeof detailContent !== 'undefined' ? ' <blockquote>' + detailContent.replace(/\n/g, '<br/>').replace(/\t/g, '&emsp;&emsp;') + '</blockquote>' : '') + '</li>';
+                detailListElement.innerHTML = detailListElement.innerHTML + '<li>[' + constrainedType.substring(0, 1).toUpperCase() + '] ' + message + (typeof detailContent !== 'undefined' ? ' <blockquote>' + detailContent.replace(/\n/g, '<br/>').replace(/\t/g, '&emsp;&emsp;') + '</blockquote>' : '') + '</li>';
                 detailElement.scrollTop = detailElement.scrollHeight;
             }
 
@@ -277,7 +277,7 @@ define(['module'], function (module) {
                 report('error', 'A fatal error occurred, aborting startup');
                 report('info', 'If this is the first time you see this error, clear your browser cache before retrying');
                 requireErrorHandler.disable(); // to avoid requirejs error handler re-catching this error
-                throw new Error();
+                throw new Error('abort');
             }
         };
     })();
