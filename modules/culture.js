@@ -34,7 +34,7 @@ define([
 
         function doSwitch(cultureObject, callback) {
             activeCulture = globalize.culture(cultureObject.name);
-            w20.console.info('culture has been set to ' + activeCulture.name);
+            w20.console.info('Culture has been set to ' + activeCulture.name);
 
             if (typeof callback === 'function') {
                 callback(activeCulture);
@@ -63,7 +63,7 @@ define([
             }
 
             if (modulesToLoad.length > 0) {
-                w20.console.log('loading i18n bundles: ' + modulesToLoad);
+                w20.console.log('Loading i18n bundles: ' + modulesToLoad);
 
                 require(modulesToLoad, function () {
                     var bundlesLoaded = Array.prototype.slice.call(arguments, 0);
@@ -1298,7 +1298,7 @@ define([
                         defaultCulture = globalize.findClosestCulture(window.navigator.language || window.navigator.userLanguage) || defaultCulture;
                     }
 
-                    w20.console.log('available cultures: ' + availableCultures);
+                    w20.console.log('Available cultures: ' + availableCultures);
 
                     switchCulture(persistedCulture || defaultCulture, function (culture) {
                         w20CoreCulture.config(['$provide', function ($provide) {

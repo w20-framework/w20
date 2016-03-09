@@ -139,7 +139,7 @@ define([
             };
 
             if (typeof allRouteHandlers[route.type] === 'undefined') {
-                console.warn('no handler for route type ' + route.type + ' when registering ' + route.path);
+                console.warn('No handler for route type ' + route.type + ' when registering ' + route.path);
             } else {
                 route = allRouteHandlers[route.type](route);
             }
@@ -407,7 +407,7 @@ define([
             run: function (modules, fragments, callback) {
                 var angularModules = [],
                     bootstrap = function () {
-                        w20.console.log('bootstrapping angular application with the following modules: ' + angularModules);
+                        w20.console.log('Bootstrapping angular application with the following modules: ' + angularModules);
 
                         angular.bootstrap(window.document, angularModules, {
                             strictDi: !w20.debug

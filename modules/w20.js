@@ -476,7 +476,7 @@ define(['module'], function (module) {
 
     var requireApplication = (function () {
         return function (w20, modulesToRequire, callback) {
-            console.log('requiring modules ' + modulesToRequire);
+            console.log('Requiring modules ' + modulesToRequire);
 
             require(['{tv4}/tv4'].concat(modulesToRequire), function (tv4) {
                 var definedModules = require.s.contexts._.defined,
@@ -487,7 +487,7 @@ define(['module'], function (module) {
                     });
 
                 // Validate configuration now that the validator (tv4) is loaded
-                console.log('validating modules configuration');
+                console.log('Validating modules configuration');
 
                 for (var fragmentName in allModules) {
                     if (allModules.hasOwnProperty(fragmentName)) {
@@ -716,8 +716,12 @@ define(['module'], function (module) {
                             };
                         } else {
                             // named external fragment
-                            fragmentsToLoad.push(fragment);
-                            fragmentConfigs.push(fragmentLoadedConfiguration);
+                            if (fragmentLoadedConfiguration.ignore) {
+                                console.warn("Ignored fragment " + fragment);
+                            } else {
+                                fragmentsToLoad.push(fragment);
+                                fragmentConfigs.push(fragmentLoadedConfiguration);
+                            }
                         }
                     }
                 }
@@ -841,7 +845,7 @@ define(['module'], function (module) {
                                 mergeObjects(w20Object.requireConfig.bundles, fragmentDefinition.bundles);
                             }
 
-                            console.log('fragment ' + (fragmentDefinition.name || '<inline>') + ' configured' + (fragmentUrl ? ' from ' + fragmentUrl : ''));
+                            console.log('Fragment ' + (fragmentDefinition.name || '[inline]') + ' configured' + (fragmentUrl ? ' from ' + fragmentUrl : ''));
                         }
                     }
 
@@ -863,7 +867,7 @@ define(['module'], function (module) {
                     if (fragmentConfigs[index].optional) {
                         report('warn', "Could not load optional fragment " + fragmentsToLoad[index]);
                     } else {
-                        report('error', 'Could not fetch fragment manifest from ' + fragmentsToLoad[index], undefined, true);
+                        report('error', 'Could not load fragment ' + fragmentsToLoad[index], undefined, true);
                     }
                 });
             }
@@ -884,7 +888,7 @@ define(['module'], function (module) {
     // STARTUP SEQUENCE                                                //
     /////////////////////////////////////////////////////////////////////
     if (w20Object.debug) {
-        console.warn('debug mode is on');
+        console.warn('Debug mode is on');
     } else {
         var noop = function () {
         };
@@ -896,24 +900,24 @@ define(['module'], function (module) {
 
     requireErrorHandler.setup();
 
-    console.info('w20 application starting up');
-    console.time('startup process duration');
-    console.time('configuration load duration');
+    console.info('W20 application starting up');
+    console.time('Startup process duration');
+    console.time('Configuration load duration');
     loadConfiguration(function (w20, modules) {
-        console.timeEnd('configuration load duration');
+        console.timeEnd('Configuration load duration');
 
         window.w20 = w20Object;
         loadingScreen.enable(w20);
 
         modules = modules.concat(w20Object.deps || []);
 
-        console.time('modules require duration');
+        console.time('Modules require duration');
         requireApplication(w20, modules, w20Object.callback || function (modulesToRequire, modulesRequired) {
-                console.timeEnd('modules require duration');
+                console.timeEnd('Modules require duration');
 
-                console.time('application initialization duration');
+                console.time('Application initialization duration');
                 startApplication(w20, modulesToRequire, modulesRequired, function () {
-                    console.timeEnd('application initialization duration');
+                    console.timeEnd('Application initialization duration');
 
                     requireErrorHandler.restore(w20);
                     loadingScreen.disable(w20);
@@ -924,8 +928,8 @@ define(['module'], function (module) {
                         window.jQuery(window.document).trigger('w20ready');
                     }
 
-                    console.info('w20 application ready');
-                    console.timeEnd('startup process duration');
+                    console.info('W20 application ready');
+                    console.timeEnd('Startup process duration');
                 });
             });
     });

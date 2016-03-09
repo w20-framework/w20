@@ -40,6 +40,9 @@ window.w20 = {
         },
         '/base/optional-fragment.w20.json': {
             optional: true
+        },
+        '/base/ignored-fragment.w20.json': {
+            ignore: true
         }
     },
     deps: tests,

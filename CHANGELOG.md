@@ -1,6 +1,7 @@
 # Version 2.2.3 (?)
 
-* [new] Add the ability to specify an `optional` attribute to any fragment configuration, allowing application to load anyway.
+* [new] Add the ability to specify an `optional` attribute on any fragment configuration, allowing application to load anyway.
+* [new] Add the ability to specify an `ignore` attribute on any fragment configuration to avoid loading it.
 
 # Version 2.2.2 (2016-02-15)
 
