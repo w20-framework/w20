@@ -39,11 +39,18 @@
                     },
                     "defaultSandboxPermissions": {
                         "description": "Specify the default iframe-based sandbox permissions (can be overridden by the sandboxPermissions attribute on a specific route)",
-                        "type": "string"
+                        "type": "string",
+                        "title": "Default sandbox permissions"
                     },
                     "defaultSandboxId": {
                         "description": "Specify the default identifier for the sandbox iframe",
-                        "type": "string"
+                        "type": "string",
+                        "title": "Default sandbox id"
+                    },
+                    "prettyUrls": {
+                        "description": "Enable AngularJS HTML5 mode to prettify URLs (needs server-side support)",
+                        "type": "boolean",
+                        "title": "Pretty URLs"
                     }
                 }
             }

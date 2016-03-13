@@ -101,8 +101,12 @@ define([
 
     // Routes configuration
     w20CoreApplication.config([ '$routeProvider', '$locationProvider', '$sceDelegateProvider', function ($routeProvider, $locationProvider, $sceDelegateProvider) {
-        // Use the classic hashbang prefix
         $locationProvider.hashPrefix('!');
+        if (config.prettyUrls) {
+            $locationProvider.html5Mode(true);
+        } else {
+            $locationProvider.html5Mode(false);
+        }
 
         // WhiteList all trusted URLs
         $sceDelegateProvider.resourceUrlWhitelist($sceDelegateProvider.resourceUrlWhitelist().concat(sceUrlWhiteList));
