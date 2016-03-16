@@ -427,9 +427,15 @@ define([
         };
 
         var doCheck = function (callback) {
+            var bases = document.getElementsByTagName('base');
+            var baseHref = null;
+            if (bases.length > 0) {
+                baseHref = bases[0].href;
+            }
+
             var req = $.ajax({
                 type: 'HEAD',
-                url: $window.location.href.split('?')[0] + '?' + Math.random(),
+                url: (baseHref !== null ? baseHref : $window.location.href.split('?')[0]) + '?' + Math.random(),
                 beforeSend: function () {
                     beforeSendTime = new Date().getTime();
                 },
