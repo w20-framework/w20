@@ -17,11 +17,8 @@
     "grunt": "~0.4",
     "grunt-bower-task": "~0.4",
     "grunt-contrib-clean": "~0.6",
-    "grunt-contrib-concat": "~0.5.0",
     "grunt-contrib-connect": "^0.11.2",
-    "grunt-contrib-copy": "~0.7",
     "grunt-contrib-jshint": "~0.10",
-    "grunt-contrib-uglify": "~0.6.0",
     "grunt-coveralls": "^1.0.0",
     "grunt-karma": "~0.9",
     "grunt-ngdocs": "^0.2.8",
@@ -31,8 +28,9 @@
     "karma-phantomjs-launcher": "~0.1",
     "karma-phantomjs-shim": "~1.2.0",
     "karma-requirejs": "~0.2",
+    "requirejs": "~2.1",
+    "jasmine-core": "~2.4",
     "phantomjs-polyfill": "0.0.1",
-    "phantomjs-prebuilt": "^2.1.4",
-    "requirejs": "~2.1"
+    "phantomjs-prebuilt": "^2.1.4"
   }
 }

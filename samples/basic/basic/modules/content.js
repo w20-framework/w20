@@ -1,5 +1,5 @@
 define([
-	'{angular}/angular/angular',
+	'{angular}/angular',
 	'{angular-resource}/angular-resource'
 
 ], function (angular) {

@@ -1,6 +1,6 @@
 define([
     'require',
-    '{angular}/angular/angular',
+    '{angular}/angular',
     '{w20-core}/modules/culture',
     '{angular-resource}/angular-resource'
 ], function (require, angular) {
