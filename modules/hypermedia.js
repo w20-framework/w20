@@ -198,15 +198,8 @@ define([
                 enter: function (rel, parameters, actions, options) {
                     var homeResource = this.getDefinition(rel);
 
-                    // Override the default actions for the entry point $resource
-                    // We only use get, other actions will not do anything
-                    // Also specify the accepted content-type to be of type hypermedia
                     actions = actions ? actions : {};
                     angular.extend(actions, {
-                        query: angular.noop,
-                        delete: angular.noop,
-                        remove: angular.noop,
-                        save: angular.noop,
                         get: {
                             method: 'GET',
                             headers: { 'accept': HYPERMEDIA_TYPE }
@@ -945,7 +938,7 @@ define([
                     apiHost = getHost(toAbsoluteUrl(apiUrl, ''));
 
                     apiPromises.push(
-                        $http({ method: 'GET', url: apiUrl, headers: { 'accept': 'application/json-home' } })
+                        $http({ method: 'GET', url: apiUrl, headers: { 'accept': 'application/json-home, application/json' } })
 
                             .success(function (home) {
 
