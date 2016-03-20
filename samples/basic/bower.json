@@ -1,9 +1,0 @@
-{
-  "name": "w20-basic-sample",
-  "version": "1.0.0",
-  "dependencies": {
-    "w20": "../../",
-    "w20-bootstrap-3": "^2.1.2",
-    "w20-business-theme": "^1.1.3"
-  }
-}
