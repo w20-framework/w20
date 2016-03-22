@@ -1,4 +1,4 @@
-# Version 2.2.3 (?)
+# Version 2.3.0 (?)
 
 * [new] Add support for HTML5 mode (pretty urls)
 * [new] Add the ability to specify an `optional` attribute on any fragment configuration, allowing application to load anyway.
