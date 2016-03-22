@@ -196,14 +196,6 @@
                 }
             }
         },
-        "text" : {
-            "path" : "{w20-core}/modules/text",
-            "configSchema": {
-                "title": "Text module configuration",
-                "type": "object",
-                "additionalProperties": false
-            }
-        },
         "ui" : {
             "path" : "{w20-core}/modules/ui",
             "autoload" : true,
@@ -247,7 +239,6 @@
             "{uri-templates}": "${components-path:bower_components}/uri-templates",
             "jquery": "${components-path:bower_components}/jquery/dist/jquery",
             "{jgrowl}": "${components-path:bower_components}/jgrowl",
-            "showdown": "${components-path:bower_components}/showdown/dist/showdown",
             "w20": "empty:"
         },
 
