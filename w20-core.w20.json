@@ -72,6 +72,10 @@
                     "default": {
                         "description": "The IETF code of the default culture",
                         "type": "string"
+                    },
+                    "translationFallback": {
+                        "description": "If true, i18n keys that are not resolved in active culture will be resolved in the default one",
+                        "type": "boolean"
                     }
                 }
             }
