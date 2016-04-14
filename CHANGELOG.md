@@ -3,6 +3,7 @@
 * [new] Add support for HTML5 mode (pretty urls)
 * [new] Add the ability to specify an `optional` attribute on any fragment configuration, allowing application to load anyway.
 * [new] Add the ability to specify an `ignore` attribute on any fragment configuration to avoid loading it.
+* [new] Add the ability to specify a `translationFallback` boolean in the `culture` module configuration. If true, missing translations will fallback to their value in the default language. Note: the default culture bundle will always be loaded if the option is activated.
 * [brk] Remove `text` module which has been moved to `w20-extras` add-on.
 
 # Version 2.2.2 (2016-02-15)
