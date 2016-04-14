@@ -327,6 +327,10 @@ define([
                 notificationService.warn(cultureService.localize('w20.core.notifications.route.error', [cultureService.displayName(current.$$route), reason]));
             }]);
 
+            eventService.on('w20.culture.culture-changed', ['CultureService', function (cultureService) {
+                $.jGrowl.defaults.closerTemplate = '<div>' + cultureService.localize('w20.core.notifications.closeall') + '</div>';
+            }]);
+
             eventService.on('w20.security.authenticated', ['CultureService', 'AuthenticationService', 'NotificationService', '$args', function (cultureService, authenticationService, notificationService, $args) {
                 notificationService.notify(cultureService.localize('w20.core.notifications.login.authenticated', [$args[0].id]));
             }]);
