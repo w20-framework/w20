@@ -126,7 +126,11 @@ define([
                 }
 
                 if (typeof states[namespace] === 'undefined') {
-                    states[namespace] = angular.fromJson(storage.getItem(prefix)) || {};
+                    try {
+                        states[namespace] = angular.fromJson(storage.getItem(prefix)) || {};
+                    } catch (e) {
+                        states[namespace] = {};
+                    }
                 }
                 if (typeof states[namespace][key] === 'undefined') {
                     states[namespace][key] = defaultvalue;
