@@ -29,17 +29,8 @@ define([
         activeCulture = defaultCulture,
         persistedCulture;
 
-    function switchCulture(selector, callback) {
-        var culture = (typeof selector === 'string' ? globalize.findClosestCulture(selector) : selector);
-
-        function doSwitch(cultureObject, callback) {
-            activeCulture = globalize.culture(cultureObject.name);
-            w20.console.info('Culture has been set to ' + activeCulture.name);
-
-            if (typeof callback === 'function') {
-                callback(activeCulture);
-            }
-        }
+    function loadCultureBundles(culture) {
+        var deferred = $.Deferred();
 
         // Load culture bundles
         if ($.inArray(culture.name, loadedCultures) === -1) {
@@ -74,17 +65,31 @@ define([
                                 messages: messages
                             });
                         } catch (e) {
-                            throw new Error('Error loading i18n bundle ' + bundlesLoaded[i], e);
+                            deferred.reject(new Error('Error loading i18n bundle ' + bundlesLoaded[i], e));
                         }
                     }
-                    doSwitch(culture, callback);
+                    deferred.resolve(culture);
                 });
             } else {
-                doSwitch(culture, callback);
+                deferred.resolve(culture);
             }
         } else {
-            doSwitch(culture, callback);
+            deferred.resolve(culture);
         }
+
+        return deferred.promise();
+    }
+
+    function switchCulture(selector) {
+        var culture = (typeof selector === 'string' ? globalize.findClosestCulture(selector) : selector);
+
+        return loadCultureBundles(culture).then(function (cultureObject) {
+            activeCulture = globalize.culture(cultureObject.name);
+            w20.console.info('Culture has been set to ' + activeCulture.name);
+            return cultureObject;
+        }, function (e) {
+            throw new Error('Could not switch to culture ' + culture.name, e);
+        });
     }
 
     function buildAngularLocale(culture) {
@@ -123,8 +128,8 @@ define([
         return {
             'DATETIME_FORMATS': {
                 'AMPMS': [
-                        standardCalendar.AM && standardCalendar.AM[0] || 'AM',
-                        standardCalendar.PM && standardCalendar.PM[0] || 'PM'
+                    standardCalendar.AM && standardCalendar.AM[0] || 'AM',
+                    standardCalendar.PM && standardCalendar.PM[0] || 'PM'
                 ],
                 'DAY': standardCalendar.days.names,
                 'MONTH': standardCalendar.months.names,
@@ -481,7 +486,7 @@ define([
                     return globalize.culture();
                 }
 
-                switchCulture(selector, function (newCulture) {
+                switchCulture(selector).done(function (newCulture) {
                     // Override $locale values with new ones
                     _.merge($locale, buildAngularLocale(newCulture));
 
@@ -1269,13 +1274,13 @@ define([
 
                 // Preload cultures
                 require(_.map(_.filter(config.available, function (elt) {
-                        // Filter cultures to remove en since it is already in globalize.js
-                        return elt !== 'en';
+                    // Filter cultures to remove en since it is already in globalize.js
+                    return elt !== 'en';
                 }), function (elt) {
-                        return '{globalize}/cultures/globalize.culture.' + elt;
+                    return '{globalize}/cultures/globalize.culture.' + elt;
                 }), function () {
 
-                    availableCultures = _.pluck(_.filter(globalize.cultures, function(elt, key) {
+                    availableCultures = _.pluck(_.filter(globalize.cultures, function (elt, key) {
                         return key !== 'default' && (key !== 'en' || _.contains(config.available, 'en'));
                     }), 'name');
 
@@ -1300,12 +1305,19 @@ define([
 
                     w20.console.log('Available cultures: ' + availableCultures);
 
-                    switchCulture(persistedCulture || defaultCulture, function (culture) {
-                        w20CoreCulture.config(['$provide', function ($provide) {
-                            // define $locale values based on default culture
-                            $provide.value('$locale', buildAngularLocale(culture));
-                        }]);
-                        callback(module);
+                    var culturesToLoad = [persistedCulture || defaultCulture];
+                    if (config.translationFallback === true) {
+                        culturesToLoad.push(defaultCulture);
+                    }
+
+                    $.when.apply(undefined, _.uniq(culturesToLoad, false, 'name').map(loadCultureBundles)).then(function (persistedCulture, defaultCulture) {
+                        switchCulture(persistedCulture || defaultCulture).done(function (culture) {
+                            w20CoreCulture.config(['$provide', function ($provide) {
+                                // define $locale values based on default culture
+                                $provide.value('$locale', buildAngularLocale(culture));
+                            }]);
+                            callback(module);
+                        });
                     });
                 });
             }
