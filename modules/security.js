@@ -1076,28 +1076,28 @@ define([
 
     w20CoreSecurity.run(['AuthenticationService', 'ApplicationService', 'EventService', 'StateService', '$location',
         function (authenticationService, applicationService, eventService, stateService, $location) {
-
-            function inBrowserSession (state) {
+            function inBrowserSession(state) {
                 var sessionState = stateService.state('session', 'isActive', false, true);
                 return typeof state !== 'boolean' ? sessionState.value() : sessionState.value(state);
             }
 
             var notInBrowserSession = !inBrowserSession();
 
-            if (typeof config.redirectAfterLogin === 'string') {
-                eventService.on('w20.security.authenticated', function () {
+            eventService.on('w20.security.authenticated', function () {
+                if (typeof config.redirectAfterLogin === 'string') {
                     if (notInBrowserSession) {
                         $location.path(config.redirectAfterLogin);
                         inBrowserSession(true);
                     }
-                });
-            }
+                }
+            });
 
-            if (typeof config.redirectAfterLogout === 'string') {
-                eventService.on('w20.security.deauthenticated', function () {
+            eventService.on('w20.security.deauthenticated', function () {
+                inBrowserSession(false);
+                if (typeof config.redirectAfterLogout === 'string') {
                     $location.path(config.redirectAfterLogout);
-                });
-            }
+                }
+            });
 
             _.each(allRealms, function (definition, realm) {
                 var providerFactory = allProviders[definition.provider];
