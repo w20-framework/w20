@@ -10,8 +10,9 @@ define([
     '{angular}/angular',
     'w20',
     '{w20-core}/modules/culture',
+    '{w20-core}/modules/application',
     '{angular-mocks}/angular-mocks'
-], function (angular, w20, culture) {
+], function (angular, w20, culture, application) {
     'use strict';
 
     describe('The Culture Service', function () {
@@ -68,13 +69,13 @@ define([
             expect($rootScope.$emit).toHaveBeenCalledWith('w20.culture.culture-changed', cultureService.culture());
         });
 
-        it('should persist the culture name to local storage when switching culture', function(done) {
+        it('should persist the culture name to local storage when switching culture', function (done) {
             expect(cultureService.culture().name).toBe('en-GB');
-            expect(localStorage.getItem('w20.state.' + w20.fragments['w20-core'].configuration.modules.application.id + '.culture')).toBeNull();
+            expect(localStorage.getItem('w20.' + application.id + '.preferred-culture')).toBeNull();
 
             var unregister = $rootScope.$on('w20.culture.culture-changed', function () {
                 expect(cultureService.culture().name).toBe('fr-FR');
-                expect(JSON.parse(localStorage.getItem('w20.state.' + w20.fragments['w20-core'].configuration.modules.application.id + '.culture'))).toEqual({first:cultureService.culture().name});
+                expect(localStorage.getItem('w20.' + application.id + '.preferred-culture')).toEqual(cultureService.culture().name);
                 unregister();
                 done();
             });

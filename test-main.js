@@ -27,7 +27,8 @@ window.w20 = {
                         'en-GB',
                         'fr-FR'
                     ],
-                    default: 'en-GB'
+                    default: 'en-GB',
+                    translationFallback: true
                 },
                 ui: {
                     'expandedRouteCategories': ['category1.category11']

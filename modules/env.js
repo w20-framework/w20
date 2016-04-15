@@ -43,7 +43,7 @@ define([
      *
      *
      */
-    var w20CoreEnv = angular.module('w20CoreEnv', [ 'w20CoreSecurity', 'w20CoreApplication' ]),
+    var w20CoreEnv = angular.module('w20CoreEnv', ['w20CoreSecurity', 'w20CoreApplication']),
         config = module && module.config() || {};
 
     /**
@@ -81,7 +81,7 @@ define([
      * The StateService provides key/value storage for data that needs to be persisted across sessions.
      *
      */
-    w20CoreEnv.factory('StateService', [ '$rootScope', '$log', '$window', 'ApplicationService', function ($rootScope, $log, $window, applicationService) {
+    w20CoreEnv.factory('StateService', ['$rootScope', '$log', '$window', 'ApplicationService', function ($rootScope, $log, $window, applicationService) {
         var states = {};
 
         return {
@@ -114,7 +114,7 @@ define([
                     throw new Error('Key argument is required for using a state, got undefined');
                 }
 
-                var prefix = 'w20.state.' + applicationService.applicationId + '.' + namespace,
+                var prefix = 'w20.' + applicationService.applicationId + '.state.' + namespace,
                     storage = session ? $window.sessionStorage : $window.localStorage;
 
                 if (!storage) {
@@ -172,7 +172,7 @@ define([
                 }
 
                 if (typeof states[namespace] === 'undefined') {
-                    states[namespace] = $window.localStorage.getItem('w20.state.' + applicationService.applicationId + '.' + namespace) || {};
+                    states[namespace] = $window.localStorage.getItem('w20.' + applicationService.applicationId + '.state.' + namespace) || {};
                 }
 
                 return _.keys(states[namespace]);
@@ -190,7 +190,7 @@ define([
      * The PreferencesService provides an abstraction over the StateService dedicated to application preference storage.
      *
      */
-    w20CoreEnv.factory('PreferencesService', [ 'StateService',
+    w20CoreEnv.factory('PreferencesService', ['StateService',
         function (stateService) {
             var preferences = {}, icons = {}, meta = {};
 
@@ -323,7 +323,7 @@ define([
      * uses AngularJS events on the root scope.
      *
      */
-    w20CoreEnv.factory('EventService', [ '$rootScope', '$injector', function ($rootScope, $injector) {
+    w20CoreEnv.factory('EventService', ['$rootScope', '$injector', function ($rootScope, $injector) {
         var viewListeners = [];
 
         $rootScope.$on('$routeChangeSuccess', function () {
@@ -407,7 +407,7 @@ define([
                 return deregisterFn;
             }
         };
-    } ]);
+    }]);
 
     /**
      * @ngdoc service
@@ -422,7 +422,7 @@ define([
      *     * unknown : the application connectivity state is unknown.
      *
      */
-    w20CoreEnv.factory('ConnectivityService', [ '$window', '$log', 'EventService', function ($window, $log, eventService) {
+    w20CoreEnv.factory('ConnectivityService', ['$window', '$log', 'EventService', function ($window, $log, eventService) {
         var beforeSendTime, lastState = {
             httpStatus: undefined,
             online: undefined,
@@ -516,15 +516,15 @@ define([
                 return lastState;
             }
         };
-    } ]);
+    }]);
 
-    w20CoreEnv.run([ 'ConnectivityService', '$window', '$injector', '$rootScope', function (connectivityService, $window, $injector, $rootScope) {
+    w20CoreEnv.run(['ConnectivityService', '$window', '$injector', '$rootScope', function (connectivityService, $window, $injector, $rootScope) {
 
         w20.injector = $injector;
 
         Object.getPrototypeOf($rootScope).$safeApply = function (fn) {
             fn = fn || function () {
-            };
+                };
             if (this.$$phase) {
                 fn();
             }
@@ -541,9 +541,9 @@ define([
         });
 
         connectivityService.check();
-    } ]);
+    }]);
 
     return {
-        angularModules: [ 'w20CoreEnv' ]
+        angularModules: ['w20CoreEnv']
     };
 });

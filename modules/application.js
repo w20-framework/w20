@@ -84,8 +84,9 @@ define([
      *         ...
      *     }
      */
-    var w20CoreApplication = angular.module('w20CoreApplication', [ 'w20CoreEnv', 'ngRoute', 'ngSanitize' ]),
+    var w20CoreApplication = angular.module('w20CoreApplication', ['w20CoreEnv', 'ngRoute', 'ngSanitize']),
         config = module && module.config() || {},
+        appId = config.id || 'w20app',
         allRoutes = {},
         allRouteHandlers = {},
         sceUrlWhiteList = [],
@@ -100,7 +101,7 @@ define([
         };
 
     // Routes configuration
-    w20CoreApplication.config([ '$routeProvider', '$locationProvider', '$sceDelegateProvider', function ($routeProvider, $locationProvider, $sceDelegateProvider) {
+    w20CoreApplication.config(['$routeProvider', '$locationProvider', '$sceDelegateProvider', function ($routeProvider, $locationProvider, $sceDelegateProvider) {
         $locationProvider.hashPrefix('!');
         if (config.prettyUrls) {
             $locationProvider.html5Mode(true);
@@ -133,7 +134,7 @@ define([
                     return deferred !== null ? deferred.then(checkSecurity, checkSecurity) : checkSecurity();
                 }],
 
-                routeCheck: [ '$q', '$injector', function ($q, $injector) {
+                routeCheck: ['$q', '$injector', function ($q, $injector) {
                     if (typeof route.check === 'undefined') {
                         return $q.defer().resolve();
                     }
@@ -154,17 +155,17 @@ define([
         // Home route
         var homeRoute;
         if (typeof allRoutes[config.home] !== 'undefined') {
-            homeRoute = _.extend(_.extend({}, allRoutes[config.home]), { path: '', hidden: true });
+            homeRoute = _.extend(_.extend({}, allRoutes[config.home]), {path: '', hidden: true});
         }
-        $routeProvider.when('/', homeRoute || { template: '' });
+        $routeProvider.when('/', homeRoute || {template: ''});
 
         // Fallback route
         var fallbackRoute;
         if (typeof allRoutes[config.notFound] !== 'undefined') {
-            fallbackRoute = _.extend(_.extend({}, allRoutes[config.notFound]), { path: undefined, hidden: true });
+            fallbackRoute = _.extend(_.extend({}, allRoutes[config.notFound]), {path: undefined, hidden: true});
             $routeProvider.otherwise(fallbackRoute);
         }
-    } ]);
+    }]);
 
     // Cache busting
     w20CoreApplication.config(['$provide', function ($provide) {
@@ -211,7 +212,7 @@ define([
              *
              * This id can be used to disambiguate between multiple W20 applications when necessary.
              */
-            applicationId: config.id || 'w20app',
+            applicationId: appId,
 
             /**
              * @ngdoc function
@@ -266,7 +267,7 @@ define([
             return first.stack === second.stack;
         }
 
-        this.$get = [ '$log', '$injector', function ($log, $injector) {
+        this.$get = ['$log', '$injector', function ($log, $injector) {
             return function (exception, cause) {
                 try {
                     $injector.invoke(['$timeout', 'EventService', function ($timeout, eventService) {
@@ -321,7 +322,7 @@ define([
         }];
     });
 
-    w20CoreApplication.run([ 'EventService', '$location', '$rootScope', function (eventService, $location, $rootScope) {
+    w20CoreApplication.run(['EventService', '$location', '$rootScope', function (eventService, $location, $rootScope) {
         if (typeof config.redirectAfterRouteError === 'string') {
             eventService.on('$routeChangeError', function () {
                 $location.path(config.redirectAfterRouteError);
@@ -331,7 +332,7 @@ define([
         eventService.on('$routeChangeSuccess', function (current) {
             $rootScope.currentRoute = current && current.$$route;
         });
-    } ]);
+    }]);
 
     function registerRouteHandler(type, handlerFn) {
         allRouteHandlers[type] = handlerFn;
@@ -360,13 +361,13 @@ define([
     registerRouteHandler('sandbox', function (route) {
         var sandboxPermissions = route.sandboxPermissions || config.defaultSandboxPermissions;
         route.template = '<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; margin: 0; padding: 0;" class="w20-top-shift w20-right-shift w20-bottom-shift w20-left-shift">' +
-                             '<iframe id="' + (route.sandboxId || config.defaultSandboxId || 'frmMain') + '" style="border: none; width: 100%; height: 100%;"' + (sandboxPermissions ? ' sandbox="' + sandboxPermissions + '"' : '') + ' data-ng-src="' + require.toUrl(route.url) + '"></iframe>' +
-                         '</div>';
+            '<iframe id="' + (route.sandboxId || config.defaultSandboxId || 'frmMain') + '" style="border: none; width: 100%; height: 100%;"' + (sandboxPermissions ? ' sandbox="' + sandboxPermissions + '"' : '') + ' data-ng-src="' + require.toUrl(route.url) + '"></iframe>' +
+            '</div>';
         return route;
     });
 
     return {
-        angularModules: [ 'w20CoreApplication' ],
+        angularModules: ['w20CoreApplication'],
 
         lifecycle: {
             pre: function (modules, fragments, callback) {
@@ -428,6 +429,8 @@ define([
             }
         },
 
-        registerRouteHandler: registerRouteHandler
+        registerRouteHandler: registerRouteHandler,
+
+        id: appId
     };
 });

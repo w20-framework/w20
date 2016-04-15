@@ -31,8 +31,6 @@ define([
      *
      * Authentication is handled through authentication providers. You can register additional providers with the API.
      *
-     * BasicAuthentication provider is built-in and handles http basic authentication.
-     *
      * Configuration
      * -------------
      *
@@ -61,53 +59,68 @@ define([
      *          }
      *      }
      *
+     * Basic authentication
+     * --------------------
+     *
+     * A provider handling basic authentication is built-in and available under the name `BasicAuthentication`. Its
+     * configuration in the fragment definition is as follows:
+     *
+     *      "security" : {
+     *          "provider" : "BasicAuthentication",
+     *          "config" : {
+     *              "authentication": "url/of/the/authentication/resource",
+     *              "authorizations" : "url/of/the/authorizations/resource",
+     *              "clearCredentials": true|false
+     *          }
+     *      }
+     *
+     * The authentication resource is where the basic authentication challenge must take place:
+     *
+     * * The first request issued to this resource is a GET without credentials,
+     * * The resource triggers the credentials input dialog of the browser by returning a 401 status code,
+     * * The browser issues a second GET request with the entered credentials to the resource which will return either
+     * a success status code (200 or 204) if the credentials are valid, or return a 401 status code again if credentials
+     * are invalid.
+     *
+     * Upon logout a DELETE request is made to the authentication resource which must invalidate the server-side security
+     * session for the authenticated subject. The resource must return a success status code (200 or 204) upon successful
+     * logout. A best-effort try is made to force the browser to forget the credentials but keep in mind that this is not
+     * standardized across browsers and may not work under some circumstances. To disable this attempt, specify `false`
+     * in the `clearCredentials` option.
+     *
+     * The authorizations resource is requested after successful authentication to return the profile of the authenticated
+     * subject along with its authorizations.
      */
     var w20CoreSecurity = angular.module('w20CoreSecurity', ['w20CoreEnv', 'ngResource']),
         config = module && module.config() || {},
         allProviders = {},
         allRealms = {};
 
-    var BasicAuthenticationProvider = ['$resource', '$document', '$q', function ($resource, $document, $q) {
+    var BasicAuthenticationProvider = ['$resource', '$window', '$q', function ($resource, $window, $q) {
         var AuthenticationResource, AuthorizationsResource, realm, authenticationUrl, clearCredentials;
 
-        function doCleanCredentials(loginUrl) {
-            var done;
-
-            // For IE/Edge browsers
-            if ($document.execCommand) {
-                done = $document.execCommand('ClearAuthenticationCache', 'false');
+        function randomString(length) {
+            var chars = [];
+            var possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            for (var i = 0; i < length; i++) {
+                chars[i] = possible.charAt(Math.floor(Math.random() * possible.length));
             }
-
-            // Others
-            if (!done) {
-                $.ajax({
-                    type: 'GET',
-                    url: loginUrl,
-                    async: true,
-                    username: 'logmeout',
-                    password: '123456',
-                    headers: { Authorization: 'Basic xxx' }
-                });
-            }
+            return chars.join('');
         }
 
         return {
             setConfig: function (providerConfig) {
-
-                clearCredentials = providerConfig.clearCredentials;
+                clearCredentials = providerConfig.clearCredentials || true;
 
                 if (typeof providerConfig.authentication === 'undefined') {
                     throw new Error('Authentication URL is required for BasicAuthentication provider, got undefined');
                 }
-
                 authenticationUrl = require.toUrl(providerConfig.authentication).replace(/:(?!\/\/)/, '\\:');
-
                 AuthenticationResource = $resource(authenticationUrl);
 
                 if (typeof providerConfig.authorizations === 'undefined') {
                     throw new Error('Authorizations URL is required for BasicAuthentication provider, got undefined');
                 }
-
                 AuthorizationsResource = $resource(require.toUrl(providerConfig.authorizations).replace(/:(?!\/\/)/, '\\:'));
             },
 
@@ -141,7 +154,18 @@ define([
                 var deferred = $q.defer();
                 AuthenticationResource.remove(function () {
                     if (clearCredentials) {
-                        doCleanCredentials(authenticationUrl);
+                        if (!$window.document.execCommand('ClearAuthenticationCache', 'false')) {
+                            $.ajax({
+                                type: 'GET',
+                                url: authenticationUrl,
+                                async: true,
+                                username: randomString(8),
+                                password: randomString(8),
+                                headers: {
+                                    Authorization: 'Basic ' + randomString(20)
+                                }
+                            });
+                        }
                     }
                     deferred.resolve(realm);
                 }, function () {
