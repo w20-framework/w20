@@ -31,7 +31,7 @@ define([
      *
      * Authentication is handled through authentication providers. You can register additional providers with the API.
      *
-     * SimpleAuthentication provider is built-in.
+     * BasicAuthentication provider is built-in and handles http basic authentication.
      *
      * Configuration
      * -------------
@@ -67,16 +67,42 @@ define([
         allProviders = {},
         allRealms = {};
 
-    var SimpleAuthenticationProvider = ['$resource', '$q', function ($resource, $q) {
-        var AuthenticationResource, AuthorizationsResource, realm;
+    var BasicAuthenticationProvider = ['$resource', '$document', '$q', function ($resource, $document, $q) {
+        var AuthenticationResource, AuthorizationsResource, realm, authenticationUrl, clearCredentials;
+
+        function doCleanCredentials(loginUrl) {
+            var done;
+
+            // For IE/Edge browsers
+            if ($document.execCommand) {
+                done = $document.execCommand('ClearAuthenticationCache', 'false');
+            }
+
+            // Others
+            if (!done) {
+                $.ajax({
+                    type: 'GET',
+                    url: loginUrl,
+                    async: true,
+                    username: 'logmeout',
+                    password: '123456',
+                    headers: { Authorization: 'Basic xxx' }
+                });
+            }
+        }
 
         return {
             setConfig: function (providerConfig) {
+
+                clearCredentials = providerConfig.clearCredentials;
+
                 if (typeof providerConfig.authentication === 'undefined') {
                     throw new Error('Authentication URL is required for BasicAuthentication provider, got undefined');
                 }
 
-                AuthenticationResource = $resource(require.toUrl(providerConfig.authentication).replace(/:(?!\/\/)/, '\\:'));
+                authenticationUrl = require.toUrl(providerConfig.authentication).replace(/:(?!\/\/)/, '\\:');
+
+                AuthenticationResource = $resource(authenticationUrl);
 
                 if (typeof providerConfig.authorizations === 'undefined') {
                     throw new Error('Authorizations URL is required for BasicAuthentication provider, got undefined');
@@ -93,9 +119,9 @@ define([
                 return true;
             },
 
-            authenticate: function (credentials) {
+            authenticate: function () {
                 var deferred = $q.defer();
-                AuthenticationResource.get(credentials || {}, function () {
+                AuthenticationResource.get(function () {
                     AuthorizationsResource.get({}, function (subject) {
                         deferred.resolve({
                             realm: realm,
@@ -114,6 +140,9 @@ define([
             deauthenticate: function () {
                 var deferred = $q.defer();
                 AuthenticationResource.remove(function () {
+                    if (clearCredentials) {
+                        doCleanCredentials(authenticationUrl);
+                    }
                     deferred.resolve(realm);
                 }, function () {
                     deferred.reject(realm);
@@ -1117,8 +1146,8 @@ define([
         angularModules: ['w20CoreSecurity'],
         lifecycle: {
             pre: function (modules, fragments, callback) {
-                allProviders.SimpleAuthentication = SimpleAuthenticationProvider;
-                allProviders.BasicAuthentication = SimpleAuthenticationProvider;
+                allProviders.SimpleAuthentication = BasicAuthenticationProvider;
+                allProviders.BasicAuthentication = BasicAuthenticationProvider;
 
                 // Collect fragment security realms
                 _.each(fragments, function (fragment, id) {
