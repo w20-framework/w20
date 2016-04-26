@@ -1,15 +1,15 @@
-# Version 2.3.0 (?)
+# Version 2.3.0 (2016-04-26)
 
 * [new] Add support for HTML5 mode (pretty urls).
 * [new] Add the ability to specify an `optional` attribute on any fragment configuration, allowing application to load anyway.
 * [new] Add the ability to specify an `ignore` attribute on any fragment configuration to avoid loading it (useful for development).
 * [new] Implement best-effort credentials cleanup for basic authentication (forcing the browser to forget credentials).
 * [chg] Fallback to default culture when a translation is missing in active culture is no longer active by default. Sets `translationFallback` to `true` on the `culture` module configuration to force the fallback behavior.
+* [brk] Remove `text` module which has been moved to `w20-extras` add-on.
 * [fix] When translation fallback is active, always load default translations even when another culture is stored in preferences (#66).
 * [fix] Fix translation of "Close all" notification dismiss link (#67).
 * [fix] Catch JSON parsing error when persisted state is corrupted and fallback to default value (#68).
 * [fix] Do not prevent `redirectAfterLogin` page to be shown after manual logout (#69).
-* [brk] Remove `text` module which has been moved to `w20-extras` add-on.
 
 # Version 2.2.2 (2016-02-15)
 
