@@ -39,6 +39,9 @@ window.w20 = {
                 'components-path': '/base/bower_components'
             }
         },
+        'base/specs/fragment-test/fragment-test.w20.json': {
+
+        },
         '/base/optional-fragment.w20.json': {
             optional: true
         },

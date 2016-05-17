@@ -17,6 +17,8 @@ module.exports = function(config) {
             { pattern: '*.json', included: false },
             { pattern: 'mocks/**/*.json', included: false },
             { pattern: 'specs/**/*.js', included: false },
+            { pattern: 'specs/**/*.json', included: false },
+            { pattern: 'specs/**/*.html', included: false },
             { pattern: 'modules/**/*.js*', included: false },
             { pattern: 'bower_components/**/*', included: false }
         ],
