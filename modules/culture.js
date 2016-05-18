@@ -129,7 +129,8 @@ define([
         buildAngularLocale = function (culture) {
             var standardCalendar = culture.calendars.standard,
                 currency = culture.numberFormat.currency,
-                number = culture.numberFormat;
+                number = culture.numberFormat,
+                eras = standardCalendar.eras.map(function (era) { return era.name; });
 
             function buildNumberPattern(patterns) {
                 return {
@@ -166,9 +167,16 @@ define([
                         standardCalendar.PM && standardCalendar.PM[0] || 'PM'
                     ],
                     'DAY': standardCalendar.days.names,
+                    "ERANAMES": eras,
+                    "ERAS": eras,
+                    "FIRSTDAYOFWEEK": standardCalendar.firstDay,
                     'MONTH': standardCalendar.months.names,
                     'SHORTDAY': standardCalendar.days.namesAbbr,
                     'SHORTMONTH': standardCalendar.months.namesAbbr,
+                    "WEEKENDRANGE": [
+                        5,
+                        6
+                    ],
                     'fullDate': buildDateTimePattern(standardCalendar.patterns.D),
                     'longDate': buildDateTimePattern(standardCalendar.patterns.d),
                     'medium': buildDateTimePattern(standardCalendar.patterns.F),
