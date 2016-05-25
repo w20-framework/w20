@@ -1,3 +1,7 @@
+# Version 2.3.1 (2016-05-25)
+
+* [fix] Add missing entries in the angular locale object generated from globalize culture definition.
+
 # Version 2.3.0 (2016-04-26)
 
 * [new] Add support for HTML5 mode (pretty urls).
