@@ -1,0 +1,9 @@
+{
+  "globalDependencies": {
+    "es6-promise": "registry:dt/es6-promise#0.0.0+20160614011821",
+    "systemjs": "registry:dt/systemjs#0.19.29+20160702105636"
+  },
+  "dependencies": {
+    "es6-promise": "registry:npm/es6-promise#3.0.0+20160723033700"
+  }
+}

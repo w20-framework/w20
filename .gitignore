@@ -8,21 +8,14 @@
 *.iml
 
 # Distribution
-.tmp
 dist/
 
 # NPM
 node_modules/
 npm-debug.log
 
-# Tests
-coverage/
-
-# Bower
-bower_components/
-
-# ngdocs
-docs/
+# Typings
+typings/
 
 #Vim
 *~
