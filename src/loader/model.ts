@@ -1,6 +1,6 @@
 export interface ModuleDef {
     path:string;
-    autoLoad:boolean;
+    autoLoad?:boolean;
 }
 
 export interface FragmentDef {
@@ -11,7 +11,7 @@ export interface FragmentDef {
 }
 
 export interface FragmentConfig {
-    optional:boolean;
-    modules:{ [s:string]:{} };
-    vars:{ [s:string]:string };
+    optional?:boolean;
+    modules?:{ [s:string]:any };
+    vars?:{ [s:string]:string };
 }
