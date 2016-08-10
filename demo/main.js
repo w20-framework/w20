@@ -2,6 +2,8 @@ define(['../dist/loader/loader'], function (Loader) {
 
     var loader = new Loader();
 
+    Loader.loadConfiguration('main.json');
+
     loader.fragment('id')
         .define({
             id: 'overrideId',

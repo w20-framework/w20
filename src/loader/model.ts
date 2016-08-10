@@ -7,11 +7,18 @@ export interface FragmentDef {
     id?:string;
     description?:string;
     modules?:{ [moduleId:string]:ModuleDef };
-    paths?:{ [s:string]:string };
+    paths?:{ [alias:string]:string };
 }
 
 export interface FragmentConfig {
     optional?:boolean;
-    modules?:{ [s:string]:any };
-    vars?:{ [s:string]:string };
+    modules?:{ [moduleName:string]:any };
+    vars?:{ [varName:string]:string };
+}
+
+export interface FragmentDsl {
+    fragment: (id:string) => FragmentDsl,
+    configure: (conf: FragmentConfig) => FragmentDsl
+    define: (def:FragmentDef) => FragmentDsl,
+    get: () => {definition: FragmentDef, configuration: FragmentConfig},
 }

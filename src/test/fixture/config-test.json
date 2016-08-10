@@ -1,0 +1,7 @@
+{
+  "some-fragmentId": {
+    "some-module": {
+      "some-property": "some-value"
+    }
+  }
+}

@@ -34,6 +34,7 @@ module.exports = function (config) {
             'dist/**/*.js.map',
         ],
         files: [
+            {pattern: 'src/test/fixture/*.json', included: false, served: true},
             'dist/test/*.spec.js'
         ],
 
