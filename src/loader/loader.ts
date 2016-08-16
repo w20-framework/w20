@@ -108,13 +108,15 @@ class Loader {
      * @param path Path to the configuration file
      * @param merge Specify if configuration should be merged or replaced. Defaults to merge.
      */
-    public loadConfiguration(path: string, merge:boolean = true): void {
+    public loadConfiguration(path: string, merge:boolean = true):void {
         Configuration.loadConfiguration(path).then(configuration => {
             if (merge) {
                 Utils.merge(this.fragmentConfigs, configuration)
             } else {
                 this.fragmentConfigs = configuration;
             }
+        }).catch(e => {
+            // todo report error
         });
     }
 

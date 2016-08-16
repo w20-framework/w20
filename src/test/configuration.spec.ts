@@ -11,13 +11,14 @@ describe('The configuration handler', () => {
         });
     });
 
-    it('should load and parse configuration from a given path', () => {
+    it('should load and parse configuration from a given path replacing placeholders with default value', () => {
        expect(parsedConfiguration).toEqual({
            "some-fragmentId": {
                "some-module": {
-                   "some-property": "some-value"
+                   "some-property": "some-value with default-value"
                }
            }
        });
     });
+
 });
