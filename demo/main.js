@@ -66,6 +66,9 @@ define(['../dist/loader/loader'], function (Loader) {
     Loader
         .fragment('test-fragment')
         .definition('test-fragment.json') // does not work with string
+/*        .definition({
+
+        })*/
         .enable({
             modules: {
                 hypermedia: {

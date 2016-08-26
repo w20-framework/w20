@@ -12,13 +12,13 @@ const reservedFragments: MapFragmentId<string> = {
     'w20-core': 'node_modules/w20-core/w20-core.w20.json'
 };
 
-export = new Loader();
+export = (<any>window).w20 = new Loader();
 
 class Loader {
     private definedFragments: MapFragmentId<FragmentDef> = {};
     private fragmentConfigs: MapFragmentId<FragmentConfig> = {};
-    private promiseOfDefinedFragments: Promise<MapFragmentId<FragmentDef>>;
-    private promiseOfFragmentConfigs: Promise<MapFragmentId<FragmentConfig>>;
+    private promiseOfDefinedFragments: Promise<MapFragmentId<FragmentDef>> = Promise.resolve(this.definedFragments);
+    private promiseOfFragmentConfigs: Promise<MapFragmentId<FragmentConfig>> = Promise.resolve(this.fragmentConfigs);
 
     private FragmentDSL(id: string): FragmentDSL {
         return {
@@ -66,8 +66,6 @@ class Loader {
      * @returns FragmentDSL
      */
     public fragment(id: string): FragmentDSL {
-        this.promiseOfDefinedFragments = Promise.resolve(this.definedFragments);
-        this.promiseOfFragmentConfigs = Promise.resolve(this.fragmentConfigs);
         return this.FragmentDSL(id);
     }
 
@@ -99,26 +97,27 @@ class Loader {
             throw new Error(`The fragment '${fragmentId}' is a reserved fragment. Cannot override such definition.`);
         }
 
-        let promiseOfFragmentDef = Promise.resolve(fragmentDef);
-        if (typeof fragmentDef === 'string') {
-            promiseOfFragmentDef = this.loadJSON(fragmentDef);
-        }
+        this.promiseOfDefinedFragments = this.promiseOfDefinedFragments.then(() => {
+            let promiseOfFragmentDef = Promise.resolve(fragmentDef);
+            if (typeof fragmentDef === 'string') {
+                promiseOfFragmentDef = this.loadJSON(fragmentDef);
+            }
 
-        // todo: Push promises into array instead
-        this.promiseOfDefinedFragments = promiseOfFragmentDef.then((definition: FragmentDef) => {
-            if (!definition.id) {
-                definition.id = fragmentId;
-            }
-            if (!this.definedFragments[fragmentId]) {
-                this.definedFragments[fragmentId] = {};
-            }
-            if (merge) {
-                mergeObjects(this.definedFragments[fragmentId], definition);
-            } else {
-                this.definedFragments[fragmentId] = definition;
-            }
-            return this.definedFragments;
-        });
+            return promiseOfFragmentDef.then((definition: FragmentDef) => {
+                if (!definition.id) {
+                    definition.id = fragmentId;
+                }
+                if (!this.definedFragments[fragmentId]) {
+                    this.definedFragments[fragmentId] = {};
+                }
+                if (merge) {
+                    mergeObjects(this.definedFragments[fragmentId], definition);
+                } else {
+                    this.definedFragments[fragmentId] = definition;
+                }
+                return this.definedFragments;
+            });
+        })
 
         return this.FragmentDSL(fragmentId);
     }
@@ -254,8 +253,8 @@ class Loader {
     public clear(): void {
         this.definedFragments = {};
         this.fragmentConfigs = {};
-        this.promiseOfDefinedFragments = null;
-        this.promiseOfFragmentConfigs = null;
+        this.promiseOfDefinedFragments = Promise.resolve(this.definedFragments);
+        this.promiseOfFragmentConfigs = Promise.resolve(this.promiseOfFragmentConfigs);
     }
 
 }
