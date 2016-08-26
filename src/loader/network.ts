@@ -8,12 +8,13 @@ function getCookie(name: string): string {
     }
     if (v === 0) {
         c.split(/[,;]/).map(cookie => {
-            const parts = cookie.split(/=/, 2), name = decodeURIComponent(parts[0].replace(/^\s+/, ""));
-            cookies[name] = parts.length > 1 ? decodeURIComponent(parts[1].replace(/\s+$/, "")) : null;
+            const parts = cookie.split(/=/, 2);
+            const cookieName = decodeURIComponent(parts[0].replace(/^\s+/, ""));
+            cookies[cookieName] = parts.length > 1 ? decodeURIComponent(parts[1].replace(/\s+$/, "")) : null;
         });
     } else {
         c.match(/(?:^|\s+)([!#$%&'*+\-.0-9A-Z^`a-z|~]+)=([!#$%&'*+\-.0-9A-Z^`a-z|~]*|"(?:[\x20-\x7E\x80\xFF]|\\[\x00-\x7F])*")(?=\s*[,;]|$)/g).map(($0, $1) => {
-            cookies[$0] = (<any>$1).charAt(0) === '"' ? (<any>$1).substr(1, -1).replace(/\\(.)/g, "$1") : $1;
+            cookies[$0] = (<any> $1).charAt(0) === '"' ? (<any> $1).substr(1, -1).replace(/\\(.)/g, "$1") : $1;
         });
     }
     return cookies[name];
@@ -43,6 +44,8 @@ export function fetch(path: string, withCredentials: boolean = false): Promise<a
             }
         };
         xhr.send(null);
+    }).catch(e => {
+        console.error(e);
+        return Promise.reject(e);
     });
 }
-

@@ -1,6 +1,7 @@
 import * as Network from './network';
+import {MapFragmentId, FragmentConfig} from "./model";
 
-function replacePlaceholders(text: string, values?: {[s: string]: string}, placeholderRegexp = new RegExp('\\${([\\w-]+)(:([^:}]*))?}', 'g') /* ${varname:defaultvalue} */):string {
+function replacePlaceholders(text: string, values?: {[s: string]: string}, placeholderRegexp = new RegExp('\\${([\\w-]+)(:([^:}]*))?}', 'g') /* ${varname:defaultvalue} */): string {
     let fromLocalStorage = (varname: string, defaultValue: string): any => {
         const result = window.localStorage.getItem(varname);
 
@@ -26,19 +27,18 @@ function replacePlaceholders(text: string, values?: {[s: string]: string}, place
     });
 }
 
-function parseConfiguration(config: string):any {
-    try {
-        return JSON.parse(replacePlaceholders(config));
-    } catch (e) {
-        // todo report error
-    }
+function parseConfiguration(config: string): MapFragmentId<FragmentConfig> {
+    return JSON.parse(replacePlaceholders(config));
 }
 
-export function loadConfiguration(path:string):Promise<any> {
+export function loadConfiguration(path: string): Promise<any> {
     return Network.fetch(path).then(configuration => {
-        let parsedConfiguration = parseConfiguration(configuration);
-        return Promise.resolve(parsedConfiguration);
-    }).catch(e => {
-        // todo report error
+        let parsedConfiguration: MapFragmentId<FragmentConfig>;
+        try {
+            parsedConfiguration = parseConfiguration(configuration);
+        } catch (e) {
+            console.error(e);
+        }
+        return parsedConfiguration;
     });
 }

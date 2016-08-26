@@ -1,0 +1,15 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "no-trailing-whitespace": false,
+    "interface-name": false,
+    "no-string-literal": false,
+    "quotemark": false,
+    "object-literal-sort-keys": false,
+    "max-line-length": false,
+    "member-ordering": false,
+    "trailing-comma": [true, {"singleline": "never", "multiline": "never"}
+    ]
+  }
+
+}

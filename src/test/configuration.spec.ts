@@ -2,7 +2,7 @@ import * as Configuration from '../loader/configuration';
 
 describe('The configuration handler', () => {
 
-    let parsedConfiguration:any;
+    let parsedConfiguration: any;
 
     beforeEach(done => {
         Configuration.loadConfiguration('/base/src/test/fixture/config-test.json').then(configuration => {

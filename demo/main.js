@@ -1,23 +1,109 @@
 define(['../dist/loader/loader'], function (Loader) {
 
-    var loader = new Loader();
+    // todo Fix definition with load json
 
-    Loader.loadConfiguration('main.json');
-
-    loader.fragment('id')
-        .define({
-            id: 'overrideId',
-            prop: 'prop',
-            prop1: 1
+/*    Loader
+        .fragment('one')
+        .definition({
+            modules: {
+                oneModule: {
+                    path: 'one/path',
+                    configSchema: {
+                        type: 'integer'
+                    }
+                }
+            }
         })
-        .configure({
-            prop: 'haha',
-            prop1: 2
+        .enable({
+            modules: {
+                oneModule: 1
+            }
         })
-        .fragment('hihi')
-        .define({whatever: 1});
+        .fragment('two')
+        .definition({
+            modules: {
+                twoModule: {
+                    path: 'two/path',
+                    configSchema: {
+                        type: 'integer'
+                    }
+                }
+            }
+        })
+        .enable({
+            modules: {
+                twoModule: 3
+            }
+        })
+        .enable({
+            modules: {
+                twoModule: 1
+            }
+        });
 
-    console.log(loader.getFragments());
+    Loader.fragment('one')
+        .enable({
+            modules: {
+                oneModule: 'kjk'
+            }
+        });
 
-    loader.init();
+
+    Loader.fragment('one').get().then(function(fragmentOne) {
+        console.log(fragmentOne);
+    });*/
+
+/*    Loader.fragment('two').get().then(function(fragmentOne) {
+        console.log(fragmentOne);
+    });*/
+
+    //Loader.loadConfiguration('inexisting.json');
+
+ /*   Loader.loadJSON('test-fragment.json').then(function(fragDef) {
+        console.log(fragDef);
+    });*/
+
+    Loader
+        .fragment('test-fragment')
+        .definition('test-fragment.json') // does not work with string
+        .enable({
+            modules: {
+                hypermedia: {
+                    api: {}
+                }
+            }
+        })
+        .fragment('inline')
+        .definition({
+            modules: {
+                aModule: {
+                    path: 'path/to/module',
+                    configSchema: {
+                        type: 'object',
+                        properties: {
+                            a: {
+                                type: 'string'
+                            },
+                            b: {
+                                type: 'integer'
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        .enable({
+            modules: {
+                aModule: {
+                    a: 'value',
+                    b: 1
+                }
+            }
+        });
+
+    Loader.getFragmentsAsync().then(function(fragments) {
+        console.log(fragments);
+    });
+
+    //Loader.init();
 });

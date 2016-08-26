@@ -1,7 +1,7 @@
 // Merge objects recursively concatenating arrays if present (original objects are modified).
-export function merge(...sources:Object[]):Object {
-    let r = (previous:any, current:any) => {
-        this.keysOf(current).forEach((p:string) => {
+export function mergeObjects(...sources: Object[]): Object {
+    let r = (previous: any, current: any) => {
+        this.keysOf(current).forEach((p: string) => {
             try {
                 if (current[p].constructor === Object) {
                     previous[p] = r(previous[p], current[p]);
@@ -19,7 +19,10 @@ export function merge(...sources:Object[]):Object {
     return sources.reduce(r);
 }
 
-export let keysOf = Object.keys;
+export function keysOf(o: Object) {
+    return Object.keys(o);
+}
 
-export let valuesOf = (object:{[key: string]: any}) => this.keysOf(object).map((k:string) => object[k]);
-
+export function valuesOf(o: {[key: string]: any}) {
+    return keysOf(o).map((k: string) => o[k]);
+}
