@@ -18,13 +18,13 @@ describe('The Loader', () => {
         expect(loader).toBeDefined();
     });
 
-    it('should register a fragment when given a definition', (done) => {
-        const moduleDef = {someModule: {path: '/a/b'}};
-        const fragmentDef = {id: 'test-fragment', modules: moduleDef};
+    it('should allow defining fragment', (done) => {
+        loader.fragment('test-fragment').definition({}).get().then(fragment => {
+            expect(fragment).toEqual({
+                configuration: undefined,
+                definition: {id: 'test-fragment'}
+            });
 
-        loader.fragment('test-fragment').definition({modules: moduleDef});
-        loader.fragment('test-fragment').get().then(fragment => {
-            expect(fragment).toEqual({configuration: undefined, definition: fragmentDef});
             done();
         });
     });
@@ -36,12 +36,29 @@ describe('The Loader', () => {
         });
     });
 
+    it('should register a fragment when given a definition', (done) => {
+        const moduleDef = {
+            someModule: {
+                path: '/a/b'
+            }
+        };
+        const fragmentDef = {
+            id: 'test-fragment',
+            modules: moduleDef
+        };
+
+        loader.fragment('test-fragment').definition({ modules: moduleDef }).get().then(fragment => {
+            expect(fragment).toEqual({configuration: undefined, definition: fragmentDef});
+            done();
+        });
+    });
+
     it('should error if we enable a fragment with a non valid configuration', () => {
         let fragmentDef = {
             modules: {
                 aModule: {
                     configSchema: {
-                        type: 'string' // expect string
+                        type: 'string'
                     },
                     path: ''
                 }
@@ -49,27 +66,15 @@ describe('The Loader', () => {
         };
         let fragmentConf = {
             modules: {
-                aModule: 1 // integer
+                aModule: 1
             }
         };
-        expect(() => loader.validateFragmentConfiguration(fragmentConf, fragmentDef))
-            .toThrowError(/Configuration of module '.*' in fragment '.*' is not valid/);
-    });
 
-    it('should allow defining fragment', (done) => {
-        loader.fragment('test-fragment').definition({}).get().then(fragment => {
-            expect(fragment).toEqual({
-                configuration: undefined,
-                definition: {id: 'test-fragment'}
-            });
-            done();
-        });
+        expect(() => loader.validateFragmentConfiguration(fragmentConf, fragmentDef)).toThrowError(/Configuration of module '.*' in fragment '.*' is not valid/);
     });
 
     it('should error if we try to define a fragment with a reserved id', () => {
-        expect(() => {
-            loader.fragment('w20-core').definition({});
-        }).toThrowError(/is a reserved/);
+        expect(() => { loader.fragment('w20-core').definition({}); }).toThrowError(/is a reserved/);
     });
 
     it('should get all the defined fragments', (done) => {
@@ -108,6 +113,14 @@ describe('The Loader', () => {
         loader.fragment('one').get().then((fragmentOne: any) => {
             expect(fragmentOne.definition.modules['oneModule'].path).toEqual('one/path');
             expect(fragmentOne.configuration.modules['oneModule']['propOne']).toEqual('propOneValue');
+            done();
+        });
+    });
+
+    it('should get a fragment definition defined with a path', (done) => {
+        loader.fragment('remote-definition').definition('/base/src/test/mock/fragment-definition.json').get().then(fragmentDef => {
+            expect(fragmentDef.definition.modules['foo']).toBeDefined();
+            expect(fragmentDef.definition.modules['xyz']).toBeUndefined();
             done();
         });
     });
@@ -180,6 +193,7 @@ describe('The Loader', () => {
                     }
                 }
             });
+
             done();
         });
     });

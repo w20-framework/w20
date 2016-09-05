@@ -12,7 +12,7 @@ const reservedFragments: MapFragmentId<string> = {
     'w20-core': 'node_modules/w20-core/w20-core.w20.json'
 };
 
-export = (<any>window).w20 = new Loader();
+export = (<any> window).w20 = new Loader();
 
 class Loader {
     private definedFragments: MapFragmentId<FragmentDef> = {};
@@ -117,7 +117,7 @@ class Loader {
                 }
                 return this.definedFragments;
             });
-        })
+        });
 
         return this.FragmentDSL(fragmentId);
     }

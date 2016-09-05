@@ -1,0 +1,25 @@
+{
+  "id": "test-fragment",
+  "name": "Test Fragment",
+  "description": "A fragment definition for testing",
+
+  "modules": {
+    "foo" : {
+      "path" : "path/to/foo",
+      "autoload" : true,
+      "configSchema": {
+        "title": "Foo module configuration",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "bar": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

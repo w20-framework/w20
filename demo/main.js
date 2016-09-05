@@ -46,10 +46,10 @@ define(['../dist/loader/loader'], function (Loader) {
             modules: {
                 oneModule: 'kjk'
             }
-        });
+        });*/
 
 
-    Loader.fragment('one').get().then(function(fragmentOne) {
+/*    Loader.fragment('one').get().then(function(fragmentOne) {
         console.log(fragmentOne);
     });*/
 
@@ -59,16 +59,13 @@ define(['../dist/loader/loader'], function (Loader) {
 
     //Loader.loadConfiguration('inexisting.json');
 
- /*   Loader.loadJSON('test-fragment.json').then(function(fragDef) {
+/*    Loader.loadJSON('test-fragment.json').then(function(fragDef) {
         console.log(fragDef);
     });*/
 
     Loader
         .fragment('test-fragment')
-        .definition('test-fragment.json') // does not work with string
-/*        .definition({
-
-        })*/
+        .definition('test-fragment.json')
         .enable({
             modules: {
                 hypermedia: {

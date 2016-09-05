@@ -5,7 +5,7 @@ describe('The configuration handler', () => {
     let parsedConfiguration: any;
 
     beforeEach(done => {
-        Configuration.loadConfiguration('/base/src/test/fixture/config-test.json').then(configuration => {
+        Configuration.loadConfiguration('/base/src/test/mock/config-test.json').then(configuration => {
             parsedConfiguration = configuration;
             done();
         });
