@@ -7,6 +7,8 @@ node_js:
 
 install:
   - npm install
+  - npm install -g typings
+  - typings install
 
 script: npm run compile && npm run test
 
