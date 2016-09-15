@@ -1,5 +1,5 @@
 import * as Network from './network';
-import {MapFragmentId, FragmentConfig} from "./model";
+import {MapFragmentId, FragmentConfig} from "./model/fragment";
 
 function replacePlaceholders(text: string, values?: {[s: string]: string}, placeholderRegexp = new RegExp('\\${([\\w-]+)(:([^:}]*))?}', 'g') /* ${varname:defaultvalue} */): string {
     let fromLocalStorage = (varname: string, defaultValue: string): any => {
