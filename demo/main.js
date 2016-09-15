@@ -2,7 +2,7 @@ define(['../dist/loader/loader'], function (Loader) {
 
     // todo Fix definition with load json
 
-/*    Loader
+    Loader
         .fragment('one')
         .definition({
             modules: {
@@ -41,27 +41,20 @@ define(['../dist/loader/loader'], function (Loader) {
             }
         });
 
-    Loader.fragment('one')
-        .enable({
-            modules: {
-                oneModule: 'kjk'
-            }
-        });*/
 
+    Loader.fragment('one').get().then(function(fragmentOne) {
+       // console.log(fragmentOne);
+    });
 
-/*    Loader.fragment('one').get().then(function(fragmentOne) {
-        console.log(fragmentOne);
-    });*/
-
-/*    Loader.fragment('two').get().then(function(fragmentOne) {
-        console.log(fragmentOne);
-    });*/
+    Loader.fragment('two').get().then(function(fragmentOne) {
+       // console.log(fragmentOne);
+    });
 
     //Loader.loadConfiguration('inexisting.json');
 
-/*    Loader.loadJSON('test-fragment.json').then(function(fragDef) {
-        console.log(fragDef);
-    });*/
+    Loader.loadJSON('test-fragment.json').then(function(fragDef) {
+      //  console.log(fragDef);
+    });
 
     Loader
         .fragment('test-fragment')
@@ -101,9 +94,9 @@ define(['../dist/loader/loader'], function (Loader) {
             }
         });
 
-    Loader.getFragmentsAsync().then(function(fragments) {
+    /*Loader.getFragmentsAsync().then(function(fragments) {
         console.log(fragments);
-    });
+    });*/
 
-    //Loader.init();
+    Loader.init();
 });

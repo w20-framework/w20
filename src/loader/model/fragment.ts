@@ -1,4 +1,5 @@
 import JsonSchema = tv4.JsonSchema;
+import Config = SystemJSLoader.Config;
 
 export type Fragment = {
     definition: FragmentDef,
@@ -9,7 +10,8 @@ export interface FragmentDef {
     id?: string;
     description?: string;
     modules?: { [moduleId: string]: ModuleDef };
-    paths?: { [alias: string]: string };
+    requireConfig?: { map: any, paths: any, shim: any }; // For compatibility
+    moduleLoaderConfig?: Config;
 }
 
 export interface FragmentConfig {
@@ -23,13 +25,6 @@ export interface ModuleDef {
     path: string;
     autoLoad?: boolean;
     configSchema?: JsonSchema;
-}
-
-export interface FragmentDSL {
-    fragment: (id: string) => FragmentDSL;
-    enable: (conf?: FragmentConfig|string) => FragmentDSL;
-    definition: (def: FragmentDef|string) => FragmentDSL;
-    get: () => Promise<{definition: FragmentDef, configuration: FragmentConfig}>;
 }
 
 export type MapFragmentId<T> = { [fragmentId: string]: T };

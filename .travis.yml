@@ -3,13 +3,12 @@ sudo: false
 language: node_js
 
 node_js:
-  - "0.12"
+  - "6.5.0"
 
-install: 
-  - npm install -g grunt-cli
+install:
   - npm install
 
-script: grunt
+script: npm run compile && npm run test
 
 after_success:
   - "[[ $TRAVIS_PULL_REQUEST == \"false\" && $TRAVIS_BRANCH == \"master\" ]] && chmod +x deploy_ghpages.sh && ./deploy_ghpages.sh"

@@ -1,10 +1,12 @@
 /// <amd-dependency name="tv4" path="./lib/tv4" />
-import {FragmentDef, FragmentConfig, FragmentDSL, MapFragmentId, Fragment, ModuleDef} from './model';
-import {mergeObjects, keysOf} from './utils';
-import {fetch} from './network';
-import {loadConfiguration} from './configuration';
+import { FragmentDef, FragmentConfig, MapFragmentId, Fragment, ModuleDef } from './model/fragment';
+import { FragmentDSL } from './model/dsl';
+import { mergeObjects, keysOf } from './utils';
+import { fetch } from './network';
+import { loadConfiguration } from './configuration';
 import TV4 = tv4.TV4;
 import MultiResult = tv4.MultiResult;
+import System = SystemJSLoader.System;
 
 declare let tv4: TV4;
 
@@ -20,40 +22,20 @@ class Loader {
     private promiseOfDefinedFragments: Promise<MapFragmentId<FragmentDef>> = Promise.resolve(this.definedFragments);
     private promiseOfFragmentConfigs: Promise<MapFragmentId<FragmentConfig>> = Promise.resolve(this.fragmentConfigs);
 
-    private FragmentDSL(id: string): FragmentDSL {
+    private fragmentDSL(id: string): FragmentDSL {
         return {
-            /**
-             * Merge or set a fragment definition.
-             * @param def The fragment definition or the path/url to its definition in json format.
-             * @param merge Merge the definition with any existing one. Default to true.
-             * @returns {FragmentDSL}
-             */
             definition: (def: FragmentDef|string, merge: boolean = true): FragmentDSL => {
                 return this.definition(id, def, merge);
             },
-            /**
-             * Set fragment configuration and activate it.
-             * @param conf The fragment configuration
-             * @param merge Specify if the configuration should be merged with any existing one or if
-             * it should replace it. Default to true.
-             * @returns {FragmentDSL}
-             */
+
             enable: (conf?: FragmentConfig|string, merge: boolean = true): FragmentDSL => {
                 return this.enable(id, conf, merge);
             },
-            /**
-             * Entry point for creating or getting a fragment. Following method(s) call(s) will
-             * use the supplied fragment id to act on it.
-             * @param id The fragment unique identifier.
-             * @returns {FragmentDSL}
-             */
+
             fragment: (fragmentId: string): FragmentDSL => {
                 return this.fragment(fragmentId);
             },
-            /**
-             * Get the fragment definition and configuration
-             * @returns {FragmentDef}
-             */
+
             get: (): Promise<Fragment> => {
                 return this.getFragmentAsync(id);
             }
@@ -66,7 +48,7 @@ class Loader {
      * @returns FragmentDSL
      */
     public fragment(id: string): FragmentDSL {
-        return this.FragmentDSL(id);
+        return this.fragmentDSL(id);
     }
 
     /**
@@ -88,94 +70,6 @@ class Loader {
                     fragments[fragmentIds[i]] = resolvedFragment;
                 });
                 return fragments;
-            });
-        });
-    }
-
-    private definition(fragmentId: string, fragmentDef: FragmentDef|string, merge: boolean = true): FragmentDSL {
-        if (this.isReservedFragment(fragmentId)) {
-            throw new Error(`The fragment '${fragmentId}' is a reserved fragment. Cannot override such definition.`);
-        }
-
-        this.promiseOfDefinedFragments = this.promiseOfDefinedFragments.then(() => {
-            let promiseOfFragmentDef = Promise.resolve(fragmentDef);
-            if (typeof fragmentDef === 'string') {
-                promiseOfFragmentDef = this.loadJSON(fragmentDef);
-            }
-
-            return promiseOfFragmentDef.then((definition: FragmentDef) => {
-                if (!definition.id) {
-                    definition.id = fragmentId;
-                }
-                if (!this.definedFragments[fragmentId]) {
-                    this.definedFragments[fragmentId] = {};
-                }
-                if (merge) {
-                    mergeObjects(this.definedFragments[fragmentId], definition);
-                } else {
-                    this.definedFragments[fragmentId] = definition;
-                }
-                return this.definedFragments;
-            });
-        });
-
-        return this.FragmentDSL(fragmentId);
-    }
-
-    private enable(fragmentId: string, fragmentConf: string|FragmentConfig = {}, merge: boolean = true) {
-        this.promiseOfDefinedFragments.then(definedFragments => {
-            try {
-                this.validateFragmentConfiguration(fragmentConf, definedFragments[fragmentId]);
-            } catch (e) {
-                throw e;
-            }
-        }).catch(e => {
-            console.error(e);
-        });
-
-        let promiseOfFragmentConfig = Promise.resolve(fragmentConf);
-        if (typeof fragmentConf === 'string') {
-            promiseOfFragmentConfig = this.loadJSON(fragmentConf);
-        }
-
-        this.promiseOfFragmentConfigs = promiseOfFragmentConfig.then(configuration => {
-            if (!this.fragmentConfigs[fragmentId]) {
-                this.fragmentConfigs[fragmentId] = {};
-            }
-            if (merge) {
-                mergeObjects(this.fragmentConfigs[fragmentId], configuration);
-            } else {
-                this.fragmentConfigs[fragmentId] = configuration;
-            }
-
-            return this.fragmentConfigs;
-        });
-
-        return this.FragmentDSL(fragmentId);
-    }
-
-    private getFragmentAsync(id: string): Promise<Fragment> {
-        return this.promiseOfDefinedFragments.then(definedFragments => {
-            let promiseOfFragmentDef: Promise<MapFragmentId<FragmentDef>> = Promise.resolve(definedFragments);
-
-            if (!definedFragments[id]) {
-                if (this.isReservedFragment(id)) {
-                    promiseOfFragmentDef = this.loadJSON(reservedFragments[id]).then(definition => {
-                        this.definedFragments[id] = definition;
-                        return this.definedFragments;
-                    });
-                } else {
-                    throw new Error(`Cannot get fragment '${id}'. No definition was found.`);
-                }
-            }
-
-            return promiseOfFragmentDef.then(resolvedDefinedFragments => {
-                return this.promiseOfFragmentConfigs.then(resolvedFragmentConfigs => {
-                    return {
-                        configuration: resolvedFragmentConfigs[id],
-                        definition: resolvedDefinedFragments[id]
-                    };
-                });
             });
         });
     }
@@ -209,15 +103,6 @@ class Loader {
         }
     }
 
-    private getValidationErrors(validationResult: MultiResult): string {
-        let result = '';
-        for (let i = 0; i < validationResult.errors.length; i++) {
-            const currentError = validationResult.errors[i];
-            result += `${currentError.dataPath}: ${currentError.message}\n`;
-        }
-        return result;
-    }
-
     /**
      * Load fragments configuration in json format, parse it and merge/replace it into the fragment configs.
      * @param path Path to the configuration file
@@ -234,7 +119,7 @@ class Loader {
     }
 
     /**
-     * Load and parse JSON data from a given path returning a promise
+     * Utility to load and parse JSON data from a given path returning a promise
      * @param path The location of the JSON data
      * @param withCredentials Specify if the withCredentials header should be set in the request header
      * @returns {Promise<TResult>|Promise<U>}
@@ -243,12 +128,8 @@ class Loader {
         return fetch(path, withCredentials).then(response => JSON.parse(response));
     }
 
-    private isReservedFragment(id: string): boolean {
-        return !!reservedFragments[id];
-    };
-
     /**
-     * Clear all defined and configured fragments from the loader. Useful for unit testing.
+     * Clear all defined and configured fragments from the loader.
      */
     public clear(): void {
         this.definedFragments = {};
@@ -257,4 +138,124 @@ class Loader {
         this.promiseOfFragmentConfigs = Promise.resolve(this.promiseOfFragmentConfigs);
     }
 
+    /**
+     * Initialize and start the application. Collected fragments are used to retrieve modules
+     * and create a SystemJS configuration.
+     * @param moduleLoader The module loader to use. Default to SystemJS.
+     * @return {Promise<any>}
+     */
+    public init(moduleLoader: System = System): Promise<any> {
+        return this.getFragmentsAsync().then(fragments => {
+            return this.initializeApplication(moduleLoader, fragments);
+        }).catch(e => {
+            console.error(e);
+            return e;
+        });
+    }
+
+    private definition(fragmentId: string, fragmentDef: FragmentDef|string, merge: boolean = true): FragmentDSL {
+        if (this.isReservedFragment(fragmentId)) {
+            throw new Error(`The fragment '${fragmentId}' is a reserved fragment. Cannot override such definition.`);
+        }
+
+        this.promiseOfDefinedFragments = this.promiseOfDefinedFragments.then(() => {
+            let promiseOfFragmentDef = Promise.resolve(fragmentDef);
+            if (typeof fragmentDef === 'string') {
+                promiseOfFragmentDef = this.loadJSON(fragmentDef);
+            }
+
+            return promiseOfFragmentDef.then((definition: FragmentDef) => {
+                if (!definition.id) {
+                    definition.id = fragmentId;
+                }
+                if (!this.definedFragments[fragmentId]) {
+                    this.definedFragments[fragmentId] = {};
+                }
+                if (merge) {
+                    mergeObjects(this.definedFragments[fragmentId], definition);
+                } else {
+                    this.definedFragments[fragmentId] = definition;
+                }
+                return this.definedFragments;
+            });
+        });
+
+        return this.fragmentDSL(fragmentId);
+    }
+
+    private enable(fragmentId: string, fragmentConf: string|FragmentConfig = {}, merge: boolean = true) {
+        this.promiseOfDefinedFragments.then(definedFragments => {
+            try {
+                this.validateFragmentConfiguration(fragmentConf, definedFragments[fragmentId]);
+            } catch (e) {
+                throw e;
+            }
+        }).catch(e => {
+            console.error(e);
+        });
+
+        let promiseOfFragmentConfig = Promise.resolve(fragmentConf);
+        if (typeof fragmentConf === 'string') {
+            promiseOfFragmentConfig = this.loadJSON(fragmentConf);
+        }
+
+        this.promiseOfFragmentConfigs = promiseOfFragmentConfig.then(configuration => {
+            if (!this.fragmentConfigs[fragmentId]) {
+                this.fragmentConfigs[fragmentId] = {};
+            }
+            if (merge) {
+                mergeObjects(this.fragmentConfigs[fragmentId], configuration);
+            } else {
+                this.fragmentConfigs[fragmentId] = configuration;
+            }
+
+            return this.fragmentConfigs;
+        });
+
+        return this.fragmentDSL(fragmentId);
+    }
+
+    private getFragmentAsync(id: string): Promise<Fragment> {
+        return this.promiseOfDefinedFragments.then(definedFragments => {
+            let promiseOfFragmentDef: Promise<MapFragmentId<FragmentDef>> = Promise.resolve(definedFragments);
+
+            if (!definedFragments[id]) {
+                if (this.isReservedFragment(id)) {
+                    promiseOfFragmentDef = this.loadJSON(reservedFragments[id]).then(definition => {
+                        this.definedFragments[id] = definition;
+                        return this.definedFragments;
+                    });
+                } else {
+                    throw new Error(`Cannot get fragment '${id}'. No definition was found.`);
+                }
+            }
+
+            return promiseOfFragmentDef.then(resolvedDefinedFragments => {
+                return this.promiseOfFragmentConfigs.then(resolvedFragmentConfigs => {
+                    return {
+                        configuration: resolvedFragmentConfigs[id],
+                        definition: resolvedDefinedFragments[id]
+                    };
+                });
+            });
+        });
+    }
+
+    private getValidationErrors(validationResult: MultiResult): string {
+        let result = '';
+        for (let i = 0; i < validationResult.errors.length; i++) {
+            const currentError = validationResult.errors[i];
+            result += `${currentError.dataPath}: ${currentError.message}\n`;
+        }
+        return result;
+    }
+
+    private isReservedFragment(id: string): boolean {
+        return !!reservedFragments[id];
+    }
+
+    private initializeApplication(moduleLoader: System, fragments: MapFragmentId<Fragment>): Promise<any> {
+
+        return Promise.resolve(1);
+    }
 }
