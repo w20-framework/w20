@@ -311,6 +311,7 @@ class Loader {
         return !!reservedFragments[id];
     }
 
+    // todo need a way to init from dumped configuration
     private initializeApplication(moduleLoader: System, fragments: MapFragmentId<Fragment>): Promise<any> {
         if (!moduleLoader) {
             throw new Error('No module loader has been provided.');
