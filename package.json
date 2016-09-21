@@ -3,8 +3,9 @@
   "version": "3.0.0",
   "description": "SeedStack Web framework",
   "scripts": {
+    "postinstall": "typings install",
     "test": "karma start karma.conf.js",
-    "compile": "tsc",
+    "compile": "tsc --allowJs",
     "compile:w": "tsc -w"
   },
   "keywords": [

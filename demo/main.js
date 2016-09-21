@@ -1,6 +1,6 @@
-define(['../dist/loader/loader'], function (Loader) {
-
-/*    Loader
+define(['../dist/src/loader/loader'], function (Loader) {
+/*
+    Loader
         .fragment('one')
         .definition({
             modules: {
@@ -41,17 +41,17 @@ define(['../dist/loader/loader'], function (Loader) {
 
 
     Loader.fragment('one').get().then(function(fragmentOne) {
-       // console.log(fragmentOne);
+       console.log(fragmentOne);
     });
 
     Loader.fragment('two').get().then(function(fragmentOne) {
-       // console.log(fragmentOne);
+       console.log(fragmentOne);
     });
 
     //Loader.loadConfiguration('inexisting.json');
 
     Loader.loadJSON('test-fragment.json').then(function(fragDef) {
-      //  console.log(fragDef);
+      console.log(fragDef);
     });
 
     Loader
@@ -90,17 +90,20 @@ define(['../dist/loader/loader'], function (Loader) {
                     b: 1
                 }
             }
-        });*/
+        });
 
-    /*Loader.getFragmentsAsync().then(function(fragments) {
+    Loader.getFragmentsAsync().then(function(fragments) {
         console.log(fragments);
     });*/
 
-    // TODO getFragmentsAsync get executed before loadConfiguration completes
-    Loader.loadConfiguration('config-test2.json')
-        .getFragmentsAsync().then(fragments => {
-        console.log(fragments);
+    Loader.setReservedFragmentLocation('w20-core', 'fragment-definition.json');
+    Loader.fragment('w20-core').get().then(fragment => {
+        console.log(fragment);
     });
 
-    Loader.init();
+   /* Loader.loadConfiguration('config-test2.json').getFragmentsAsync().then(fragments => {
+        console.log(fragments);
+    });*/
+
+    //Loader.init();
 });

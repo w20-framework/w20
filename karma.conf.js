@@ -35,7 +35,7 @@ module.exports = function (config) {
         ],
         files: [
             {pattern: 'src/test/mock/*.json', included: false, served: true},
-            'dist/test/*.spec.js'
+            'dist/src/test/*.spec.js'
         ],
 
         port: 9876,

@@ -5,5 +5,13 @@
         "bar": ["one", "two"]
       }
     }
+  },
+
+  "fragment2-definition.json": {
+    "modules": {
+      "boo": {
+        "zin": ["one", "two"]
+      }
+    }
   }
 }

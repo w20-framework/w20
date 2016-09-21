@@ -16,11 +16,13 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "allowJs": true
   },
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "demo"
   ],
   "compileOnSave": true
 }
