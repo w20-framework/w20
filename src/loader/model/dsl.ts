@@ -15,14 +15,14 @@ export interface FragmentDSL {
      * it should replace it. Default to true.
      * @returns {FragmentDSL}
      */
-    enable: (conf?: FragmentConfig|string) => FragmentDSL;
+    enable: (conf?: FragmentConfig|string, merge?: boolean) => FragmentDSL;
     /**
      * Merge or set a fragment definition.
      * @param def The fragment definition or the path/url to its definition in json format.
      * @param merge Merge the definition with any existing one. Default to true.
      * @returns {FragmentDSL}
      */
-    definition: (def: FragmentDef|string) => FragmentDSL;
+    definition: (def: FragmentDef|string, merge?: boolean) => FragmentDSL;
     /**
      * Get the fragment definition and configuration
      * @returns {FragmentDef}

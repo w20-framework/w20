@@ -1,0 +1,9 @@
+{
+  "/base/src/test/mock/fragment-definition.json": {
+    "modules": {
+      "foo": {
+        "bar": ["one", "two"]
+      }
+    }
+  }
+}

@@ -1,8 +1,6 @@
 define(['../dist/loader/loader'], function (Loader) {
 
-    // todo Fix definition with load json
-
-    Loader
+/*    Loader
         .fragment('one')
         .definition({
             modules: {
@@ -92,11 +90,17 @@ define(['../dist/loader/loader'], function (Loader) {
                     b: 1
                 }
             }
-        });
+        });*/
 
     /*Loader.getFragmentsAsync().then(function(fragments) {
         console.log(fragments);
     });*/
+
+    // TODO getFragmentsAsync get executed before loadConfiguration completes
+    Loader.loadConfiguration('config-test2.json')
+        .getFragmentsAsync().then(fragments => {
+        console.log(fragments);
+    });
 
     Loader.init();
 });

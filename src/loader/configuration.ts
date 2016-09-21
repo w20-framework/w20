@@ -27,15 +27,20 @@ function replacePlaceholders(text: string, values?: {[s: string]: string}, place
     });
 }
 
-function parseConfiguration(config: string): MapFragmentId<FragmentConfig> {
+function parse(config: string): MapFragmentId<FragmentConfig> {
     return JSON.parse(replacePlaceholders(config));
+}
+
+function validate (configuration: any) {
+    // todo implement
+    return configuration;
 }
 
 export function loadConfiguration(path: string): Promise<any> {
     return Network.fetch(path).then(configuration => {
         let parsedConfiguration: MapFragmentId<FragmentConfig>;
         try {
-            parsedConfiguration = parseConfiguration(configuration);
+            parsedConfiguration = validate(parse(configuration));
         } catch (e) {
             console.error(e);
         }

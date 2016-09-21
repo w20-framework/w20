@@ -84,8 +84,9 @@ describe('The Loader', () => {
 
     it('should error if we try to define a fragment with a reserved id', () => {
         expect(() => {
+            loader.setReservedFragmentLocation('w20-core', '/base/src/test/mock/fragment-definition.json');
             loader.fragment('w20-core').definition({});
-        }).toThrowError(/is a reserved/);
+        }).toThrowError(/is a reserved fragment. Cannot override/);
     });
 
     it('should get all the defined fragments', (done) => {
@@ -132,6 +133,36 @@ describe('The Loader', () => {
         loader.fragment('remote-definition').definition('/base/src/test/mock/fragment-definition.json').get().then(fragmentDef => {
             expect(fragmentDef.definition.modules[ 'foo' ]).toBeDefined();
             expect(fragmentDef.definition.modules[ 'xyz' ]).toBeUndefined();
+            done();
+        });
+    });
+
+    it('should return itself when cleared', () => {
+        expect(loader.clear()).toEqual(loader);
+    });
+
+    it('should get a reserved fragment', (done) => {
+        loader.setReservedFragmentLocation('w20-core', '/base/src/test/mock/fragment-definition.json');
+        loader.fragment('w20-core').get().then(fragment => {
+            expect(fragment.definition.id).toEqual('test-fragment');
+            done();
+        });
+    });
+
+    it('should register a configuration loaded with the loadConfiguration method', (done) => {
+        loader.loadConfiguration('/base/src/test/mock/config-test2.json').getFragmentsAsync().then(fragments => {
+            expect(fragments).not.toBeNull();
+
+           /* expect(fragments).toEqual({
+                definition: {
+                    'some-fragmentId': {
+                        'some-module': {
+                            'some-property': 'some-value with ${placeholder-value:default-value}'
+                        }
+                    }
+                },
+                configuration: undefined
+            });*/
             done();
         });
     });

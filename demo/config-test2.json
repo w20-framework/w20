@@ -1,0 +1,9 @@
+{
+  "fragment-definition.json": {
+    "modules": {
+      "foo": {
+        "bar": ["one", "two"]
+      }
+    }
+  }
+}
