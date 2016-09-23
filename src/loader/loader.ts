@@ -19,27 +19,27 @@ class Loader {
     private fragmentConfigs: MapFragmentId<FragmentConfig> = {};
     private promiseOfFragmentConfigs: Promise<MapFragmentId<FragmentConfig>> = Promise.resolve(this.fragmentConfigs);
 
-    private dsl(id: string): FragmentDSL {
+    private dsl(fragmentId: string): FragmentDSL {
         return {
-            fragment: (fragmentId: string): FragmentDSL => {
-                return this.fragment(fragmentId);
+            fragment: (id: string): FragmentDSL => {
+                return this.fragment(id);
             },
 
-            definition: (def: FragmentDef|string, merge: boolean = true): FragmentDSL => {
-                if (this.isReservedFragment(id)) {
-                    throw new Error(`The fragment '${id}' is a reserved fragment. Cannot override such definition.`);
+            definition: (fragmentDef: FragmentDef|string, merge: boolean = true): FragmentDSL => {
+                if (this.isReservedFragment(fragmentId)) {
+                    throw new Error(`The fragment '${fragmentId}' is a reserved fragment. Cannot override such definition.`);
                 }
-                this.promiseOfDefinedFragments = this.newPromiseOfDefinedFragments(id, def, merge);
-                return this.dsl(id);
+                this.promiseOfDefinedFragments = this.newPromiseOfDefinedFragments(fragmentId, fragmentDef, merge);
+                return this.dsl(fragmentId);
             },
 
-            enable: (conf?: FragmentConfig|string, merge: boolean = true): FragmentDSL => {
-                this.enableFragment(id, conf, merge);
-                return this.dsl(id);
+            enable: (fragmentConfig?: FragmentConfig|string, merge: boolean = true): FragmentDSL => {
+                this.enableFragment(fragmentId, fragmentConfig, merge);
+                return this.dsl(fragmentId);
             },
 
             get: (): Promise<Fragment> => {
-                return this.getFragmentAsync(id);
+                return this.getFragmentAsync(fragmentId);
             }
         };
     }
@@ -147,7 +147,7 @@ class Loader {
             });
         });
 
-        return this
+        return this;
     }
 
     /**
@@ -210,6 +210,15 @@ class Loader {
      */
     public getReservedFragmentLocation(id: string): string {
         return reservedFragments[id];
+    }
+
+    /**
+     * Log the configuration to the console
+     */
+    public logConfiguration(): void {
+        this.getFragmentsAsync().then(fragments => {
+            console.log(JSON.stringify(fragments, null, 4));
+        });
     }
 
     private newPromiseOfDefinedFragments(fragmentId: string, fragmentDef: FragmentDef|string, merge: boolean = true) {
@@ -311,11 +320,12 @@ class Loader {
         return !!reservedFragments[id];
     }
 
-    // todo need a way to init from dumped configuration
     private initializeApplication(moduleLoader: System, fragments: MapFragmentId<Fragment>): Promise<any> {
         if (!moduleLoader) {
             throw new Error('No module loader has been provided.');
         }
+
+        console.log(fragments);
 
         return Promise.resolve(1);
     }

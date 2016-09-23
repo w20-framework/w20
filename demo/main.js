@@ -107,5 +107,5 @@ define(['../dist/src/loader/loader'], function (Loader) {
         console.log(fragments);
     });*/
 
-    //Loader.init();
+    Loader.init();
 });

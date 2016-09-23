@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "es6-shim": "^0.35.1",
-    "systemjs": "^0.19.36"
+    "systemjs": "^0.19.36",
+    "xmlhttprequest": "^1.8.0"
   }
 }

@@ -1,6 +1,7 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "no-console": false,
     "no-trailing-whitespace": false,
     "interface-name": false,
     "no-string-literal": false,
