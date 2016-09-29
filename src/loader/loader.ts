@@ -1,15 +1,17 @@
 /// <amd-dependency name="tv4" path="./lib/tv4" />
 import { FragmentDef, FragmentConfig, MapFragmentId, Fragment, ModuleDef } from './model/fragment';
 import { FragmentDSL } from './model/dsl';
-import { mergeObjects, keysOf } from './utils';
+import { mergeObjects, keysOf, valuesOf } from './utils';
 import { fetch } from './network';
 import { loadConfiguration } from './configuration';
 import reservedFragments from './reserved-fragment';
 import TV4 = tv4.TV4;
 import MultiResult = tv4.MultiResult;
-import System = SystemJSLoader.System;
 declare let tv4: TV4;
 export = (<any> window).w20 = new Loader();
+
+const SystemJS = (<any> window)['System'];
+const requirejs = (<any> window)['requirejs'];
 
 class Loader {
 
@@ -178,12 +180,11 @@ class Loader {
     /**
      * Initialize and start the application. Collected fragments are used to retrieve modules
      * and create a SystemJS configuration.
-     * @param moduleLoader The module loader to use. Default to SystemJS.
      * @return {Promise<any>}
      */
-    public init(moduleLoader: System = System): Promise<any> {
+    public init(): Promise<any> {
         return this.getFragmentsAsync().then(fragments => {
-            return this.initializeApplication(moduleLoader, fragments);
+           return this.initializeApplication(fragments);
         }).catch(e => {
             console.error(e);
             return e;
@@ -320,12 +321,24 @@ class Loader {
         return !!reservedFragments[id];
     }
 
-    private initializeApplication(moduleLoader: System, fragments: MapFragmentId<Fragment>): Promise<any> {
-        if (!moduleLoader) {
-            throw new Error('No module loader has been provided.');
-        }
+    private getFragmentsMergedModuleLoaderConfig(fragments: MapFragmentId<Fragment>) {
+        let fragmentsModuleLoaderConfig = {};
 
-        console.log(fragments);
+        valuesOf(fragments).forEach((fragment: Fragment) => {
+            mergeObjects(fragmentsModuleLoaderConfig, fragment.definition.moduleLoaderConfig || {});
+        });
+
+        return fragmentsModuleLoaderConfig;
+    }
+
+    private initializeApplication(fragments: MapFragmentId<Fragment>): Promise<any> {
+        let fragmentsMergedModuleLoaderConfig = this.getFragmentsMergedModuleLoaderConfig(fragments);
+
+        if (SystemJS) {
+            let systemjsConfig = SystemJS.getConfig();
+            mergeObjects(systemjsConfig, fragmentsMergedModuleLoaderConfig);
+            SystemJS.config(systemjsConfig);
+        }
 
         return Promise.resolve(1);
     }

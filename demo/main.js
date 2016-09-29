@@ -2,7 +2,7 @@
  *  !!!! Since this is not transpiled using ES6 features will break in some "browsers"
  */
 define(['../dist/src/loader/loader'], function (Loader) {
-/*    Loader
+    Loader
         .fragment('one')
         .definition({
             modules: {
@@ -96,11 +96,11 @@ define(['../dist/src/loader/loader'], function (Loader) {
 
     Loader.getFragmentsAsync().then(function(fragments) {
         console.log(fragments);
-    });*/
+    });
 
     Loader.setReservedFragmentLocation('w20-core', 'fragment-definition.json');
     Loader.fragment('w20-core').enable().get().then(function(fragment) {
-        console.log(fragment);
+        //console.log(fragment);
     });
 
    /* Loader.loadConfiguration('config-test2.json').getFragmentsAsync().then(function(fragments) {

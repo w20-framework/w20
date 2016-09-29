@@ -5,10 +5,10 @@
 
   "modules": {
     "foo" : {
-      "path" : "path/to/foo",
+      "path" : "{test-fragment}/modules/myModule",
       "autoload" : true,
       "configSchema": {
-        "title": "Foo module configuration",
+        "title": "myModule module configuration",
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -20,6 +20,12 @@
           }
         }
       }
+    }
+  },
+
+  "moduleLoaderConfig": {
+    "map": {
+      "jquery": "https://code.jquery.com/jquery.js"
     }
   }
 }

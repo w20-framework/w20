@@ -3,6 +3,7 @@
   "rules": {
     "no-console": false,
     "no-trailing-whitespace": false,
+    "no-consecutive-blank-lines": false,
     "interface-name": false,
     "no-string-literal": false,
     "quotemark": false,
