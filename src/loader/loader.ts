@@ -11,7 +11,7 @@ declare let tv4: TV4;
 export = (<any> window).w20 = new Loader();
 
 const SystemJS = (<any> window)['System'];
-const requirejs = (<any> window)['requirejs'];
+// const requirejs = (<any> window)['requirejs'];
 
 class Loader {
 
@@ -184,7 +184,7 @@ class Loader {
      */
     public init(): Promise<any> {
         return this.getFragmentsAsync().then(fragments => {
-           return this.initializeApplication(fragments);
+            return this.initializeApplication(fragments);
         }).catch(e => {
             console.error(e);
             return e;
@@ -225,14 +225,34 @@ class Loader {
     private newPromiseOfDefinedFragments(fragmentId: string, fragmentDef: FragmentDef|string, merge: boolean = true) {
         return this.promiseOfDefinedFragments.then(() => {
             return this.defineFragment(fragmentId, fragmentDef, merge);
+        }).catch(e => {
+            return e;
         });
+    }
+
+    private registerFragmentRootAlias(fragmentId: string, fragmentRoot: string) {
+        let fragmentRootAlias = `{${fragmentId}}`;
+        if (SystemJS) {
+            SystemJS.config({
+                paths: { [fragmentRootAlias]: fragmentRoot }
+            });
+        }
     }
 
     private defineFragment(fragmentId: string, fragmentDef: FragmentDef|string, merge: boolean = true): Promise<MapFragmentId<FragmentDef>> {
         let promiseOfFragmentDef = Promise.resolve(fragmentDef);
+        let fragmentRoot = '.';
 
         if (typeof fragmentDef === 'string') {
-            promiseOfFragmentDef = this.loadJSON(fragmentDef).catch(e => {
+            let fragmentDefLocation = <string> fragmentDef;
+            promiseOfFragmentDef = this.loadJSON(fragmentDefLocation).then((definition: FragmentDef) => {
+                if (!definition.id) {
+                    throw new Error(`Fragment at ${fragmentId} does not have a mandatory id`);
+                }
+                fragmentId = definition.id;
+                fragmentRoot = fragmentDefLocation.substring(0, fragmentDefLocation.lastIndexOf('/')) || '.';
+                return definition;
+            }).catch(e => {
                 console.error(e);
                 return e;
             });
@@ -243,9 +263,12 @@ class Loader {
                 definition.id = fragmentId;
             } else if (definition.id) {
                 if (definition.id !== fragmentId) {
-                    // todo handle this case
+                    return Promise.reject(new Error(`Cannot declare a fragment with an id that is different from the one in its definition`));
                 }
             }
+
+            this.registerFragmentRootAlias(fragmentId, fragmentRoot);
+
             if (!this.definedFragments[fragmentId]) {
                 this.definedFragments[fragmentId] = {};
             }
@@ -339,6 +362,11 @@ class Loader {
             mergeObjects(systemjsConfig, fragmentsMergedModuleLoaderConfig);
             SystemJS.config(systemjsConfig);
         }
+
+        // Add root and url to remotely loaded fragments (768)
+        // Create fragment root alias { fragment-name } => test
+        // Check for non existent configured modules
+
 
         return Promise.resolve(1);
     }

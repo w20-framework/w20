@@ -1,11 +1,12 @@
 {
-  "id": "remote-definition",
+  "id": "w20-core",
   "name": "Test Fragment",
   "description": "A fragment definition for testing",
+
   "modules": {
-    "foo": {
-      "path": "path/to/foo",
-      "autoload": true,
+    "foo" : {
+      "path" : "path/to/foo",
+      "autoload" : true,
       "configSchema": {
         "title": "Foo module configuration",
         "type": "object",

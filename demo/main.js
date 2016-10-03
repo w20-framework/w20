@@ -1,8 +1,9 @@
 /**
  *  !!!! Since this is not transpiled using ES6 features will break in some "browsers"
  */
-define(['../dist/src/loader/loader'], function (Loader) {
-    Loader
+define(['../dist/src/loader/loader'], function (loader) {
+
+    loader
         .fragment('one')
         .definition({
             modules: {
@@ -42,21 +43,21 @@ define(['../dist/src/loader/loader'], function (Loader) {
         });
 
 
-    Loader.fragment('one').get().then(function(fragmentOne) {
+    loader.fragment('one').get().then(function(fragmentOne) {
        console.log(fragmentOne);
     });
 
-    Loader.fragment('two').get().then(function(fragmentOne) {
+    loader.fragment('two').get().then(function(fragmentOne) {
        console.log(fragmentOne);
     });
 
     //Loader.loadConfiguration('inexisting.json');
 
-    Loader.loadJSON('test-fragment.json').then(function(fragDef) {
+    loader.loadJSON('test-fragment.json').then(function(fragDef) {
       console.log(fragDef);
     });
 
-    Loader
+    loader
         .fragment('test-fragment')
         .definition('test-fragment.json')
         .enable({
@@ -94,12 +95,12 @@ define(['../dist/src/loader/loader'], function (Loader) {
             }
         });
 
-    Loader.getFragmentsAsync().then(function(fragments) {
+    loader.getFragmentsAsync().then(function(fragments) {
         console.log(fragments);
     });
 
-    Loader.setReservedFragmentLocation('w20-core', 'fragment-definition.json');
-    Loader.fragment('w20-core').enable().get().then(function(fragment) {
+    loader.setReservedFragmentLocation('w20-core', 'fragment-definition.json');
+    loader.fragment('w20-core').enable().get().then(function(fragment) {
         //console.log(fragment);
     });
 
@@ -107,5 +108,5 @@ define(['../dist/src/loader/loader'], function (Loader) {
         console.log(fragments);
     });*/
 
-    Loader.init();
+    loader.init();
 });

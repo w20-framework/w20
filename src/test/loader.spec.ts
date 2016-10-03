@@ -142,10 +142,10 @@ describe('The Loader', () => {
     });
 
     it('should get a reserved fragment', (done) => {
-        loader.setReservedFragmentLocation('w20-core', '/base/src/test/mock/fragment-definition.json');
+        loader.setReservedFragmentLocation('w20-core', '/base/src/test/mock/reserved-fragment.json');
         loader.fragment('w20-core').get().then(fragment => {
             expect(fragment).toBeDefined();
-            expect(fragment.definition.id).toEqual('test-fragment');
+            expect(fragment.definition.id).toEqual('w20-core');
             done();
         });
     });
@@ -153,17 +153,9 @@ describe('The Loader', () => {
     it('should register a configuration loaded with the loadConfiguration method', (done) => {
         loader.loadConfiguration('/base/src/test/mock/config-test2.json').getFragmentsAsync().then(fragments => {
             expect(fragments).not.toBeNull();
+            expect(fragments['remote-definition']).not.toBeNull();
 
-           /* expect(fragments).toEqual({
-                definition: {
-                    'some-fragmentId': {
-                        'some-module': {
-                            'some-property': 'some-value with ${placeholder-value:default-value}'
-                        }
-                    }
-                },
-                configuration: undefined
-            });*/
+            //expect(fragments).toEqual({});
             done();
         });
     });
