@@ -37,7 +37,7 @@ describe('The Loader', () => {
     });
 
     it('should get a defined fragment', (done) => {
-        loader.fragment('new-fragment').definition({ modules: { test: { path: ''}}});
+        loader.fragment('new-fragment').definition({ modules: { test: { path: '' } } });
 
         loader.fragment('new-fragment').get().then(fragment => {
             expect(fragment.definition.modules['test']).toBeDefined();
@@ -69,7 +69,7 @@ describe('The Loader', () => {
                     configSchema: {
                         type: 'string'
                     },
-                    path: ''
+                    path: 'a'
                 }
             }
         };
@@ -97,9 +97,9 @@ describe('The Loader', () => {
         let fragmentsPromise = loader.getFragmentsAsync();
 
         fragmentsPromise.then(resolvedFragments => {
-            expect(resolvedFragments[ 'a' ].definition).toEqual({ id: 'a' });
-            expect(resolvedFragments[ 'b' ].definition).toEqual({ id: 'b' });
-            expect(resolvedFragments[ 'c' ].definition).toEqual({ id: 'c' });
+            expect(resolvedFragments['a'].definition).toEqual({ id: 'a' });
+            expect(resolvedFragments['b'].definition).toEqual({ id: 'b' });
+            expect(resolvedFragments['c'].definition).toEqual({ id: 'c' });
             done();
         });
     });
@@ -123,16 +123,16 @@ describe('The Loader', () => {
             });
 
         loader.fragment('one').get().then((fragmentOne: any) => {
-            expect(fragmentOne.definition.modules[ 'oneModule' ].path).toEqual('one/path');
-            expect(fragmentOne.configuration.modules[ 'oneModule' ][ 'propOne' ]).toEqual('propOneValue');
+            expect(fragmentOne.definition.modules['oneModule'].path).toEqual('one/path');
+            expect(fragmentOne.configuration.modules['oneModule']['propOne']).toEqual('propOneValue');
             done();
         });
     });
 
     it('should get a fragment definition defined with a path', (done) => {
         loader.fragment('remote-definition').definition('/base/src/test/mock/fragment-definition.json').get().then(fragmentDef => {
-            expect(fragmentDef.definition.modules[ 'foo' ]).toBeDefined();
-            expect(fragmentDef.definition.modules[ 'xyz' ]).toBeUndefined();
+            expect(fragmentDef.definition.modules['foo']).toBeDefined();
+            expect(fragmentDef.definition.modules['xyz']).toBeUndefined();
             done();
         });
     });
@@ -154,10 +154,33 @@ describe('The Loader', () => {
         loader.loadConfiguration('/base/src/test/mock/config-test2.json').getFragmentsAsync().then(fragments => {
             expect(fragments).not.toBeNull();
             expect(fragments['remote-definition']).not.toBeNull();
+            expect(fragments['remote-definition'].definition.description).toEqual('A fragment definition for testing');
+            expect(fragments['remote-definition'].configuration).toEqual({
+                modules: {
+                    foo: {
+                        bar: ['one', 'two']
+                    }
+                }
+            });
 
-            //expect(fragments).toEqual({});
             done();
         });
+    });
+
+    it('should create an alias for the fragment root', (done) => {
+        loader
+            .fragment('myFrag')
+            .definition({ id: 'myFrag' })
+            .fragment('remote-definition')
+            .definition('/base/src/test/mock/fragment-definition.json');
+
+
+        loader.getFragmentsAsync().then(() => {
+                expect(SystemJS).toBeDefined();
+                expect(SystemJS.paths['{myFrag}/*']).toEqual('.');
+                expect(SystemJS.paths['{remote-definition}/*']).toEqual('/base/src/test/mock');
+                done();
+            });
     });
 
     it('should allow chaining multiple fragment definition and configuration', (done) => {
@@ -194,7 +217,7 @@ describe('The Loader', () => {
             });
 
         loader.getFragmentsAsync().then(fragments => {
-            expect(fragments[ 'one' ]).toEqual({
+            expect(fragments['one']).toEqual({
                 configuration: {
                     modules: {
                         oneModule: {
@@ -211,7 +234,7 @@ describe('The Loader', () => {
                     }
                 }
             });
-            expect(fragments[ 'two' ]).toEqual({
+            expect(fragments['two']).toEqual({
                 definition: {
                     id: 'two',
                     modules: {

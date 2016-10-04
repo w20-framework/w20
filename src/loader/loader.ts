@@ -7,14 +7,20 @@ import { loadConfiguration } from './configuration';
 import reservedFragments from './reserved-fragment';
 import TV4 = tv4.TV4;
 import MultiResult = tv4.MultiResult;
-declare let tv4: TV4;
-export = (<any> window).w20 = new Loader();
+import Config = SystemJSLoader.Config;
 
-const SystemJS = (<any> window)['System'];
-// const requirejs = (<any> window)['requirejs'];
+declare let tv4: TV4;
+declare let window: any;
+
+const SystemJS = window['System'];
+if (SystemJS) {
+    window.define = SystemJS.amdDefine;
+    window.require = SystemJS.amdRequire;
+}
+
+export = window.w20 = new Loader();
 
 class Loader {
-
     private definedFragments: MapFragmentId<FragmentDef> = {};
     private promiseOfDefinedFragments: Promise<MapFragmentId<FragmentDef>> = Promise.resolve(this.definedFragments);
 
@@ -26,7 +32,6 @@ class Loader {
             fragment: (id: string): FragmentDSL => {
                 return this.fragment(id);
             },
-
             definition: (fragmentDef: FragmentDef|string, merge: boolean = true): FragmentDSL => {
                 if (this.isReservedFragment(fragmentId)) {
                     throw new Error(`The fragment '${fragmentId}' is a reserved fragment. Cannot override such definition.`);
@@ -34,12 +39,10 @@ class Loader {
                 this.promiseOfDefinedFragments = this.newPromiseOfDefinedFragments(fragmentId, fragmentDef, merge);
                 return this.dsl(fragmentId);
             },
-
             enable: (fragmentConfig?: FragmentConfig|string, merge: boolean = true): FragmentDSL => {
                 this.enableFragment(fragmentId, fragmentConfig, merge);
                 return this.dsl(fragmentId);
             },
-
             get: (): Promise<Fragment> => {
                 return this.getFragmentAsync(fragmentId);
             }
@@ -94,24 +97,28 @@ class Loader {
      */
     public validateFragmentConfiguration(fragmentConf: FragmentConfig, fragmentDef: FragmentDef, validator: TV4 = tv4): void {
         if (fragmentConf.modules) {
-            let moduleConf: {[prop: string]: any};
-            let moduleDef: ModuleDef;
-
+            if (!fragmentDef.modules) {
+                throw new Error(`Fragment '${fragmentDef.id}' has been configured with module entries but its definition does not declare any modules`);
+            }
             keysOf(fragmentConf.modules).forEach((moduleName: string) => {
-                moduleDef = fragmentDef.modules[moduleName];
-                if (!moduleDef) {
-                    throw new Error(`Missing definition for module '${moduleName}' of fragment '${fragmentDef.id}'`);
-                }
-                if (moduleDef.configSchema) {
-                    moduleConf = fragmentConf.modules[moduleName];
-
-                    let result = validator.validateMultiple(moduleConf, moduleDef.configSchema);
-
-                    if (!result.valid) {
-                        throw new Error(`Configuration of module '${moduleName}' in fragment '${fragmentDef.id}' is not valid.\n${this.getValidationErrors(result)}`);
-                    }
-                }
+                this.validateModuleConfiguration(moduleName, fragmentDef.id, fragmentConf.modules[moduleName], fragmentDef.modules[moduleName], validator);
             });
+        }
+    }
+
+    private validateModuleConfiguration (moduleName: string, fragmentId: string, moduleConf: any, moduleDef: ModuleDef, validator: TV4): void {
+        if (!moduleDef) {
+            throw new Error(`Module '${moduleName}' has been configured but is not declared in fragment ${fragmentId} definition`);
+        }
+        if (!moduleDef.path) {
+            throw new Error(`Module '${moduleName}' definition in fragment ${fragmentId} does not specify its path`);
+        }
+        if (moduleDef.configSchema) {
+            let result = validator.validateMultiple(moduleConf, moduleDef.configSchema);
+
+            if (!result.valid) {
+                throw new Error(`Configuration of module '${moduleName}' in fragment '${fragmentId}' is not valid.\n${this.getValidationErrors(result)}`);
+            }
         }
     }
 
@@ -127,13 +134,25 @@ class Loader {
             return loadConfiguration(path).then((configuration: MapFragmentId<FragmentConfig>) => {
                 let fragments: Promise<void>[] = [];
 
-                keysOf(configuration).forEach((fragmentPath: string) => {
-                    if (this.isReservedFragment(fragmentPath)) {
-                        fragmentPath = reservedFragments[fragmentPath];
+                keysOf(configuration).forEach((fragmentDefPath: string) => {
+
+                    let fragmentId: string;
+                    let promise: Promise<void>;
+
+                    if (this.isReservedFragment(fragmentDefPath)) {
+                        fragmentId = fragmentDefPath;
+                        fragmentDefPath = reservedFragments[fragmentDefPath];
                     }
 
-                    let promise = this.defineFragment(fragmentPath, fragmentPath, merge).then(() => {
-                        return this.enableFragment(fragmentPath, configuration[fragmentPath], merge);
+                    promise = this.loadJSON(fragmentDefPath).then((definition: FragmentDef) => {
+                        this.validateFragmentDefinition(fragmentDefPath, definition);
+                        fragmentId = definition.id;
+                        return this.defineFragment(fragmentId, definition, merge).then(() => {
+                            return this.enableFragment(fragmentId, configuration[fragmentDefPath], merge);
+                        });
+                    }).catch(e => {
+                        console.error(e);
+                        return e;
                     });
 
                     fragments.push(promise);
@@ -159,7 +178,16 @@ class Loader {
      * @returns {Promise<Object|Array<any>|void>}
      */
     public loadJSON(path: string, withCredentials: boolean = false): Promise<Object|Array<any>|void> {
-        return fetch(path, withCredentials).then(response => JSON.parse(response)).catch(e => {
+        return fetch(path, withCredentials).then(response => {
+            let parsedResponse: any;
+            try {
+                parsedResponse = JSON.parse(response)
+            } catch (e) {
+                console.error(`Cannot parse JSON at ${path}`);
+                throw e;
+            }
+            return parsedResponse;
+        }).catch(e => {
             console.error(e);
         });
     }
@@ -184,7 +212,7 @@ class Loader {
      */
     public init(): Promise<any> {
         return this.getFragmentsAsync().then(fragments => {
-            return this.initializeApplication(fragments);
+            return this.initializeApplication(this.filterByEnabled(fragments));
         }).catch(e => {
             console.error(e);
             return e;
@@ -222,6 +250,16 @@ class Loader {
         });
     }
 
+    private filterByEnabled (fragments: MapFragmentId<Fragment>): MapFragmentId<Fragment> {
+        let filteredEnabledFragments: MapFragmentId<Fragment> = {};
+        valuesOf(fragments).forEach((fragment: Fragment) => {
+            if (fragment.configuration) {
+                filteredEnabledFragments[fragment.definition.id] = fragment;
+            }
+        });
+        return filteredEnabledFragments;
+    }
+
     private newPromiseOfDefinedFragments(fragmentId: string, fragmentDef: FragmentDef|string, merge: boolean = true) {
         return this.promiseOfDefinedFragments.then(() => {
             return this.defineFragment(fragmentId, fragmentDef, merge);
@@ -230,27 +268,34 @@ class Loader {
         });
     }
 
-    private registerFragmentRootAlias(fragmentId: string, fragmentRoot: string) {
+    private registerFragmentRootAlias(fragmentId: string, fragmentDef: any) {
         let fragmentRootAlias = `{${fragmentId}}`;
+        let fragmentRoot = '.';
+        if (typeof fragmentDef === 'string') {
+            fragmentRoot = fragmentDef.substring(0, fragmentDef.lastIndexOf('/')) || '.';
+        }
         if (SystemJS) {
+            fragmentRootAlias = `${fragmentRootAlias}/*`;
             SystemJS.config({
-                paths: { [fragmentRootAlias]: fragmentRoot }
+                paths: { [fragmentRootAlias]: fragmentRoot + '/*' }
             });
+        }
+    }
+
+    private validateFragmentDefinition (fragmentDefPath: string, definition: FragmentDef) {
+        if (!definition.id) {
+            throw new Error(`Fragment at ${fragmentDefPath} does not have a mandatory id`);
         }
     }
 
     private defineFragment(fragmentId: string, fragmentDef: FragmentDef|string, merge: boolean = true): Promise<MapFragmentId<FragmentDef>> {
         let promiseOfFragmentDef = Promise.resolve(fragmentDef);
-        let fragmentRoot = '.';
 
         if (typeof fragmentDef === 'string') {
             let fragmentDefLocation = <string> fragmentDef;
             promiseOfFragmentDef = this.loadJSON(fragmentDefLocation).then((definition: FragmentDef) => {
-                if (!definition.id) {
-                    throw new Error(`Fragment at ${fragmentId} does not have a mandatory id`);
-                }
+                this.validateFragmentDefinition(fragmentDefLocation, definition);
                 fragmentId = definition.id;
-                fragmentRoot = fragmentDefLocation.substring(0, fragmentDefLocation.lastIndexOf('/')) || '.';
                 return definition;
             }).catch(e => {
                 console.error(e);
@@ -267,7 +312,7 @@ class Loader {
                 }
             }
 
-            this.registerFragmentRootAlias(fragmentId, fragmentRoot);
+            this.registerFragmentRootAlias(fragmentId, fragmentDef);
 
             if (!this.definedFragments[fragmentId]) {
                 this.definedFragments[fragmentId] = {};
@@ -344,8 +389,8 @@ class Loader {
         return !!reservedFragments[id];
     }
 
-    private getFragmentsMergedModuleLoaderConfig(fragments: MapFragmentId<Fragment>) {
-        let fragmentsModuleLoaderConfig = {};
+    private getFragmentsMergedModuleLoaderConfig(fragments: MapFragmentId<Fragment>): Config {
+        let fragmentsModuleLoaderConfig: Config = {};
 
         valuesOf(fragments).forEach((fragment: Fragment) => {
             mergeObjects(fragmentsModuleLoaderConfig, fragment.definition.moduleLoaderConfig || {});
@@ -354,8 +399,21 @@ class Loader {
         return fragmentsModuleLoaderConfig;
     }
 
+    private getModulesToLoad(fragments: MapFragmentId<Fragment>) {
+        let modulesPathsToLoad: string[] = [];
+        valuesOf(fragments).forEach((fragment: Fragment) => {
+            keysOf(fragment.definition.modules).forEach((moduleName: string) => {
+                if (fragment.definition.modules[moduleName].autoload || fragment.configuration.modules[moduleName]) {
+                    modulesPathsToLoad.push(fragment.definition.modules[moduleName].path);
+                }
+            });
+        });
+        return modulesPathsToLoad;
+    }
+
     private initializeApplication(fragments: MapFragmentId<Fragment>): Promise<any> {
-        let fragmentsMergedModuleLoaderConfig = this.getFragmentsMergedModuleLoaderConfig(fragments);
+        let fragmentsMergedModuleLoaderConfig: Config = this.getFragmentsMergedModuleLoaderConfig(fragments);
+        let modulesPathsToLoad: Array<string> = this.getModulesToLoad(fragments);
 
         if (SystemJS) {
             let systemjsConfig = SystemJS.getConfig();
@@ -363,10 +421,9 @@ class Loader {
             SystemJS.config(systemjsConfig);
         }
 
-        // Add root and url to remotely loaded fragments (768)
-        // Create fragment root alias { fragment-name } => test
-        // Check for non existent configured modules
+        window.require(modulesPathsToLoad, () => {
 
+        });
 
         return Promise.resolve(1);
     }

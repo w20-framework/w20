@@ -23,7 +23,7 @@ export interface FragmentConfig {
 
 export interface ModuleDef {
     path: string;
-    autoLoad?: boolean;
+    autoload?: boolean;
     configSchema?: JsonSchema;
 }
 
