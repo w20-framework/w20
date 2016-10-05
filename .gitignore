@@ -20,4 +20,4 @@ typings/
 #Vim
 *~
 
-bower_components/
+/demo/bower_components/
