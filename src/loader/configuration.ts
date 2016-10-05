@@ -1,7 +1,7 @@
 import * as Network from './network';
 import { MapFragmentId, FragmentConfig } from "./model/fragment";
 
-function replacePlaceholders(text: string, values?: {[s: string]: string}, placeholderRegexp = new RegExp('\\${([\\w-]+)(:([^:}]*))?}', 'g') /* ${varname:defaultvalue} */): string {
+export function replacePlaceholders(text: string, values?: {[s: string]: string}, placeholderRegexp = new RegExp('\\${([\\w-]+)(:([^:}]*))?}', 'g') /* ${varname:defaultvalue} */): string {
     let fromLocalStorage = (varname: string, defaultValue: string): any => {
         const result = window.localStorage.getItem(varname);
 

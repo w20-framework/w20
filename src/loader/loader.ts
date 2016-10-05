@@ -3,19 +3,21 @@ import { FragmentDef, FragmentConfig, MapFragmentId, Fragment, ModuleDef } from 
 import { FragmentDSL } from './model/dsl';
 import { mergeObjects, keysOf, valuesOf } from './utils';
 import { fetch } from './network';
-import { loadConfiguration } from './configuration';
-import reservedFragments from './reserved-fragment';
+import { loadConfiguration, replacePlaceholders } from './configuration';
+import reservedFragments from './model/reserved-fragment';
 import TV4 = tv4.TV4;
 import MultiResult = tv4.MultiResult;
 import Config = SystemJSLoader.Config;
 
-declare let tv4: TV4;
 declare let window: any;
+declare let require: any;
+declare let define: any;
+declare let tv4: TV4;
 
 const SystemJS = window['System'];
 if (SystemJS) {
     window.define = SystemJS.amdDefine;
-    window.require = SystemJS.amdRequire;
+    window.require = window.requirejs = SystemJS.amdRequire;
 }
 
 export = window.w20 = new Loader();
@@ -130,7 +132,6 @@ class Loader {
      */
     public loadConfiguration(path: string, merge: boolean = true): Loader {
         this.promiseOfDefinedFragments = this.promiseOfDefinedFragments.then(() => {
-
             return loadConfiguration(path).then((configuration: MapFragmentId<FragmentConfig>) => {
                 let fragments: Promise<void>[] = [];
 
@@ -144,7 +145,7 @@ class Loader {
                         fragmentDefPath = reservedFragments[fragmentDefPath];
                     }
 
-                    promise = this.loadJSON(fragmentDefPath).then((definition: FragmentDef) => {
+                    promise = this.loadJSON(fragmentDefPath, true).then((definition: FragmentDef) => {
                         this.validateFragmentDefinition(fragmentDefPath, definition);
                         fragmentId = definition.id;
                         return this.defineFragment(fragmentId, definition, merge).then(() => {
@@ -167,20 +168,23 @@ class Loader {
                 return e;
             });
         });
-
         return this;
     }
 
     /**
      * Utility to load and parse JSON data from a given path returning a promise
      * @param path The location of the JSON data
+     * @param replacePlaceholder Spcify if placeholders of the form ${val:defaultValue} should be replaced. Defaults to false
      * @param withCredentials Specify if the withCredentials header should be set in the request header
      * @returns {Promise<Object|Array<any>|void>}
      */
-    public loadJSON(path: string, withCredentials: boolean = false): Promise<Object|Array<any>|void> {
+    public loadJSON(path: string, replacePlaceholder = false, withCredentials: boolean = false): Promise<Object|Array<any>|void> {
         return fetch(path, withCredentials).then(response => {
             let parsedResponse: any;
             try {
+                if (replacePlaceholder) {
+                    response = replacePlaceholders(response);
+                }
                 parsedResponse = JSON.parse(response)
             } catch (e) {
                 console.error(`Cannot parse JSON at ${path}`);
@@ -219,6 +223,7 @@ class Loader {
         });
     }
 
+    //noinspection JSMethodCanBeStatic
     /**
      * Allow to override location of reserved fragment definition
      * @param id The id of the reserved fragment
@@ -232,6 +237,7 @@ class Loader {
         }
     }
 
+    //noinspection JSMethodCanBeStatic
     /**
      * Return the location of a reserved fragment
      * @param id The id of the fragment
@@ -268,6 +274,7 @@ class Loader {
         });
     }
 
+    //noinspection JSMethodCanBeStatic
     private registerFragmentRootAlias(fragmentId: string, fragmentDef: any) {
         let fragmentRootAlias = `{${fragmentId}}`;
         let fragmentRoot = '.';
@@ -282,6 +289,7 @@ class Loader {
         }
     }
 
+    //noinspection JSMethodCanBeStatic
     private validateFragmentDefinition (fragmentDefPath: string, definition: FragmentDef) {
         if (!definition.id) {
             throw new Error(`Fragment at ${fragmentDefPath} does not have a mandatory id`);
@@ -293,7 +301,7 @@ class Loader {
 
         if (typeof fragmentDef === 'string') {
             let fragmentDefLocation = <string> fragmentDef;
-            promiseOfFragmentDef = this.loadJSON(fragmentDefLocation).then((definition: FragmentDef) => {
+            promiseOfFragmentDef = this.loadJSON(fragmentDefLocation, true).then((definition: FragmentDef) => {
                 this.validateFragmentDefinition(fragmentDefLocation, definition);
                 fragmentId = definition.id;
                 return definition;
@@ -339,7 +347,7 @@ class Loader {
 
         let promiseOfFragmentConfig = Promise.resolve(fragmentConf);
         if (typeof fragmentConf === 'string') {
-            promiseOfFragmentConfig = this.loadJSON(fragmentConf);
+            promiseOfFragmentConfig = this.loadJSON(fragmentConf, true);
         }
 
         this.promiseOfFragmentConfigs = promiseOfFragmentConfig.then(configuration => {
@@ -376,6 +384,7 @@ class Loader {
         });
     }
 
+    //noinspection JSMethodCanBeStatic
     private getValidationErrors(validationResult: MultiResult): string {
         let result = '';
         for (let i = 0; i < validationResult.errors.length; i++) {
@@ -385,6 +394,7 @@ class Loader {
         return result;
     }
 
+    //noinspection JSMethodCanBeStatic
     private isReservedFragment(id: string): boolean {
         return !!reservedFragments[id];
     }
@@ -416,13 +426,15 @@ class Loader {
         let modulesPathsToLoad: Array<string> = this.getModulesToLoad(fragments);
 
         if (SystemJS) {
-            let systemjsConfig = SystemJS.getConfig();
-            mergeObjects(systemjsConfig, fragmentsMergedModuleLoaderConfig);
-            SystemJS.config(systemjsConfig);
+            SystemJS.config(fragmentsMergedModuleLoaderConfig);
         }
 
-        window.require(modulesPathsToLoad, () => {
+        require(modulesPathsToLoad, () => {
+            // todo
+        });
 
+        define('w20', function () {
+           return {};
         });
 
         return Promise.resolve(1);

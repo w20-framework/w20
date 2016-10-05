@@ -19,3 +19,5 @@ typings/
 
 #Vim
 *~
+
+bower_components/

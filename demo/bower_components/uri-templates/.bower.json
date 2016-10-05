@@ -1,0 +1,33 @@
+{
+  "name": "uri-templates",
+  "main": "uri-templates.js",
+  "version": "0.1.9",
+  "homepage": "https://github.com/geraintluff/uri-templates",
+  "authors": [
+    "Geraint <luffgd@gmail.com>"
+  ],
+  "description": "URI Templates (RFC6570) including de-substitution",
+  "keywords": [
+    "rfc6570",
+    "uri",
+    "url",
+    "template"
+  ],
+  "license": "Public Domain",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.1.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.9",
+    "commit": "41d06b4b04f26e8af69093161bede5f001a0b8c5"
+  },
+  "_source": "https://github.com/geraintluff/uri-templates.git",
+  "_target": "~0.1.9",
+  "_originalSource": "uri-templates"
+}
