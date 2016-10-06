@@ -281,7 +281,7 @@ define([
      * to build the tree menu for instance.
      *
      */
-    w20CoreUI.factory('NavigationService', ['$route', 'SecurityExpressionService', 'EventService', function ($route, securityExpressionService, eventService) {
+    w20CoreUI.factory('NavigationService', ['$route', '$location', 'SecurityExpressionService', 'EventService', function ($route, $location, securityExpressionService, eventService) {
         var routeTree,
             expandedRouteCategories,
             topLevelCategories,
@@ -563,6 +563,33 @@ define([
              */
             refreshNavigation: function () {
                 refreshNavigation();
+            },
+
+            /**
+             * @ngdoc function
+             * @name w20CoreUI.service:NavigationService#buildLink
+             * @methodOf w20CoreUI.service:NavigationService
+             *
+             * @param {String} path Route path to build link from.
+             *
+             * @description
+             *
+             * This method take a route path and build a suitable link depending on pretty URLs mode. Path is prefixed by
+             * the hashbang if application is in legacy mode. Path is stripped of starting slash if application is in
+             * HTML5 mode.
+             */
+            buildLink: function (path) {
+                if ($location.$$html5) {
+                    if (path === '/') {
+                        return "./";
+                    } else if (path.indexOf('/') === 0) {
+                        return path.substring(1);
+                    } else {
+                        return path;
+                    }
+                } else {
+                    return '#!' + path;
+                }
             }
         };
     }]);

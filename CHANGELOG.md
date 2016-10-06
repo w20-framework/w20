@@ -1,3 +1,7 @@
+# Version 2.3.2 (2016-10-06)
+
+* [chg] Add method `buildLink` to build links in `NavigationService`.
+
 # Version 2.3.1 (2016-05-25)
 
 * [fix] Add missing entries in the angular locale object generated from globalize culture definition.
