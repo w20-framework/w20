@@ -796,7 +796,7 @@ define([
 
             uri.href = url;
 
-            return uri.protocol + '//' + uri.host;
+            return (uri.protocol || window.location.protocol) + '//' + (uri.host || window.location.host);
 
         }
     }
