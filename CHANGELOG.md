@@ -1,3 +1,7 @@
+# Version 2.3.3 (2016-12-06)
+
+* [fix] Fix hypermedia link building in IE 11.
+
 # Version 2.3.2 (2016-10-06)
 
 * [chg] Add method `buildLink` to build links in `NavigationService`.
