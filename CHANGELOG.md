@@ -1,3 +1,7 @@
+# Version 2.3.4 (2016-12-06)
+
+* [fix] Fix error when invoking `buildLink()` with undefined (it can happen in templates). 
+
 # Version 2.3.3 (2016-12-06)
 
 * [fix] Fix hypermedia link building in IE 11.

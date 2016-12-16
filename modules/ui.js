@@ -260,7 +260,7 @@ define([
              * Returns the current values of content shift.
              *
              */
-            getContentShift: function() {
+            getContentShift: function () {
                 return {
                     top: currentContentShift[0],
                     right: currentContentShift[1],
@@ -461,9 +461,9 @@ define([
                     return null;
                 }
                 return _.sortBy(_.compact(_.filter(_.values(parentMenuTree),
-                        function (elt) {
-                            return _.isArray(elt);
-                        }).concat(_.pluck(_.compact(parentMenuTree), 'route'))),
+                    function (elt) {
+                        return _.isArray(elt);
+                    }).concat(_.pluck(_.compact(parentMenuTree), 'route'))),
                     function (elt) {
                         return typeof elt.categoryPosition !== 'undefined' ? elt.categoryPosition : (typeof elt.sortKey !== 'undefined' ? elt.sortKey : elt);
                     });
@@ -582,7 +582,7 @@ define([
                 if ($location.$$html5) {
                     if (path === '/') {
                         return "./";
-                    } else if (path.indexOf('/') === 0) {
+                    } else if (typeof path !== 'undefined' && path.indexOf('/') === 0) {
                         return path.substring(1);
                     } else {
                         return path;
@@ -1108,7 +1108,7 @@ define([
                         $injector.get('$mdDialog').show({
                             template: errorReportTemplate,
                             parent: angular.element(document.body),
-                            clickOutsideToClose:true,
+                            clickOutsideToClose: true,
                             controller: ['$scope', function ($scope) {
                                 $scope.message = errors[0].exception.message;
                                 $scope.stacktrace = errors[0].exception.stack;
@@ -1171,7 +1171,7 @@ define([
 
         function buildRoleFilterModel(newValue) {
             $scope.roles = {};
-            _.each(newValue, function(role) {
+            _.each(newValue, function (role) {
                 $scope.roles[role] = true;
             });
         }
