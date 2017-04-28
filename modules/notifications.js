@@ -240,7 +240,7 @@ define([
                     growl(text, _.extend({
                         header: cultureService.localize('w20.core.notifications.severity.notification'),
                         life: 3000
-                    }, _config.options && _config.options.notify || {}, options), 'icon-info-sign', 'jGrowl-notification', system);
+                    }, _config.options && _config.options.notify || {}, options), 'icon-info-sign', 'jGrowl-info', system);
 
                     if (persistent) {
                         notificationHistoryService.addNotification('info', text);
