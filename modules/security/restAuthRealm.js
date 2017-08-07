@@ -29,11 +29,10 @@ define([
 
     var w20CoreSecurity = angular.module('w20CoreSecurity');
 
-    function RestAuthenticationProvider($resource, $window, $q, $rootScope) {
+    function RestAuthenticationProvider($resource, $window, $q, eventService) {
         var AuthenticationResource,
             AuthorizationsResource,
             realm,
-            authenticationUrl,
             clearCredentials;
 
 
@@ -110,7 +109,7 @@ define([
 
                 //Event that can be intercepted by application to show a dialog to do login again
                 function requestLoginFn() {
-                    $rootScope.$broadcast("LoginRequired");
+                    eventService.emit("w20.security.loginRequired");
                     rejectLogin();
 
                 }
@@ -175,12 +174,12 @@ define([
             }
         };
     }
-    RestAuthenticationProvider.$inject = [ '$resource', '$window', '$q','$rootScope' ];
+    RestAuthenticationProvider.$inject = [ '$resource', '$window', '$q','EventService' ];
 
 
     var restAuthProviderFunction = function() {
         return RestAuthenticationProvider;
-    }
+    };
 
     w20CoreSecurity.factory('restAuth', restAuthProviderFunction);
 });

@@ -131,7 +131,7 @@ define([
     
     var basicAuthProviderFunction = function(){
         return BasicAuthenticationProvider;
-    }
+    };
     
     w20CoreSecurity.factory('basicAuth', basicAuthProviderFunction);
 });

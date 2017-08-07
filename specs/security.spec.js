@@ -11,45 +11,51 @@ define([
     '{angular}/angular',
     '{angular-mocks}/angular-mocks',
     '{w20-core}/modules/security'
-], function (_, angular) {
+], function(_, angular) {
     'use strict';
 
     function AuthenticationProviderMockFactory(subject) {
-        return function ($q) {
+        return function($q) {
             var realm;
 
             return {
-                setConfig: function (providerConfig) {
-                },
+                setConfig : function(providerConfig) {},
 
-                setRealm: function (value) {
+                setRealm : function(value) {
                     realm = value;
                 },
 
-                isAuthentifiable: function () {
+                isAuthentifiable : function() {
                     return true;
                 },
 
-                authenticate: function () {
+                authenticate : function(rejectAuthentication) {
                     var deferred = $q.defer();
-                    deferred.resolve({
-                        realm: realm,
-                        subject: subject
-                    });
+
+                    rejectAuthentication = rejectAuthentication || false; //Default as false
+
+                    if (rejectAuthentication) {
+                        deferred.reject();
+                    } else {
+                        deferred.resolve({
+                            realm : realm,
+                            subject : subject
+                        });
+                    }
                     return deferred.promise;
                 },
 
-                deauthenticate: function () {
+                deauthenticate : function() {
                     var deferred = $q.defer();
                     deferred.resolve(realm);
                     return deferred.promise;
                 },
 
-                refresh: function () {
+                refresh : function() {
                     var deferred = $q.defer();
                     deferred.resolve({
-                        realm: realm,
-                        subject: subject
+                        realm : realm,
+                        subject : subject
                     });
                     return deferred.promise;
                 }
@@ -57,7 +63,7 @@ define([
         };
     }
 
-    describe('the authentication service', function () {
+    describe('the authentication service', function() {
         var $rootScope,
             authenticationService,
             missingIdSubject = {
@@ -70,8 +76,8 @@ define([
                 id : 'Subject1Id',
                 type : 'user',
                 principals : {
-                    principal1: 'testValue1',
-                    principal2: 'testValue2'
+                    principal1 : 'testValue1',
+                    principal2 : 'testValue2'
                 },
                 roles : [],
                 permissions : []
@@ -80,8 +86,8 @@ define([
                 id : 'Subject1Id',
                 type : 'user',
                 principals : {
-                    principal3: 'testValue3',
-                    principal4: 'testValue4'
+                    principal3 : 'testValue3',
+                    principal4 : 'testValue4'
                 },
                 roles : [],
                 permissions : []
@@ -90,8 +96,8 @@ define([
                 id : 'Subject2Id',
                 type : 'user',
                 principals : {
-                    principal1: 'testValue1',
-                    principal2: 'testValue2'
+                    principal1 : 'testValue1',
+                    principal2 : 'testValue2'
                 },
                 roles : [],
                 permissions : []
@@ -100,19 +106,19 @@ define([
                 id : 'Subject2Id',
                 type : 'terminal',
                 principals : {
-                    principal1: 'testValue1',
-                    principal2: 'testValue2'
+                    principal1 : 'testValue1',
+                    principal2 : 'testValue2'
                 },
                 roles : [],
                 permissions : []
             };
 
-        beforeEach(function () {
-            angular.mock.module('w20CoreSecurity', function ($provide) {
+        beforeEach(function() {
+            angular.mock.module('w20CoreSecurity', function($provide) {
                 $provide.value('$log', console);
             });
 
-            angular.mock.inject(function ($injector, _$rootScope_) {
+            angular.mock.inject(function($injector, _$rootScope_) {
                 $rootScope = _$rootScope_;
                 authenticationService = $injector.get('AuthenticationService');
             });
@@ -151,6 +157,41 @@ define([
 
             $rootScope.$digest();
         });
+
+        it('should fail when missing authentication provider', function() {
+
+            authenticationService.authenticate().then(function(subject) {
+                //This should not be called                
+                done.fail('success authentication without realm');
+            }, function(error) {
+                expect(error).toEqual('No realm to authenticate');
+
+            });
+
+            $rootScope.$digest();
+        });
+
+
+        it('should fail when authentication fail flag is on', function() {
+            authenticationService.addProvider('mock-realm1', new AuthenticationProviderMockFactory(userSubject11), {});
+            var event = {};
+            event.failureMessage = function() {};
+            var spy = spyOn(event, 'failureMessage');
+
+            //Spy failure event
+            $rootScope.$on('w20.security.failed-authentication', event.failureMessage);
+
+            //Fail on authentication
+            authenticationService.authenticate(true).then(function(subject) {
+                //This should not be called                
+                done.fail('success authentication when fail flag is on');
+            }, function(error) {
+                expect(spy).toHaveBeenCalled();
+            });
+
+            $rootScope.$digest();
+        });
+
 
         it('should reject subjects without id', function() {
             authenticationService.addProvider('mock-realm1', new AuthenticationProviderMockFactory(missingIdSubject), {});
@@ -216,6 +257,23 @@ define([
             $rootScope.$digest();
         });
 
+
+        it('should fail to refresh subject without provider or subject', function() {
+
+            authenticationService.refresh().then(function(subject) {
+                //Should not happen
+                done.fail('Refreshed without subject');
+            }, function(error) {
+                expect(error).toBe('No subject to refresh');
+            });
+
+            $rootScope.$digest();
+        });
+
+
+
+
+
         it('should be able to deauthenticate', function() {
             authenticationService.addProvider('mock-realm1', new AuthenticationProviderMockFactory(userSubject11), {});
             authenticationService.authenticate().then(authenticationService.deauthenticate).then(function(result) {
@@ -227,9 +285,10 @@ define([
 
             $rootScope.$digest();
         });
+
     });
 
-    describe('the authorization service', function () {
+    describe('the authorization service', function() {
         var $rootScope,
             authenticationService,
             authorizationService,
@@ -237,63 +296,63 @@ define([
                 id : 'Subject1Id',
                 type : 'user',
                 principals : {
-                    principal1: 'testValue1',
-                    principal2: 'testValue2'
+                    principal1 : 'testValue1',
+                    principal2 : 'testValue2'
                 },
                 roles : [
                     {
-                        name: 'ROLE1',
-                        attributes: {
-                            domain: 'MU'
+                        name : 'ROLE1',
+                        attributes : {
+                            domain : 'MU'
                         },
-                        permissions: [
+                        permissions : [
                             [ 'test', 'zone1', 'read' ],
                             [ 'test', 'zone1', 'write' ],
                             [ 'test', 'zone2', '*' ]
                         ]
                     },
                     {
-                        name: 'ROLE1',
-                        attributes: {
-                            domain: 'PY'
+                        name : 'ROLE1',
+                        attributes : {
+                            domain : 'PY'
                         },
-                        permissions: [
+                        permissions : [
                             [ 'test', 'zone1', 'read' ],
                             [ 'test', 'zone2', 'read' ],
                             [ 'test', 'zone3', 'read' ]
                         ]
                     },
                     {
-                        name: 'ROLE2',
-                        attributes: {
-                            domain: 'PY'
+                        name : 'ROLE2',
+                        attributes : {
+                            domain : 'PY'
                         },
-                        permissions: [
+                        permissions : [
                             [ 'test', 'zone4', 'read' ]
                         ]
                     },
                     {
-                        name: 'ROLE3',
-                        attributes: {
-                            domain: 'SX'
+                        name : 'ROLE3',
+                        attributes : {
+                            domain : 'SX'
                         },
-                        permissions: [
+                        permissions : [
                             [ 'test', 'zone3', 'read' ],
                             [ 'test', 'zone4', 'read' ]
                         ]
                     },
                     {
-                        name: 'ROLE4',
-                        permissions: [
+                        name : 'ROLE4',
+                        permissions : [
                             [ 'test', 'zone4', 'read' ]
                         ]
                     },
                     {
-                        name: 'ROLE5',
-                        attributes: {
-                            other: 'value'
+                        name : 'ROLE5',
+                        attributes : {
+                            other : 'value'
                         },
-                        permissions: [
+                        permissions : [
                             [ 'test', 'zone4', 'read' ]
                         ]
                     }
@@ -304,12 +363,12 @@ define([
                 ]
             };
 
-        beforeEach(function () {
-            angular.mock.module('w20CoreSecurity', function ($provide) {
+        beforeEach(function() {
+            angular.mock.module('w20CoreSecurity', function($provide) {
                 $provide.value('$log', console);
             });
 
-            angular.mock.inject(function ($injector, _$rootScope_) {
+            angular.mock.inject(function($injector, _$rootScope_) {
                 $rootScope = _$rootScope_;
                 authenticationService = $injector.get('AuthenticationService');
                 authorizationService = $injector.get('AuthorizationService');
@@ -354,15 +413,27 @@ define([
         });
 
         it('should be able to check for role with attributes', function() {
-            expect(authorizationService.hasRole('mock-realm', 'ROLE1', { domain: 'MU' })).toEqual(true);
-            expect(authorizationService.hasRole('mock-realm', 'ROLE1', { domain: 'PY' })).toEqual(true);
-            expect(authorizationService.hasRole('mock-realm', 'ROLE1', { domain: 'SX' })).toEqual(false);
+            expect(authorizationService.hasRole('mock-realm', 'ROLE1', {
+                domain : 'MU'
+            })).toEqual(true);
+            expect(authorizationService.hasRole('mock-realm', 'ROLE1', {
+                domain : 'PY'
+            })).toEqual(true);
+            expect(authorizationService.hasRole('mock-realm', 'ROLE1', {
+                domain : 'SX'
+            })).toEqual(false);
         });
 
         it('should be able to check for permissions with attributes', function() {
-            expect(authorizationService.hasPermission('mock-realm', 'test:zone1:read', { domain: 'MU' })).toEqual(true);
-            expect(authorizationService.hasPermission('mock-realm', 'test:zone1:read', { domain: 'PY' })).toEqual(true);
-            expect(authorizationService.hasPermission('mock-realm', 'test:zone1:read', { domain: 'SX' })).toEqual(false);
+            expect(authorizationService.hasPermission('mock-realm', 'test:zone1:read', {
+                domain : 'MU'
+            })).toEqual(true);
+            expect(authorizationService.hasPermission('mock-realm', 'test:zone1:read', {
+                domain : 'PY'
+            })).toEqual(true);
+            expect(authorizationService.hasPermission('mock-realm', 'test:zone1:read', {
+                domain : 'SX'
+            })).toEqual(false);
         });
 
         it('should be able to filter roles', function() {
@@ -382,7 +453,7 @@ define([
 
         it('should be able to filter attributes', function() {
             authorizationService.setAttributeFilter({
-                domain: 'MU'
+                domain : 'MU'
             });
             expect(authorizationService.hasRole('mock-realm', 'ROLE1')).toEqual(true);
             expect(authorizationService.hasPermission('mock-realm', 'test:zone1:read')).toEqual(true);
@@ -396,13 +467,20 @@ define([
         });
 
         it('should be able to list unified roles', function() {
-            expect(authorizationService.getAttributes()).toEqual({ domain: [ 'MU', 'PY', 'SX' ], other: [ 'value' ] });
+            expect(authorizationService.getAttributes()).toEqual({
+                domain : [ 'MU', 'PY', 'SX' ],
+                other : [ 'value' ]
+            });
         });
 
         it('should be able to merge overlapping permissions', function() {
             expect(authorizationService.hasPermission('mock-realm', 'test:zone4:read')).toEqual(true);
-            expect(authorizationService.hasPermission('mock-realm', 'test:zone4:read', { domain: 'XX' })).toEqual(true);
-            expect(authorizationService.hasPermission('mock-realm', 'test:zone4:read', { domain: '*' })).toEqual(true);
+            expect(authorizationService.hasPermission('mock-realm', 'test:zone4:read', {
+                domain : 'XX'
+            })).toEqual(true);
+            expect(authorizationService.hasPermission('mock-realm', 'test:zone4:read', {
+                domain : '*'
+            })).toEqual(true);
         });
     });
 });
