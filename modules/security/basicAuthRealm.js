@@ -23,12 +23,10 @@ define([
     '{angular}/angular',
     '{angular-resource}/angular-resource',
     '{w20-core}/modules/security/securityModule'
-], function(module, require, w20, $, _, angular) {
+], function(module, require, w20, $, _, angular, resources, securityModule) {
     'use strict';
-
-    var w20CoreSecurity = angular.module('w20CoreSecurity');
    
-    function BasicAuthenticationProvider($resource, $window, $q) {
+    function BasicAuthentication($resource, $window, $q) {
         var AuthenticationResource,
             AuthorizationsResource,
             realm,
@@ -45,7 +43,7 @@ define([
         }
 
         return {
-            setConfig : function(providerConfig) {
+            setConfig: function(providerConfig) {
                 clearCredentials = providerConfig.clearCredentials || true;
 
                 if (typeof providerConfig.authentication === 'undefined') {
@@ -60,21 +58,21 @@ define([
                 AuthorizationsResource = $resource(require.toUrl(providerConfig.authorizations).replace(/:(?!\/\/)/, '\\:'));
             },
 
-            setRealm : function(value) {
+            setRealm: function(value) {
                 realm = value;
             },
 
-            isAuthentifiable : function() {
+            isAuthentifiable: function() {
                 return true;
             },
 
-            authenticate : function() {
+            authenticate: function() {
                 var deferred = $q.defer();
                 AuthenticationResource.get(function() {
                     AuthorizationsResource.get({}, function(subject) {
                         deferred.resolve({
-                            realm : realm,
-                            subject : subject
+                            realm: realm,
+                            subject: subject
                         });
                     }, function() {
                         deferred.reject(realm);
@@ -86,19 +84,19 @@ define([
                 return deferred.promise;
             },
 
-            deauthenticate : function() {
+            deauthenticate: function() {
                 var deferred = $q.defer();
                 AuthenticationResource.remove(function() {
                     if (clearCredentials) {
                         if (!$window.document.execCommand('ClearAuthenticationCache', 'false')) {
                             $.ajax({
-                                type : 'GET',
-                                url : authenticationUrl,
-                                async : true,
-                                username : randomString(8),
-                                password : randomString(8),
-                                headers : {
-                                    Authorization : 'Basic ' + randomString(20)
+                                type: 'GET',
+                                url: authenticationUrl,
+                                async: true,
+                                username: randomString(8),
+                                password: randomString(8),
+                                headers: {
+                                    Authorization: 'Basic ' + randomString(20)
                                 }
                             });
                         }
@@ -111,12 +109,12 @@ define([
                 return deferred.promise;
             },
 
-            refresh : function() {
+            refresh: function() {
                 var deferred = $q.defer();
                 AuthorizationsResource.get({}, function(subject) {
                     deferred.resolve({
-                        realm : realm,
-                        subject : subject
+                        realm: realm,
+                        subject: subject
                     });
                 }, function() {
                     deferred.reject(realm);
@@ -126,12 +124,13 @@ define([
             }
         };
     }
-    BasicAuthenticationProvider.$inject = [ '$resource', '$window', '$q' ];
+    BasicAuthentication.$inject = [ '$resource', '$window', '$q' ];
     
+    function basicAuthProvider(){
+        return BasicAuthentication;
+    }
     
-    var basicAuthProviderFunction = function(){
-        return BasicAuthenticationProvider;
-    };
-    
-    w20CoreSecurity.factory('basicAuth', basicAuthProviderFunction);
+    securityModule.registerSecurityProvider('basicAuth',basicAuthProvider);
+   
+   
 });

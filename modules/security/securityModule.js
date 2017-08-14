@@ -11,7 +11,18 @@
  * Security Module
  * 
  * Creates the security modules with its dependencies 
+ * 
+ * Adds a method to register new authentication provider
+ * 
  */
 define([ '{angular}/angular' ], function(angular) {
-    angular.module('w20CoreSecurity', [ 'w20CoreEnv', 'ngResource' ]);
+    var w20CoreSecurity = angular.module('w20CoreSecurity', [ 'w20CoreEnv', 'ngResource' ]);
+
+    function registerSecurityProvider(provider,providerFn) {
+        w20CoreSecurity.factory(provider,providerFn);
+    }
+
+    return {
+        registerSecurityProvider: registerSecurityProvider
+    }
 });

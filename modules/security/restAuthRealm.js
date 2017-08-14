@@ -24,12 +24,10 @@ define([
     '{angular}/angular',
     '{angular-resource}/angular-resource',
     '{w20-core}/modules/security/securityModule'
-], function(module, require, w20, $, _, angular) {
+], function( require, w20, $, _, angular, resources, securityModule) {
     'use strict';
 
-    var w20CoreSecurity = angular.module('w20CoreSecurity');
-
-    function RestAuthenticationProvider($resource, $window, $q, eventService) {
+    function RestAuthentication($resource, $window, $q, $rootScope) {
         var AuthenticationResource,
             AuthorizationsResource,
             realm,
@@ -37,7 +35,7 @@ define([
 
 
         return {
-            setConfig : function(providerConfig) {
+            setConfig: function(providerConfig) {
                 clearCredentials = providerConfig.clearCredentials || true;
 
                 //Parse configuration
@@ -57,34 +55,34 @@ define([
 
                 //Setup Resources
                 AuthenticationResource = $resource('', {}, {
-                    login : {
-                        method : 'POST',
-                        withCredentials : true,
-                        url : loginUrl
+                    login: {
+                        method: 'POST',
+                        withCredentials: true,
+                        url: loginUrl
                     },
-                    logout : {
-                        method : 'DELETE',
-                        withCredentials : true,
-                        url : logoutUrl
+                    logout: {
+                        method: 'DELETE',
+                        withCredentials: true,
+                        url: logoutUrl
                     }
                 });
 
                 AuthorizationsResource = $resource(authorizationUrl, {}, {
-                    getSubject : {
-                        method : 'GET'
+                    getSubject: {
+                        method: 'GET'
                     }
                 });
             },
 
-            setRealm : function(value) {
+            setRealm: function(value) {
                 realm = value;
             },
 
-            isAuthentifiable : function() {
+            isAuthentifiable: function() {
                 return true;
             },
 
-            authenticate : function(credentials) {
+            authenticate: function(credentials) {
                 var deferred = $q.defer();
 
                 function isValidSubject(subject) {
@@ -102,14 +100,14 @@ define([
                         return;
                     }
                     deferred.resolve({
-                        realm : realm,
-                        subject : subject
+                        realm: realm,
+                        subject: subject
                     });
                 }
 
                 //Event that can be intercepted by application to show a dialog to do login again
                 function requestLoginFn() {
-                    eventService.emit("w20.security.loginRequired");
+                    $rootScope.$broadcast("LoginRequired");
                     rejectLogin();
 
                 }
@@ -145,7 +143,7 @@ define([
 
             },
 
-            deauthenticate : function() {
+            deauthenticate: function() {
                 var deferred = $q.defer();
                 AuthenticationResource.logout(function() {
                     if (clearCredentials) {
@@ -159,12 +157,12 @@ define([
                 return deferred.promise;
             },
 
-            refresh : function() {
+            refresh: function() {
                 var deferred = $q.defer();
                 AuthorizationsResource.get({}, function(subject) {
                     deferred.resolve({
-                        realm : realm,
-                        subject : subject
+                        realm: realm,
+                        subject: subject
                     });
                 }, function() {
                     deferred.reject(realm);
@@ -174,12 +172,11 @@ define([
             }
         };
     }
-    RestAuthenticationProvider.$inject = [ '$resource', '$window', '$q','EventService' ];
+    RestAuthentication.$inject = [ '$resource', '$window', '$q', '$rootScope' ];
 
+    function restAuthProvider() {
+        return RestAuthentication;
+    }
+    securityModule.registerSecurityProvider('restAuth', restAuthProvider);
 
-    var restAuthProviderFunction = function() {
-        return RestAuthenticationProvider;
-    };
-
-    w20CoreSecurity.factory('restAuth', restAuthProviderFunction);
 });
