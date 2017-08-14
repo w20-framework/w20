@@ -18,11 +18,11 @@
 define([ '{angular}/angular' ], function(angular) {
     var w20CoreSecurity = angular.module('w20CoreSecurity', [ 'w20CoreEnv', 'ngResource' ]);
 
-    function registerSecurityProvider(provider,providerFn) {
-        w20CoreSecurity.factory(provider,providerFn);
+    function registerSecurityProvider(provider, providerFn) {
+        w20CoreSecurity.factory(provider, providerFn);
     }
 
     return {
-        registerSecurityProvider: registerSecurityProvider
-    }
+        registerSecurityProvider : registerSecurityProvider
+    };
 });
