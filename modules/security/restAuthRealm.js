@@ -24,7 +24,7 @@ define([
     '{angular}/angular',
     '{angular-resource}/angular-resource',
     '{w20-core}/modules/security/securityModule'
-], function( require, w20, $, _, angular, resources, securityModule) {
+], function(module, require, w20, $, _, angular, resources, securityModule) {
     'use strict';
 
     function RestAuthentication($resource, $window, $q, $rootScope) {
