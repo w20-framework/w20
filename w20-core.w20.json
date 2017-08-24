@@ -230,8 +230,8 @@
         },
 
         "paths": {
-            "{lodash}": "${components-path:bower_components}/lodash/dist",
-            "{globalize}": "${components-path:bower_components}/globalize/lib",
+            "{lodash}": "${components-path:bower_components}/lodash",
+            "{globalize}": "${components-path:bower_components}/globalize/dist",
             "{angular}": "${components-path:bower_components}/angular",
             "{angular-resource}": "${components-path:bower_components}/angular-resource",
             "{angular-route}": "${components-path:bower_components}/angular-route",

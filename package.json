@@ -2,18 +2,13 @@
   "name": "w20",
   "version": "2.3.4",
   "description": "SeedStack Web framework",
-  "license": "MPL 2.0",
+  "license": "UNLICENSED",
   "contributors": [
-    {
-      "name": "Adrien LAUER",
-      "email": "adrien.lauer@mpsa.com"
-    },
-    {
-      "name": "Kavi RAMYEAD",
-      "email": "kavi.ramyead@ext.mpsa.com"
-    }
+    "Adrien LAUER <adrien.lauer@mpsa.com>",
+    "Kavi RAMYEAD <kavi.ramyead@ext.mpsa.com>"
   ],
   "devDependencies": {
+    "angular-mocks": "^1.6.5",
     "grunt": "~0.4",
     "grunt-bower-task": "~0.4",
     "grunt-contrib-clean": "~0.6",
@@ -32,5 +27,39 @@
     "jasmine-core": "~2.4",
     "phantomjs-polyfill": "0.0.1",
     "phantomjs-prebuilt": "^2.1.4"
-  }
+  },
+  "main": "gruntfile.js",
+  "dependencies": {
+    "angular-cookies": "^1.6.5",
+    "angular-messages": "^1.6.5",
+    "angular": "^1.6.5",
+    "angular-animate": "^1.6.5",
+    "angular-aria": "^1.6.5",
+    "angular-resource": "^1.6.5",
+    "angular-touch": "^1.6.5",
+    "angular-route": "^1.6.5",
+    "angular-message-format": "^1.6.5",
+    "angular-sanitize": "^1.6.5",
+    "lodash": "^4.17.4",
+    "require-css": "^0.1.10",
+    "requirejs-text": "^2.0.15",
+    "jgrowl": "^1.4.6",
+    "globalize": "^1.3.0",
+    "uri-templates": "^0.2.0",
+    "tv4": "^1.3.0",
+    "requirejs": "^2.1.22",
+    "jquery": "^3.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmmartinez84/w20.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/jmmartinez84/w20/issues"
+  },
+  "homepage": "https://github.com/jmmartinez84/w20#readme"
 }

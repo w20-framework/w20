@@ -20,7 +20,7 @@ module.exports = function(config) {
             { pattern: 'specs/**/*.json', included: false },
             { pattern: 'specs/**/*.html', included: false },
             { pattern: 'modules/**/*.js*', included: false },
-            { pattern: 'bower_components/**/*', included: false }
+            { pattern: 'node_modules/**/*', included: false }
         ],
         preprocessors: {
             'modules/*.js': 'coverage'
