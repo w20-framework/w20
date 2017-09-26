@@ -35,64 +35,52 @@ define([
 
         it('should request full screen', function () {
             var element = angular.element('body')[0];
-            var div = angular.element('div');
+            var div = document.createElement('div');
+            if(typeof element.requestFullScreen !== "undefined" && typeof div.requestFullScreen  !== "undefined"){
+                window.spyOn(element, 'requestFullScreen');
+                window.spyOn(div, 'requestFullScreen');
+                displayService.enterFullScreen(element);
+                expect(element.requestFullScreen).toHaveBeenCalled();
+                displayService.enterFullScreen();
+                expect(element.requestFullScreen).toHaveBeenCalled();
+                displayService.enterFullScreen(div);
+                expect(div.requestFullScreen).toHaveBeenCalled();
+            }else if(typeof element.webkitRequestFullScreen !== "undefined" && typeof div.webkitRequestFullScreen  !== "undefined"){
+                window.spyOn(element, 'webkitRequestFullScreen');
+                window.spyOn(div, 'webkitRequestFullScreen');
+                displayService.enterFullScreen(element);
+                expect(element.webkitRequestFullScreen).toHaveBeenCalled();
+                displayService.enterFullScreen();
+                expect(element.webkitRequestFullScreen).toHaveBeenCalled();
+                displayService.enterFullScreen(div);
+                expect(div.webkitRequestFullScreen).toHaveBeenCalled();
+            }else if(typeof element.mozRequestFullScreen !== "undefined" && typeof div.mozRequestFullScreen !== "undefined"){
+                window.spyOn(element, 'mozRequestFullScreen');
+                window.spyOn(div, 'mozRequestFullScreen');
+                displayService.enterFullScreen(element);
+                expect(element.mozRequestFullScreen).toHaveBeenCalled();
+                displayService.enterFullScreen();
+                expect(element.mozRequestFullScreen).toHaveBeenCalled();
+                displayService.enterFullScreen(div);
+                expect(div.mozRequestFullScreen).toHaveBeenCalled();
+            }else if(typeof element.msRequestFullScreen !== "undefined" && typeof div.msRequestFullScreen !== "undefined"){
+                window.spyOn(element, 'msRequestFullScreen');
+                window.spyOn(div, 'msRequestFullScreen');
+                displayService.enterFullScreen(element);
+                expect(element.msRequestFullScreen).toHaveBeenCalled();
+                displayService.enterFullScreen();
+                expect(element.msRequestFullScreen).toHaveBeenCalled();
+                displayService.enterFullScreen(div);
+                expect(div.msRequestFullScreen).toHaveBeenCalled();
+            }else{
+                var $log = $injector.get('$log');
+                window.spyOn($log, 'warn');
+                displayService.enterFullScreen(element);
+                expect($log.warn).toHaveBeenCalledWith('cannot enter fullscreen mode, no support');
+            }
 
-            element.requestFullScreen = function() {};
-            div.requestFullScreen = function() {};
-            window.spyOn(element, 'requestFullScreen');
-            window.spyOn(div, 'requestFullScreen');
-            displayService.enterFullScreen(element);
-            expect(element.requestFullScreen).toHaveBeenCalled();
-            displayService.enterFullScreen();
-            expect(element.requestFullScreen).toHaveBeenCalled();
-            displayService.enterFullScreen(div);
-            expect(div.requestFullScreen).toHaveBeenCalled();
-            delete element.requestFullScreen;
-            delete div.requestFullScreen;
 
-            element.webkitRequestFullScreen = function() {};
-            div.webkitRequestFullScreen = function() {};
-            window.spyOn(element, 'webkitRequestFullScreen');
-            window.spyOn(div, 'webkitRequestFullScreen');
-            displayService.enterFullScreen(element);
-            expect(element.webkitRequestFullScreen).toHaveBeenCalled();
-            displayService.enterFullScreen();
-            expect(element.webkitRequestFullScreen).toHaveBeenCalled();
-            displayService.enterFullScreen(div);
-            expect(div.webkitRequestFullScreen).toHaveBeenCalled();
-            delete element.webkitRequestFullScreen;
-            delete div.webkitRequestFullScreen;
-
-            element.mozRequestFullScreen = function() {};
-            div.mozRequestFullScreen = function() {};
-            window.spyOn(element, 'mozRequestFullScreen');
-            window.spyOn(div, 'mozRequestFullScreen');
-            displayService.enterFullScreen(element);
-            expect(element.mozRequestFullScreen).toHaveBeenCalled();
-            displayService.enterFullScreen();
-            expect(element.mozRequestFullScreen).toHaveBeenCalled();
-            displayService.enterFullScreen(div);
-            expect(div.mozRequestFullScreen).toHaveBeenCalled();
-            delete element.mozRequestFullScreen;
-            delete div.mozRequestFullScreen;
-
-            element.msRequestFullScreen = function() {};
-            div.msRequestFullScreen = function() {};
-            window.spyOn(element, 'msRequestFullScreen');
-            window.spyOn(div, 'msRequestFullScreen');
-            displayService.enterFullScreen(element);
-            expect(element.msRequestFullScreen).toHaveBeenCalled();
-            displayService.enterFullScreen();
-            expect(element.msRequestFullScreen).toHaveBeenCalled();
-            displayService.enterFullScreen(div);
-            expect(div.msRequestFullScreen).toHaveBeenCalled();
-            delete element.msRequestFullScreen;
-            delete div.msRequestFullScreen;
-
-            var $log = $injector.get('$log');
-            window.spyOn($log, 'warn');
-            displayService.enterFullScreen(element);
-            expect($log.warn).toHaveBeenCalledWith('cannot enter fullscreen mode, no support');
+            
         });
 
         it('should exit full screen', function () {
@@ -102,24 +90,25 @@ define([
             var cancelFullScreen = $window.document.cancelFullScreen,
                 webkitCancelFullScreen = $window.document.webkitCancelFullScreen,
                 mozCancelFullScreen = $window.document.mozCancelFullScreen;
-
-            $window.document.cancelFullScreen = function() {};
-            window.spyOn($window.document, 'cancelFullScreen');
-            displayService.exitFullScreen();
-            expect($window.document.cancelFullScreen).toHaveBeenCalled();
-            $window.document.cancelFullScreen = cancelFullScreen;
-
-            $window.document.webkitCancelFullScreen = function() {};
-            window.spyOn($window.document, 'webkitCancelFullScreen');
-            displayService.exitFullScreen();
-            expect($window.document.webkitCancelFullScreen).toHaveBeenCalled();
-            $window.document.webkitCancelFullScreen = webkitCancelFullScreen;
-
-            $window.document.mozCancelFullScreen = function() {};
-            window.spyOn($window.document, 'mozCancelFullScreen');
-            displayService.exitFullScreen();
-            expect($window.document.mozCancelFullScreen).toHaveBeenCalled();
-            $window.document.mozCancelFullScreen = mozCancelFullScreen;
+            if(typeof cancelFullScreen !== "undefined"){
+                window.spyOn($window.document, 'cancelFullScreen');
+                displayService.exitFullScreen();
+                expect($window.document.cancelFullScreen).toHaveBeenCalled();
+            }else if(typeof webkitCancelFullScreen  !== "undefined"){
+                window.spyOn($window.document, 'webkitCancelFullScreen');
+                displayService.exitFullScreen();
+                expect($window.document.webkitCancelFullScreen).toHaveBeenCalled();
+            }else if(typeof mozCancelFullScreen !== "undefined") 
+            {
+                window.spyOn($window.document, 'mozCancelFullScreen');
+                displayService.exitFullScreen();
+                expect($window.document.mozCancelFullScreen).toHaveBeenCalled();
+            }else{
+                var $log = $injector.get('$log');
+                window.spyOn($log, 'warn');
+                displayService.exitFullScreen();
+                expect($log.warn).toHaveBeenCalledWith('cannot exit fullscreen mode, no support');
+            }
         });
 
         it('should register content shift', function() {
@@ -400,7 +389,6 @@ define([
             spyOn(localStorage, 'setItem').and.callFake(function(key, value) {
                 store[key] = value;
             });
-
             application.lifecycle.pre([], {
                 'test-fragment-bookmark': {
                     configuration: {},
@@ -430,17 +418,16 @@ define([
                 }
             }, function () {
                 angular.mock.module('w20CoreUI');
-
                 angular.mock.inject(function (_$injector_, _$rootScope_, _$compile_, _$route_) {
                     $injector = _$injector_;
                     $rootScope = _$rootScope_;
                     $compile = _$compile_;
                     $route = _$route_;
                     bookmarkService = $injector.get('BookmarkService');
-
+                    bookmarkService.reset();
                     $rootScope.$digest();
                 });
-
+                localStorage.clear();
                 done();
             });
         });
@@ -461,11 +448,11 @@ define([
         });
 
         it('should be able to remove a bookmark', function() {
-            expect(bookmarkService.getBookmark('testBookmark')).toEqual(false);
-            bookmarkService.addBookmark('testBookmark', $route.routes['/test-fragment-bookmark/testRoute1']);
-            expect(bookmarkService.getBookmark('testBookmark')).toBeDefined();
-            bookmarkService.removeBookmark('testBookmark');
-            expect(bookmarkService.getBookmark('testBookmark')).toEqual(false);
+            expect(bookmarkService.getBookmark('testBookmark3')).toEqual(false);
+            bookmarkService.addBookmark('testBookmark3', $route.routes['/test-fragment-bookmark/testRoute1']);
+            expect(bookmarkService.getBookmark('testBookmark3')).toBeDefined();
+            bookmarkService.removeBookmark('testBookmark3');
+            expect(bookmarkService.getBookmark('testBookmark3')).toEqual(false);
         });
 
         it('should be able to reset all bookmarks', function() {

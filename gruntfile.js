@@ -33,11 +33,13 @@ module.exports = function (grunt) {
         karma: {
             test: {
                 configFile: 'karma.conf.js',
-                singleRun: true
+                singleRun: true,
+                browsers: [ 'PhantomJS' ]
             },
             watch: {
                 configFile: 'karma.conf.js',
-                autoWatch: true
+                autoWatch: true,
+                browsers: [ 'Firefox' ]
             }
         },
         coveralls: {
