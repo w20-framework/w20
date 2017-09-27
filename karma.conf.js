@@ -44,7 +44,7 @@ module.exports = function(config) {
         preprocessors: {
             'modules/*.js': 'coverage'
         },
-       // reporters: ['dots', 'coverage' ],
+        reporters: ['dots', 'coverage' ],
         coverageReporter: {
             type: 'lcov',
             dir: 'coverage/',
@@ -53,6 +53,6 @@ module.exports = function(config) {
         port: 9876,
         colors: true,
         logLevel: 'INFO',
-        browsers: [ 'Firefox','PhantomJS' ]
+        browsers: ['PhantomJS' ]
     });
 };
