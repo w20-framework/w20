@@ -29,3 +29,6 @@ docs/
 
 #Vim
 *~
+
+# Mac
+.DS_Store
