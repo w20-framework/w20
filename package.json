@@ -1,14 +1,15 @@
 {
   "name": "w20",
-  "version": "2.4.0-rc.3",
-  "description": "SeedStack Web framework",
+  "version": "2.4.0",
+  "description": "W20 Web framework",
   "license": "MPL-2.0",
   "contributors": [
     "Adrien LAUER <adrien.lauer@mpsa.com>",
-    "Kavi RAMYEAD <kavi.ramyead@ext.mpsa.com>"
+    "Kavi RAMYEAD <kavi.ramyead@ext.mpsa.com>",
+    "Jose Manuel MARTINEZ LAINEZ <josemanuel.martinez1@ext.mpsa.com>"
   ],
   "devDependencies": {
-    "angular-mocks": "^1.6.8",
+    "angular-mocks": "^1.6.9",
     "grunt": "^1.0.1",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-connect": "^0.11.2",
@@ -28,19 +29,19 @@
   },
   "main": "gruntfile.js",
   "dependencies": {
-    "angular": "^1.6.8",
-    "angular-animate": "^1.6.8",
-    "angular-aria": "^1.6.8",
-    "angular-cookies": "^1.6.8",
-    "angular-message-format": "^1.6.8",
-    "angular-messages": "^1.6.8",
-    "angular-resource": "^1.6.8",
-    "angular-route": "^1.6.8",
-    "angular-sanitize": "^1.6.8",
-    "angular-touch": "^1.6.8",
+    "angular": "^1.6.9",
+    "angular-animate": "^1.6.9",
+    "angular-aria": "^1.6.9",
+    "angular-cookies": "^1.6.9",
+    "angular-message-format": "^1.6.9",
+    "angular-messages": "^1.6.9",
+    "angular-resource": "^1.6.9",
+    "angular-route": "^1.6.9",
+    "angular-sanitize": "^1.6.9",
+    "angular-touch": "^1.6.9",
     "globalize": "~0.1.1",
     "jgrowl": "^1.4.6",
-    "jquery": "~2.2.4",
+    "jquery": "^3.0.0",
     "lodash": "^2.4.2",
     "require-css": "^0.1.10",
     "requirejs": "^2.1.22",
@@ -48,16 +49,13 @@
     "tv4": "~1.1.12",
     "uri-templates": "~0.1.9"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jmmartinez84/w20.git"
+    "url": "git+https://github.com/w20-framework/w20.git"
   },
-  "author": "",
+  "author": "W20 team",
   "bugs": {
-    "url": "https://github.com/jmmartinez84/w20/issues"
+    "url": "https://github.com/w20-framework/w20/issues"
   },
-  "homepage": "https://github.com/jmmartinez84/w20#readme"
+  "homepage": "https://w20-framework.github.io/"
 }

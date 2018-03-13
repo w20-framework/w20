@@ -22,7 +22,7 @@ module.exports = function (grunt) {
             core: {
                 src: ['modules/**/*.js'],
                 reporterOutput: "" 
-            },
+            }
         },
         bower: {
             install: {
