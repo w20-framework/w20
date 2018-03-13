@@ -36,7 +36,7 @@ window.w20 = {
                 hypermedia: {}
             },
             vars: {
-                'components-path': '/base/bower_components'
+                'components-path': '/base/node_modules'
             }
         },
         'base/specs/fragment-test/fragment-test.w20.json': {
@@ -55,7 +55,7 @@ window.w20 = {
 
 requirejs.config({
     paths: {
-        '{angular-mocks}': '/base/bower_components/angular-mocks'
+        '{angular-mocks}': '/base/node_modules/angular-mocks'
     },
     shim: {
         '{angular-mocks}/angular-mocks': [ '{angular}/angular' ]

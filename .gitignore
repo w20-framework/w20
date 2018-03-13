@@ -3,6 +3,9 @@
 .project
 .settings/
 
+# VSCode
+.vscode/
+
 # Intellij
 .idea/
 *.iml
@@ -26,3 +29,6 @@ docs/
 
 #Vim
 *~
+
+# Mac
+.DS_Store

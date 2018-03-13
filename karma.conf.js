@@ -19,8 +19,27 @@ module.exports = function(config) {
             { pattern: 'specs/**/*.js', included: false },
             { pattern: 'specs/**/*.json', included: false },
             { pattern: 'specs/**/*.html', included: false },
-            { pattern: 'modules/**/*.js*', included: false },
-            { pattern: 'bower_components/**/*', included: false }
+            { pattern: 'modules/**/*.js', included: false },
+            { pattern: 'node_modules/angular-cookies/!(spec).*', included: false },
+            { pattern: 'node_modules/angular-mocks/!(spec).*', included: false },
+            { pattern: 'node_modules/angular-messages/!(spec).*', included: false },
+            { pattern: 'node_modules/angular/!(spec).*', included: false },
+            { pattern: 'node_modules/angular-animate/!(spec).*', included: false },
+            { pattern: 'node_modules/angular-aria/!(spec).*', included: false },
+            { pattern: 'node_modules/angular-resource/!(spec).*', included: false },
+            { pattern: 'node_modules/angular-touch/!(spec).*', included: false },
+            { pattern: 'node_modules/angular-route/!(spec).*', included: false },
+            { pattern: 'node_modules/angular-message-format/!(spec).*', included: false },
+            { pattern: 'node_modules/angular-sanitize/!(spec).*', included: false },
+            { pattern: 'node_modules/lodash/!(spec).*', included: false },
+            { pattern: 'node_modules/require-css/!(spec).*', included: false },
+            { pattern: 'node_modules/requirejs-text/!(spec).*', included: false },
+            { pattern: 'node_modules/jgrowl/!(spec).*', included: false },
+            { pattern: 'node_modules/globalize/lib/**/!(spec).*', included: false },
+            { pattern: 'node_modules/uri-templates/!(spec).*', included: false },
+            { pattern: 'node_modules/tv4/!(spec).*', included: false },
+            { pattern: 'node_modules/requirejs/!(spec).*', included: false },
+            { pattern: 'node_modules/jquery/dist/!(spec).*', included: false },
         ],
         preprocessors: {
             'modules/*.js': 'coverage'
@@ -34,6 +53,6 @@ module.exports = function(config) {
         port: 9876,
         colors: true,
         logLevel: 'INFO',
-        browsers: [ 'PhantomJS' ]
+        browsers: ['PhantomJS' ]
     });
 };

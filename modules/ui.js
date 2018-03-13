@@ -146,6 +146,8 @@ define([
                     $window.document.webkitCancelFullScreen();
                 } else if ($window.document.mozCancelFullScreen) {
                     $window.document.mozCancelFullScreen();
+                } else {
+                    $log.warn('cannot exit fullscreen mode, no support');
                 }
             },
 

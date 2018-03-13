@@ -19,7 +19,6 @@ define([
     '{w20-core}/modules/env'
 ], function (module, require, w20, $, _, angular, globalize, application) {
     'use strict';
-
     // Config
     var config = module && module.config() || {},
         translationFallback = config.translationFallback || false;

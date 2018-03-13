@@ -20,8 +20,9 @@ module.exports = function (grunt) {
         ],
         jshint: {
             core: {
-                src: ['modules/**/*.js']
-            }
+                src: ['modules/**/*.js'],
+                reporterOutput: "" 
+            },
         },
         bower: {
             install: {
@@ -33,11 +34,11 @@ module.exports = function (grunt) {
         karma: {
             test: {
                 configFile: 'karma.conf.js',
-                singleRun: true
+                singleRun: true,
             },
             watch: {
                 configFile: 'karma.conf.js',
-                autoWatch: true
+                autoWatch: true,
             }
         },
         coveralls: {
@@ -72,10 +73,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-ngdocs');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-coveralls');
-    grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-contrib-connect');
 
     grunt.registerTask('docs', ['ngdocs', 'connect:docs']);
 
-    grunt.registerTask('default', ['clean', 'jshint', 'bower', 'karma:test', 'coveralls', 'ngdocs']);
+    grunt.registerTask('default', ['clean', 'jshint', 'karma:test', 'coveralls', 'ngdocs']);
 };
