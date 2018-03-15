@@ -58,15 +58,14 @@ define([
             expect(culture.name).toBe('en-GB');
         });
 
-        it('should fire an event when culture changes', function () {
+        it('should fire an event when culture changes', function (done) {
             spyOn($rootScope, '$emit');
-
-            $rootScope.$on('w20.culture.culture-changed', function (culture) {
-            });
             cultureService.culture('en-GB');
             $rootScope.$apply();
-
-            expect($rootScope.$emit).toHaveBeenCalledWith('w20.culture.culture-changed', cultureService.culture());
+            setTimeout(function(){
+                expect($rootScope.$emit).toHaveBeenCalledWith('w20.culture.culture-changed', cultureService.culture());
+                done();
+            },50)            
         });
 
         it('should persist the culture name to local storage when switching culture', function (done) {
