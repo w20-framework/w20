@@ -12,7 +12,7 @@ define([
     'require',
 
     '{angular}/angular',
-    '{uri-templates}/uri-templates',
+    'uri-templates',
 
     '{angular-resource}/angular-resource'
 

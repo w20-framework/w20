@@ -240,7 +240,7 @@
             "{requirejs-text}": "${components-path:node_modules}/requirejs-text",
             "{requirejs}": "${components-path:node_modules}/requirejs",
             "{require-css}": "${components-path:node_modules}/require-css",
-            "{uri-templates}": "${components-path:node_modules}/uri-templates",
+            "uri-templates": "${components-path:node_modules}/uri-templates/uri-templates",
             "jquery": "${components-path:node_modules}/jquery/dist/jquery",
             "{jgrowl}": "${components-path:node_modules}/jgrowl",
             "w20": "empty:"
