@@ -39,15 +39,15 @@
     "angular-route": "^1.6.9",
     "angular-sanitize": "^1.6.9",
     "angular-touch": "^1.6.9",
-    "globalize": "~0.1.1",
+    "globalize": "^0.1.1",
     "jgrowl": "^1.4.6",
     "jquery": "^3.0.0",
     "lodash": "^2.4.2",
     "require-css": "^0.1.10",
     "requirejs": "^2.1.22",
     "requirejs-text": "^2.0.15",
-    "tv4": "~1.1.12",
-    "uri-templates": "~0.1.9"
+    "tv4": "^1.1.12",
+    "uri-templates": "^0.2.0"
   },
   "repository": {
     "type": "git",
