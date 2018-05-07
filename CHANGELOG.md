@@ -1,3 +1,9 @@
+# Version 2.4.0 (2018-03-21)
+
+* [new] Move from bower to npm
+* [chg] Update AngularJS to ^1.6.9
+* [chg] Update jQuery to ^3.0.0
+
 # Version 2.3.4 (2016-12-06)
 
 * [fix] Fix error when invoking `buildLink()` with undefined (it can happen in templates). 
