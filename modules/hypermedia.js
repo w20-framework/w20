@@ -940,7 +940,7 @@ define([
                     apiPromises.push(
                         $http({ method: 'GET', url: apiUrl, headers: { 'accept': 'application/json-home, application/json' } })
 
-                            .success(function (home) {
+                            .then(function (home) {
 
                                 if (!home.resources || !angular.isObject(home.resources)) {
                                     throw new Error('Json-home resources does not have a "resources" root element');
