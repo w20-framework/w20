@@ -1,3 +1,7 @@
+# Version 2.4.1 (2018-06-04)
+
+* [fix] Fix hypermedia promise error after AngularJS 1.6+ migration.
+
 # Version 2.4.0 (2018-03-21)
 
 * [new] Move from bower to npm
