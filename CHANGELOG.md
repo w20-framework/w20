@@ -1,3 +1,7 @@
+# Version 2.4.2 (2018-07-09)
+
+* [chg] Update AngularJS to ^1.7.1
+
 # Version 2.4.1 (2018-06-04)
 
 * [fix] Fix hypermedia promise error after AngularJS 1.6+ migration.
