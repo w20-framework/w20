@@ -1,6 +1,6 @@
-# Version 2.4.4 (2018-07-10)
+# Version 2.4.5 (2018-07-10)
 
-* [fix] Run grunt on prepublish instead of install. 
+* [fix] Run grunt on prepare instead of install. 
 
 # Version 2.4.3 (2018-07-10)
 
