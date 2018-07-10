@@ -1,3 +1,7 @@
+# Version 2.4.3 (2018-07-10)
+
+* [chg] Switch to Yarn as package manager (will preserve the dependency flat structure)
+
 # Version 2.4.2 (2018-07-09)
 
 * [chg] Update AngularJS to ^1.7.1
