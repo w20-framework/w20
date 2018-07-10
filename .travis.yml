@@ -4,11 +4,7 @@ language: node_js
 
 node_js: node
 
-install: 
-  - npm install -g grunt-cli
-  - npm install
-
-script: grunt
+cache: yarn
 
 after_success:
   - "[[ $TRAVIS_PULL_REQUEST == \"false\" && $TRAVIS_BRANCH == \"master\" ]] && chmod +x deploy_ghpages.sh && ./deploy_ghpages.sh"

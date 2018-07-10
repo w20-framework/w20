@@ -31,4 +31,7 @@ docs/
 *~
 
 # Mac
-.DS_Store
+.DS_Store 
+
+# Yarn
+yarn-error.log
