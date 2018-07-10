@@ -1,3 +1,7 @@
+# Version 2.4.4 (2018-07-10)
+
+* [fix] Run grunt on prepublish instead of install. 
+
 # Version 2.4.3 (2018-07-10)
 
 * [chg] Switch to Yarn as package manager (will preserve the dependency flat structure)

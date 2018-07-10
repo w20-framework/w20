@@ -1,6 +1,6 @@
 {
   "name": "@w20/w20",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "W20 Web framework",
   "license": "MPL-2.0",
   "contributors": [
@@ -51,7 +51,7 @@
     "uri-templates": "^0.2.0"
   },
   "scripts": {
-    "install": "grunt",
+    "prepublish": "grunt",
     "test": "grunt test"
   },
   "repository": {
