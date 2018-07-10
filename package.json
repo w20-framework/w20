@@ -51,7 +51,8 @@
     "uri-templates": "^0.2.0"
   },
   "scripts": {
-    "install": "grunt"
+    "install": "grunt",
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
