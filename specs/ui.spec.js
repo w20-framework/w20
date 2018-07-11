@@ -158,6 +158,12 @@ define([
                             testRoute11: {
                                 category: 'category1.category11'
                             },
+                            testRoute12: {
+                                category: 'category1.category12'
+                            },
+                            testRoute122: {
+                                category: 'category1.category12'
+                            },
                             testRouteInvisible: {
                                 category: 'invisible',
                                 hidden: true
@@ -226,7 +232,9 @@ define([
             subSubTree = navigationService.computeSubTree(subTree[0]);
             expect(subSubTree[0]).toEqual(jasmine.any(Array));
             expect(subSubTree[0][0].category).toEqual('category1.category11');
-            expect(subSubTree[1].category).toEqual('category1');
+            expect(subSubTree[1][0].category).toEqual('category1.category12');
+            expect(subSubTree[1][1].category).toEqual('category1.category12');
+            expect(subSubTree[2].category).toEqual('category1');
 
             subSubTree = navigationService.computeSubTree(subTree[1]);
             expect(subSubTree[0]).toEqual(jasmine.any(Array));

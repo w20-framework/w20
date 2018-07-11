@@ -73,7 +73,7 @@ define([
 
             var notifications = notificationHistoryService.getNotifications();
 
-           expect(_.pluck(notifications, 'id')).toEqual([1, 2, 3, 4, 5]);
+           expect(_.map(notifications, 'id')).toEqual([1, 2, 3, 4, 5]);
         });
 
         it('should be able to get clear all notifications', function() {

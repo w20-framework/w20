@@ -44,7 +44,8 @@ define([
      */
     var w20CoreUI = angular.module('w20CoreUI', ['w20CoreEnv', 'w20CoreSecurity', 'w20CoreCulture']),
         config = module && module.config() || {},
-        allNavigation = {};
+        allNavigation = {},
+        includes = _.contains || _.includes;
 
     /**
      * @ngdoc service
@@ -329,7 +330,7 @@ define([
             _.each(keys, function (key) {
                 while (key.lastIndexOf('.') > 0) {
                     key = key.substring(0, key.lastIndexOf('.'));
-                    if (!_.contains(keys, key)) {
+                    if (!includes(keys, key)) {
                         pathByCategory[key] = [];
                     }
                 }
@@ -462,12 +463,18 @@ define([
                 if (!parentMenuTree) {
                     return null;
                 }
-                return _.sortBy(_.compact(_.filter(_.values(parentMenuTree),
+                return _.sortBy(
+                    _.compact(
+                        _.filter(_.values(parentMenuTree), function (elt) {
+                            return _.isArray(elt);
+                        }).concat(_.map(_.compact(parentMenuTree), 'route'))
+                    ),
                     function (elt) {
-                        return _.isArray(elt);
-                    }).concat(_.pluck(_.compact(parentMenuTree), 'route'))),
-                    function (elt) {
-                        return typeof elt.categoryPosition !== 'undefined' ? elt.categoryPosition : (typeof elt.sortKey !== 'undefined' ? elt.sortKey : elt);
+                        if (_.isArray(elt)) {
+                            return elt.categoryPosition || 0;
+                        } else {
+                            return 1000000 + elt.sortKey || 0;
+                        }
                     });
             },
 
@@ -659,7 +666,7 @@ define([
                 }
 
                 function getAll() {
-                    return _.pluck(_.sortBy(_.filter(items, function (item) {
+                    return _.map(_.sortBy(_.filter(items, function (item) {
                         return !item.security || securityExpressionService.evaluate(item.security);
                     }), 'sortKey'), 'name');
                 }
