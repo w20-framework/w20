@@ -942,11 +942,11 @@ define([
 
                             .then(function (home) {
 
-                                if (!home.resources || !angular.isObject(home.resources)) {
+                                if (!home.data.resources || !angular.isObject(home.data.resources)) {
                                     throw new Error('Json-home resources does not have a "resources" root element');
                                 }
 
-                                angular.forEach(home.resources, function (definition, rel) {
+                                angular.forEach(home.data.resources, function (definition, rel) {
                                     api[apiName][rel] = prefixHomeResourcesWithApiHost(definition, apiHost);
                                 });
 
