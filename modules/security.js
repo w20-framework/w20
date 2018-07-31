@@ -95,8 +95,8 @@ define([
      */
     var w20CoreSecurity = angular.module('w20CoreSecurity'),
         config = module && module.config() || {},
-        allRealms = {};
-
+        allRealms = {},
+        includes = _.contains || _.includes;
 
     // $http security defaults
     w20CoreSecurity.config([ '$httpProvider', function($httpProvider) {
@@ -271,7 +271,7 @@ define([
                     return false;
                 }
 
-                return _.all(authProviders, function (provider) {
+                return _.every(authProviders, function (provider) {
                     return provider.isAuthentifiable();
                 });
             },
@@ -302,8 +302,8 @@ define([
                     deferred = null;
 
                     $log.info('subject ' + currentSubject.id + ' authenticated on realm(s): ' + subjects.map(function (elt) {
-                            return elt.realm;
-                        }));
+                        return elt.realm;
+                    }));
 
                     /**
                      * @ngdoc event
@@ -430,8 +430,8 @@ define([
                     deferred = null;
 
                     $log.info('subject ' + currentSubject.id + ' refreshed on realm(s): ' + subjects.map(function (elt) {
-                            return elt.realm;
-                        }));
+                        return elt.realm;
+                    }));
 
                     /**
                      * @ngdoc event
@@ -547,7 +547,7 @@ define([
         function checkWithAttributeFilter(attributes) {
             return !(_.keys(attributeFilter).length > 0 && !_.find(attributeFilter, function (valueToCheck, attributeToCheck) {
                 if (attributes && attributes[attributeToCheck]) {
-                    return _.contains(attributes[attributeToCheck], '*') || _.contains(attributes[attributeToCheck], valueToCheck);
+                    return includes(attributes[attributeToCheck], '*') || includes(attributes[attributeToCheck], valueToCheck);
                 } else {
                     return true;
                 }
@@ -664,7 +664,7 @@ define([
                     invalidAttributes = {};
 
                 _.each(value, function (attrValue, attrName) {
-                    if (!_.contains(validAttributes[attrName], attrValue)) {
+                    if (!includes(validAttributes[attrName], attrValue)) {
                         invalidAttributes[attrName] = attrValue;
                     }
                 });
@@ -747,8 +747,8 @@ define([
                 }
 
                 if (typeof attributes !== 'undefined') {
-                    return _.all(attributes, function (value, attribute) {
-                        return _.contains(roleDefinition.$attributes[attribute], value);
+                    return _.every(attributes, function (value, attribute) {
+                        return includes(roleDefinition.$attributes[attribute], value);
                     });
                 } else {
                     return true;
@@ -777,20 +777,20 @@ define([
                     }
 
                     if (values.length === 0) {
-                        var result = _.any(parent.$roles, function (role) {
-                                return checkWithRoleFilter(currentRoles[realm][role] && currentRoles[realm][role].$unifiedRole);
-                            }) && checkWithAttributeFilter(parent.$attributes);
+                        var result = _.some(parent.$roles, function (role) {
+                            return checkWithRoleFilter(currentRoles[realm][role] && currentRoles[realm][role].$unifiedRole);
+                        }) && checkWithAttributeFilter(parent.$attributes);
 
                         if (typeof attributes === 'undefined') {
                             return result; // no attribute check, return the result as-is
                         } else {
-                            return result && _.all(attributes, function (value, attribute) {
-                                    return _.contains(parent.$attributes[attribute], '*') || _.contains(parent.$attributes[attribute], value);
-                                });
+                            return result && _.every(attributes, function (value, attribute) {
+                                return includes(parent.$attributes[attribute], '*') || includes(parent.$attributes[attribute], value);
+                            });
                         }
                     }
 
-                    return _.all(values.shift().split(','), function (value) {
+                    return _.every(values.shift().split(','), function (value) {
                         if (value.indexOf('$') === 0) {
                             throw new Error('permissions cannot start with a $');
                         }
@@ -899,20 +899,20 @@ define([
                     _.each(config.roleMapping, function (definition, name) {
                         var mergedAttributes = {};
 
-                        if (_.all(definition, function (role, realm) {
-                                var realRole = currentRoles[realm] && currentRoles[realm][role];
-                                if (realRole) {
-                                    _.map(realRole.$attributes, function (values, attribute) {
-                                        mergedAttributes[attribute] = _.union(values, mergedAttributes[attribute] || []);
-                                    });
+                        if (_.every(definition, function (role, realm) {
+                            var realRole = currentRoles[realm] && currentRoles[realm][role];
+                            if (realRole) {
+                                _.map(realRole.$attributes, function (values, attribute) {
+                                    mergedAttributes[attribute] = _.union(values, mergedAttributes[attribute] || []);
+                                });
 
-                                    realRole.$unifiedRole = name;
+                                realRole.$unifiedRole = name;
 
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            })) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        })) {
                             unifiedRoles[name] = {
                                 $attributes: mergedAttributes
                             };

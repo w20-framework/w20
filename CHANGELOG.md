@@ -1,3 +1,25 @@
+# Version 2.4.5 (2018-07-10)
+
+* [fix] Run grunt on prepare instead of install. 
+
+# Version 2.4.3 (2018-07-10)
+
+* [chg] Switch to Yarn as package manager (will preserve the dependency flat structure)
+
+# Version 2.4.2 (2018-07-09)
+
+* [chg] Update AngularJS to ^1.7.1
+
+# Version 2.4.1 (2018-06-04)
+
+* [fix] Fix hypermedia promise error after AngularJS 1.6+ migration.
+
+# Version 2.4.0 (2018-03-21)
+
+* [new] Move from bower to npm
+* [chg] Update AngularJS to ^1.6.9
+* [chg] Update jQuery to ^3.0.0
+
 # Version 2.3.4 (2016-12-06)
 
 * [fix] Fix error when invoking `buildLink()` with undefined (it can happen in templates). 

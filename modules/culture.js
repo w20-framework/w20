@@ -19,10 +19,10 @@ define([
     '{w20-core}/modules/env'
 ], function (module, require, w20, $, _, angular, globalize, application) {
     'use strict';
-
     // Config
     var config = module && module.config() || {},
-        translationFallback = config.translationFallback || false;
+        translationFallback = config.translationFallback || false,
+        includes = _.contains || _.includes;
 
     // Global state
     var availableCultures = [],
@@ -130,7 +130,9 @@ define([
             var standardCalendar = culture.calendars.standard,
                 currency = culture.numberFormat.currency,
                 number = culture.numberFormat,
-                eras = standardCalendar.eras.map(function (era) { return era.name; });
+                eras = standardCalendar.eras.map(function (era) {
+                    return era.name;
+                });
 
             function buildNumberPattern(patterns) {
                 return {
@@ -1308,8 +1310,8 @@ define([
                 }), function (elt) {
                     return '{globalize}/cultures/globalize.culture.' + elt;
                 }), function () {
-                    availableCultures = _.pluck(_.filter(globalize.cultures, function (elt, key) {
-                        return key !== 'default' && (key !== 'en' || _.contains(config.available, 'en'));
+                    availableCultures = _.map(_.filter(globalize.cultures, function (elt, key) {
+                        return key !== 'default' && (key !== 'en' || includes(config.available, 'en'));
                     }), 'name');
 
                     availableCultureObjects = _.map(availableCultures, function (name) {
