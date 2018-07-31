@@ -1,5 +1,9 @@
 # Version 2.5.0 (2018-07-31)
 
+* [fix] Fix missing injection in `security.js`
+
+# Version 2.5.0 (2018-07-31)
+
 * [new] Support for extensible security providers.
 * [new] New security provider supporting custom authentication stored in a cookie. 
 * [fix] Fix remaining hypermedia promise error after AngularJS 1.6+ migration.

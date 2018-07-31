@@ -1034,8 +1034,8 @@ define([
         };
     }]);
 
-    w20CoreSecurity.run(['AuthenticationService', 'ApplicationService', 'EventService', 'StateService', '$location',
-        function (authenticationService, applicationService, eventService, stateService, $location) {
+    w20CoreSecurity.run(['AuthenticationService', 'ApplicationService', 'EventService', 'StateService', '$location', '$injector',
+        function (authenticationService, applicationService, eventService, stateService, $location, $injector) {
             function inBrowserSession(state) {
                 var sessionState = stateService.state('session', 'isActive', false, true);
                 return typeof state !== 'boolean' ? sessionState.value() : sessionState.value(state);
