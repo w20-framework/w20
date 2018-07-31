@@ -14,8 +14,10 @@ define([
     'jquery',
     '{lodash}/lodash',
     '{angular}/angular',
-    '{angular-resource}/angular-resource'
-], function (module, require, w20, $, _, angular) {
+    '{angular-resource}/angular-resource',
+    '{w20-core}/modules/security/securityModule',
+    '{w20-core}/modules/security/realms'
+], function(module, require, w20, $, _, angular) {
     'use strict';
 
     /**
@@ -91,111 +93,15 @@ define([
      * The authorizations resource is requested after successful authentication to return the profile of the authenticated
      * subject along with its authorizations.
      */
-    var w20CoreSecurity = angular.module('w20CoreSecurity', ['w20CoreEnv', 'ngResource']),
+    var w20CoreSecurity = angular.module('w20CoreSecurity'),
         config = module && module.config() || {},
-        allProviders = {},
         allRealms = {},
         includes = _.contains || _.includes;
 
-    var BasicAuthenticationProvider = ['$resource', '$window', '$q', function ($resource, $window, $q) {
-        var AuthenticationResource, AuthorizationsResource, realm, authenticationUrl, clearCredentials;
-
-        function randomString(length) {
-            var chars = [];
-            var possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
-            for (var i = 0; i < length; i++) {
-                chars[i] = possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-            return chars.join('');
-        }
-
-        return {
-            setConfig: function (providerConfig) {
-                clearCredentials = providerConfig.clearCredentials || true;
-
-                if (typeof providerConfig.authentication === 'undefined') {
-                    throw new Error('Authentication URL is required for BasicAuthentication provider, got undefined');
-                }
-                authenticationUrl = require.toUrl(providerConfig.authentication).replace(/:(?!\/\/)/, '\\:');
-                AuthenticationResource = $resource(authenticationUrl);
-
-                if (typeof providerConfig.authorizations === 'undefined') {
-                    throw new Error('Authorizations URL is required for BasicAuthentication provider, got undefined');
-                }
-                AuthorizationsResource = $resource(require.toUrl(providerConfig.authorizations).replace(/:(?!\/\/)/, '\\:'));
-            },
-
-            setRealm: function (value) {
-                realm = value;
-            },
-
-            isAuthentifiable: function () {
-                return true;
-            },
-
-            authenticate: function () {
-                var deferred = $q.defer();
-                AuthenticationResource.get(function () {
-                    AuthorizationsResource.get({}, function (subject) {
-                        deferred.resolve({
-                            realm: realm,
-                            subject: subject
-                        });
-                    }, function () {
-                        deferred.reject(realm);
-                    });
-                }, function () {
-                    deferred.reject(realm);
-                });
-
-                return deferred.promise;
-            },
-
-            deauthenticate: function () {
-                var deferred = $q.defer();
-                AuthenticationResource.remove(function () {
-                    if (clearCredentials) {
-                        if (!$window.document.execCommand('ClearAuthenticationCache', 'false')) {
-                            $.ajax({
-                                type: 'GET',
-                                url: authenticationUrl,
-                                async: true,
-                                username: randomString(8),
-                                password: randomString(8),
-                                headers: {
-                                    Authorization: 'Basic ' + randomString(20)
-                                }
-                            });
-                        }
-                    }
-                    deferred.resolve(realm);
-                }, function () {
-                    deferred.reject(realm);
-                });
-
-                return deferred.promise;
-            },
-
-            refresh: function () {
-                var deferred = $q.defer();
-                AuthorizationsResource.get({}, function (subject) {
-                    deferred.resolve({
-                        realm: realm,
-                        subject: subject
-                    });
-                }, function () {
-                    deferred.reject(realm);
-                });
-
-                return deferred.promise;
-            }
-        };
-    }];
-
     // $http security defaults
-    w20CoreSecurity.config(['$httpProvider', function ($httpProvider) {
+    w20CoreSecurity.config([ '$httpProvider', function($httpProvider) {
         $httpProvider.defaults.headers.common.withCredentials = !!w20.corsWithCredentials;
-    }]);
+    } ]);
 
     /**
      * @ngdoc service
@@ -1146,40 +1052,41 @@ define([
                 }
             });
 
-            eventService.on('w20.security.deauthenticated', function () {
+            eventService.on('w20.security.deauthenticated', function() {
                 inBrowserSession(false);
                 if (typeof config.redirectAfterLogout === 'string') {
                     $location.path(config.redirectAfterLogout);
                 }
             });
 
-            _.each(allRealms, function (definition, realm) {
-                var providerFactory = allProviders[definition.provider];
-                if (typeof providerFactory === 'undefined') {
+            _.each(allRealms, function(definition, realm) {
+
+                var provider = $injector.get(definition.provider);
+
+                if (typeof provider === 'undefined') {
                     throw new Error('Unknown authentication provider ' + definition.provider);
                 }
 
-                authenticationService.addProvider(realm, providerFactory, definition.config);
+                authenticationService.addProvider(realm, provider, definition.config);
             });
 
             if (config.autoLogin) {
                 authenticationService.authenticate();
             }
-        }]);
+        } ]);
 
     return {
-        angularModules: ['w20CoreSecurity'],
-        lifecycle: {
-            pre: function (modules, fragments, callback) {
-                allProviders.SimpleAuthentication = BasicAuthenticationProvider;
-                allProviders.BasicAuthentication = BasicAuthenticationProvider;
+        angularModules : [ 'w20CoreSecurity' ],
+        lifecycle : {
+            pre : function(modules, fragments, callback) {
 
                 // Collect fragment security realms
-                _.each(fragments, function (fragment, id) {
+                _.each(fragments, function(fragment, id) {
                     if (typeof fragment.definition.security !== 'undefined') {
                         allRealms[id] = fragment.definition.security;
                     }
                 });
+
 
                 callback(module);
             }
