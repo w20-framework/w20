@@ -49,7 +49,7 @@ define([
                 var logoutUrl = require.toUrl(providerConfig.logoutUrl).replace(/:(?!\/\/)/, '\\:');
 
                 if (typeof providerConfig.authorizations === 'undefined') {
-                    throw new Error('Authorizations URL is required for BasicAuthentication provider, got undefined');
+                    throw new Error('Authorizations URL is required for RestAuthentication provider, got undefined');
                 }
                 var authorizationUrl = require.toUrl(providerConfig.authorizations).replace(/:(?!\/\/)/, '\\:');
 
