@@ -171,7 +171,7 @@ define([
                     'DAY': standardCalendar.days.names,
                     "ERANAMES": eras,
                     "ERAS": eras,
-                    "FIRSTDAYOFWEEK": standardCalendar.firstDay + 6 % 7,
+                    "FIRSTDAYOFWEEK": standardCalendar.firstDay + 6 % 7, // Transform from javascript format to ISO-8601
                     'MONTH': standardCalendar.months.names,
                     'SHORTDAY': standardCalendar.days.namesAbbr,
                     'SHORTMONTH': standardCalendar.months.namesAbbr,
