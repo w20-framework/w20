@@ -171,7 +171,7 @@ define([
                     'DAY': standardCalendar.days.names,
                     "ERANAMES": eras,
                     "ERAS": eras,
-                    "FIRSTDAYOFWEEK": standardCalendar.firstDay,
+                    "FIRSTDAYOFWEEK": standardCalendar.firstDay + 6 % 7,
                     'MONTH': standardCalendar.months.names,
                     'SHORTDAY': standardCalendar.days.namesAbbr,
                     'SHORTMONTH': standardCalendar.months.namesAbbr,
