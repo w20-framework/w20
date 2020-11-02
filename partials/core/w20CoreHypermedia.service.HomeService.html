@@ -1,0 +1,38 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/hypermedia.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/hypermedia.js#L115" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">HomeService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">w20CoreHypermedia</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-page"><p>Service for registering api entry points resources exposed as json-home document</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">HomeService(api);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>api</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-page"><p>One of the api key registered in the api section of the module configuration</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-page"><p>The object that allows to interact with the requested api</p>
+</div></td></tr></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/hypermedia.js#L198" class="view-source icon-eye-open"> </a><h3 id="methods_enter">enter(rel, parameters, actions, options)</h3>
+<div class="enter"><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-enter-page"><p>Provide a $resource object configured from a registered home resource.
+This method allow to enter an hypermedia endpoint</p>
+</div><h5 id="methods_enter_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>rel</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-enter-page"><p>the relation (link) of the home resource to retrieve</p>
+</div></td></tr><tr><td>parameters</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-enter-page"><p>the parameters for the resource url</p>
+</div></td></tr><tr><td>actions</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-enter-page"><p>optional $resource method actions</p>
+</div></td></tr><tr><td>options</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-enter-page"><p>additional $resource method options</p>
+</div></td></tr></tbody></table><h5 id="methods_enter_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-enter-page"><p>the $resource for this home resource</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/hypermedia.js#L175" class="view-source icon-eye-open"> </a><h3 id="methods_getdefinition">getDefinition(rel)</h3>
+<div class="getdefinition"><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-getdefinition-page"><p>Return the home resource definition</p>
+</div><h5 id="methods_getdefinition_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>rel</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-getdefinition-page"><p>relation (link) of the resource</p>
+</div></td></tr></tbody></table><h5 id="methods_getdefinition_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-getdefinition-page"><p>the requested home resource configuration</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/hypermedia.js#L157" class="view-source icon-eye-open"> </a><h3 id="methods_register">register(resource)</h3>
+<div class="register"><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-register-page"><p>Register a new home resource</p>
+</div><h5 id="methods_register_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>resource</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-homeservice-register-page"><p>a json-home compliant resource declaration</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+</div>

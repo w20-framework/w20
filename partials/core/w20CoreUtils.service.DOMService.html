@@ -1,0 +1,25 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/utils.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/utils.js#L48" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">DOMService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">w20CoreUtils</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20coreutils-service-page w20coreutils-service-domservice-page"><p>This service performs DOM utility manipulation</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/utils.js#L74" class="view-source icon-eye-open"> </a><h3 id="methods_autoid">autoId(element)</h3>
+<div class="autoid"><div class="w20coreutils-service-page w20coreutils-service-domservice-autoid-page"><p>Add an id attribute on the element with an auto-generated value in the form &quot;w20-autoid-(increment)&quot;</p>
+</div><h5 id="methods_autoid_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>element</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreutils-service-page w20coreutils-service-domservice-autoid-page"><p>A DOM selector (class, element)</p>
+</div></td></tr></tbody></table><h5 id="methods_autoid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreutils-service-page w20coreutils-service-domservice-autoid-page"><p>if the element selected with the parameter had no id it returns the generated id, otherwise it returns the element id</p>
+</div></td></tr></table><h4 id="methods_autoid_example">Example</h4>
+<div class="example"><div class="w20coreutils-service-page w20coreutils-service-domservice-autoid-page"><pre><code>&lt;span class=&quot;without-id&quot;&gt; I am the 14th element with class &quot;without-id&quot; &lt;/span&gt;
+
+domService.autoId(&#39;.without-id&#39;);
+
+&lt;span class=&quot;without-id&quot; id=&quot;w20-autoid-14&quot;&gt; I am the 14th element with class &quot;without-id&quot; &lt;/span&gt;
+</code></pre></div></div>
+</div>
+</li>
+</ul>
+</div>
+</div>

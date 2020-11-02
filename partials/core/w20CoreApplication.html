@@ -1,0 +1,57 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/application.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/application.js#L87" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">w20CoreApplication</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20coreapplication-page"><p>This module configure the following AngularJS aspects:</p>
+<ul>
+<li>Routing (more information <a href="http://www.seedstack.org/docs/w20/manual/core/routing/">here</a>),</li>
+<li>Exception handler,</li>
+<li>Initialization.</li>
+</ul>
+<p>This module is required to run a W20 application. It is automatically loaded.</p>
+<h3 id="description_configuration">Configuration</h3>
+<pre><code>&quot;application&quot; : {
+    &quot;id&quot;: &quot;The application unique identifier&quot;,
+    &quot;home&quot;: &quot;The path of the home view&quot;,
+    &quot;blank&quot;: &quot;The path of the blank view&quot;,
+    &quot;notFound&quot;: &quot;The path of the &#39;view not found&#39; view&quot;,
+    &quot;redirectAfterRouteError&quot;: &quot;Specify the path to go to after a route change error&quot;,
+    &quot;defaultSandboxPermissions&quot;: &quot;Specify the default iframe-based sandbox permissions (can be overridden by the sandboxPermissions attribute on a specific route)&quot;,
+    &quot;defaultSandboxId&quot;: &quot;Specify the default identifier for the sandbox iframe&quot;
+}
+</code></pre><h3 id="description_fragment-definition-sections">Fragment definition sections</h3>
+<p>The fragment &quot;routes&quot; section allows to declare application routes. All fragments &quot;routes&quot; sections are merged on application
+initialization. Fragment &quot;routes&quot; definitions can be overriden by redeclaring the &quot;routes&quot; section in the configuration and
+redeclaring any value to be overriden.</p>
+<pre><code>&quot;routes&quot; : {
+    &quot;path/of/the/route/1&quot; : {
+        // Type of the route (view by default by other type can be registered by modules)
+        &quot;type&quot;: &quot;view|...&quot;
+
+        // If type attribute is view, the URL of the view HTML template (exclusive with the &quot;template&quot; attribute)
+        &quot;templateUrl&quot; : &quot;module name of the template&quot;,
+
+        // If type attribute is view, inline template of the view (exclusive with the &quot;templateUrl&quot; attribute)
+        &quot;template&quot; : &quot;&lt;html&gt;&lt;of&gt;&lt;the&gt;&lt;template&gt;...&quot;,
+
+        // Integer key used to sort the category entries
+        &quot;sortKey&quot; : 1,
+
+        // Category of the route
+        &quot;category&quot; : &quot;category-name&quot;,
+
+        // Hide the route from being displayed
+        &quot;hidden&quot; : true|false,
+
+        // Name of a &quot;resolve&quot; function that must return a promise. The routing is suspended until the promise is resolved (or rejected).
+        // The function should be declared using module.value(&quot;checkFnName&quot;, [ &quot;...&quot;, function(...) { } ])
+        &quot;check&quot; : &quot;checkFnName&quot;
+    },
+
+    &quot;path/of/the/route/2&quot; : { ... },
+
+    ...
+}
+</code></pre></div></div>
+</div>

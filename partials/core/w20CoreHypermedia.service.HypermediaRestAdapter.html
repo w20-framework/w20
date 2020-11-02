@@ -1,0 +1,42 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/hypermedia.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/hypermedia.js#L264" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">HypermediaRestAdapter</code>
+<div><span class="hint">service in module <code ng:non-bindable="">w20CoreHypermedia</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20corehypermedia-service-page w20corehypermedia-service-hypermediarestadapter-page"><p>Service to manually process http response data into hypermedia resource object.
+The processed hypermedia resource object is an AngularJS $resource object extended with additional methods:</p>
+<ul>
+<li><strong>$links(rel, parameters, actions, options)</strong>: Same signature as $resource action method. Provide the name of a relation (link) instead of the url.
+If called without parameter $links() return an object with all the available links.</li>
+</ul>
+<ul>
+<li><strong>$embedded(key)</strong>: if present, retrieve embedded resources in the _embedded field by the key name. If no key is provided, return all the embedded objects.</li>
+</ul>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/hypermedia.js#L401" class="view-source icon-eye-open"> </a><h3 id="methods_process">process(promiseOrData, fetchLinkNames, recursive)</h3>
+<div class="process"><div class="w20corehypermedia-service-page w20corehypermedia-service-hypermediarestadapter-process-page"><p>The actual adapter method which processes the given JSON data object and adds
+the wrapped resource property to all embedded elements where resources are available.</p>
+</div><h5 id="methods_process_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>promiseOrData</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-hypermediarestadapter-process-page"><p>a promise with the given JSON data or just the JSON data</p>
+</div></td></tr><tr><td>fetchLinkNames</td><td><a href="" class="label type-hint type-hint-array">Array</a><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-hypermediarestadapter-process-page"><p>the link names to be fetched automatically or the &#39;_allLinks&#39; key to fetch all links except the &#39;self&#39; key.</p>
+</div></td></tr><tr><td>recursive</td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-hypermediarestadapter-process-page"><p>true if the automatically fetched response should be processed recursively with the adapter, false otherwise</p>
+</div></td></tr></tbody></table><h5 id="methods_process_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20corehypermedia-service-page w20corehypermedia-service-hypermediarestadapter-process-page"><p>the processed JSON data</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<h2 id="example">Example</h2>
+<div class="example"><div class="w20corehypermedia-service-page w20corehypermedia-service-hypermediarestadapter-page"><pre><code>HypermediaRestAdapter.process(response.data).then(function (processedResponse) {
+  // processedResponse is a $resource object augmented with a $links and $embedded method
+});
+
+HypermediaRestAdapter.process(response, &#39;aLink&#39;, true).then(function(processedResponse) {
+    // follow &#39;aLink&#39; automatically and get the response as processedResponse
+ });
+
+ HypermediaRestAdapter.process(response, [&#39;someLink&#39;, &#39;testLink&#39;], true).then(function(processedResponse) {
+    // follow multiple links automatically and get the response as processedResponse
+ });
+</code></pre></div></div>
+</div>

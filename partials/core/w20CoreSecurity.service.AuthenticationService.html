@@ -1,0 +1,126 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/security.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L116" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">AuthenticationService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">w20CoreSecurity</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-page"><p>The AuthenticationService provides an API to authenticate and deauthenticate a subject, as well as query its
+various properties.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L160" class="view-source icon-eye-open"> </a><h3 id="methods_addprovider">addProvider(realm, providerFactory, config)</h3>
+<div class="addprovider"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-addprovider-page"><p>Add an authentication provider which can then be used by any security realm definition.</p>
+</div><h5 id="methods_addprovider_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>realm</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-addprovider-page"><p>The realm</p>
+</div></td></tr><tr><td>providerFactory</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-addprovider-page"><p>An injectable AngularJS factory that act as a provider for authentication.
+This factory should return an object with a setConfig(config) and setRealm(realm) methods.</p>
+</div></td></tr><tr><td>config</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-addprovider-page"><p>A configuration object with a <strong>authorization</strong> property url and a <strong>authentication</strong> property url</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L290" class="view-source icon-eye-open"> </a><h3 id="methods_authenticate">authenticate(credentials)</h3>
+<div class="authenticate"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-authenticate-page"><p>Authenticate the subject corresponding to the specified credentials through all the configured security realms.</p>
+</div><h5 id="methods_authenticate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>credentials</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-authenticate-page"><p>The credentials object passed to authentication providers to authenticate the subject.</p>
+</div></td></tr></tbody></table><h5 id="methods_authenticate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-authenticate-page"><p>A promise that will be resolved upon successful subject authentication, or rejected otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L362" class="view-source icon-eye-open"> </a><h3 id="methods_deauthenticate">deauthenticate()</h3>
+<div class="deauthenticate"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-deauthenticate-page"><p>Deauthenticate the currently authenticated subject.</p>
+</div><h5 id="methods_deauthenticate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-deauthenticate-page"><p>A promise that will be resolved upon successful subject deauthentication, or rejected otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L269" class="view-source icon-eye-open"> </a><h3 id="methods_isauthentifiable">isAuthentifiable()</h3>
+<div class="isauthentifiable"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-isauthentifiable-page"><p>Return if a subject is authentifiable (i.e. all authentication providers can authenticate a subject).</p>
+</div><h5 id="methods_isauthentifiable_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-isauthentifiable-page"><p>True if the subject is currently authentifiable, false otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L414" class="view-source icon-eye-open"> </a><h3 id="methods_refresh">refresh()</h3>
+<div class="refresh"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-refresh-page"><p>Refresh the currently connected subject by deauthenticating and reauthenticating it in a row.</p>
+</div><h5 id="methods_refresh_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-refresh-page"><p>A promise that will be resolved upon successful subject refresh, or rejected otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L254" class="view-source icon-eye-open"> </a><h3 id="methods_subjectauthenticated">subjectAuthenticated()</h3>
+<div class="subjectauthenticated"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-subjectauthenticated-page"><p>Return if the subject is authenticated.</p>
+</div><h5 id="methods_subjectauthenticated_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-subjectauthenticated-page"><p>True if the subject is currently authenticated, false otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L178" class="view-source icon-eye-open"> </a><h3 id="methods_subjectid">subjectId()</h3>
+<div class="subjectid"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-subjectid-page"><p>Retrieve the identifier of the currently authenticated subject.</p>
+</div><h5 id="methods_subjectid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-subjectid-page"><p>The subject identifier or undefined if no subject is currently authenticated.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L235" class="view-source icon-eye-open"> </a><h3 id="methods_subjectprincipal">subjectPrincipal(name)</h3>
+<div class="subjectprincipal"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-subjectprincipal-page"><p>Retrieve the specified principal value of the currently authenticated subject.</p>
+</div><h5 id="methods_subjectprincipal_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>name</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-subjectprincipal-page"><p>The name of the principal value.</p>
+</div></td></tr></tbody></table><h5 id="methods_subjectprincipal_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-subjectprincipal-page"><p>The specified principal value or undefined if no subject is currently authenticated or the specified principal doesn&#39;t exists.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L215" class="view-source icon-eye-open"> </a><h3 id="methods_subjectprincipals">subjectPrincipals()</h3>
+<div class="subjectprincipals"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-subjectprincipals-page"><p>Retrieve all the the principals of the currently authenticated subject.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L197" class="view-source icon-eye-open"> </a><h3 id="methods_subjecttype">subjectType()</h3>
+<div class="subjecttype"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-subjecttype-page"><p>Retrieve the type of the currently authenticated subject.</p>
+</div><h5 id="methods_subjecttype_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-subjecttype-page"><p>The subject type or undefined if no subject is currently authenticated.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member event"><h2 id="events">Events</h2>
+<ul class="events"><li><h3 id="events_w20\security\authenticated">w20\.security\.authenticated</h3>
+<div class="w20\security\authenticated"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-w20-security-authenticated-page"><p>This event is emitted after successful subject authentication.</p>
+</div><div class="inline"><h4 id="events_w20\security\authenticated_type">Type:</h4>
+<div class="type">emitted</div>
+</div>
+<div class="inline"><h4 id="events_w20\security\authenticated_target">Target:</h4>
+<div class="target">root scope</div>
+</div>
+<h5 id="events_w20\security\authenticated_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>The</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-w20-security-authenticated-page"><p>authenticated subject definition.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="events_w20\security\deauthenticated">w20\.security\.deauthenticated</h3>
+<div class="w20\security\deauthenticated"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-w20-security-deauthenticated-page"><p>This event is emitted after the subject deauthentication.</p>
+</div><div class="inline"><h4 id="events_w20\security\deauthenticated_type">Type:</h4>
+<div class="type">emitted</div>
+</div>
+<div class="inline"><h4 id="events_w20\security\deauthenticated_target">Target:</h4>
+<div class="target">root scope</div>
+</div>
+<h5 id="events_w20\security\deauthenticated_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-w20-security-deauthenticated-page"><p>The deauthenticated subject identifier.</p>
+</div></td></tr><tr><td>The</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-w20-security-deauthenticated-page"><p>subject is cleanly deauthenticated.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="events_w20\security\failed-authentication">w20\.security\.failed-authentication</h3>
+<div class="w20\security\failed-authentication"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-w20-security-failed-authentication-page"><p>This event is emitted after unsuccessful subject authentication.</p>
+</div><div class="inline"><h4 id="events_w20\security\failed-authentication_type">Type:</h4>
+<div class="type">emitted</div>
+</div>
+<div class="inline"><h4 id="events_w20\security\failed-authentication_target">Target:</h4>
+<div class="target">root scope</div>
+</div>
+<h5 id="events_w20\security\failed-authentication_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-w20-security-failed-authentication-page"><p>The authenticated subject identifier.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="events_w20\security\failed-refresh">w20\.security\.failed-refresh</h3>
+<div class="w20\security\failed-refresh"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-w20-security-failed-refresh-page"><p>This event is emitted after unsuccessful subject refresh.</p>
+</div><div class="inline"><h4 id="events_w20\security\failed-refresh_type">Type:</h4>
+<div class="type">emitted</div>
+</div>
+<div class="inline"><h4 id="events_w20\security\failed-refresh_target">Target:</h4>
+<div class="target">root scope</div>
+</div>
+<h5 id="events_w20\security\failed-refresh_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>The</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-w20-security-failed-refresh-page"><p>authenticated subject identifier.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="events_w20\security\refreshed">w20\.security\.refreshed</h3>
+<div class="w20\security\refreshed"><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-w20-security-refreshed-page"><p>This event is emitted after successful subject refresh.</p>
+</div><div class="inline"><h4 id="events_w20\security\refreshed_type">Type:</h4>
+<div class="type">emitted</div>
+</div>
+<div class="inline"><h4 id="events_w20\security\refreshed_target">Target:</h4>
+<div class="target">root scope</div>
+</div>
+<h5 id="events_w20\security\refreshed_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>The</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authenticationservice-w20-security-refreshed-page"><p>authenticated subject definition.</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+</div>

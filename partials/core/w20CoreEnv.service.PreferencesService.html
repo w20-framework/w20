@@ -1,0 +1,38 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/env.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/env.js#L193" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">PreferencesService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">w20CoreEnv</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-page"><p>The PreferencesService provides an abstraction over the StateService dedicated to application preference storage.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/env.js#L211" class="view-source icon-eye-open"> </a><h3 id="methods_icon">icon(category, icon)</h3>
+<div class="icon"><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-icon-page"><p>Getter/setter for the icon of a preference category.</p>
+</div><h5 id="methods_icon_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>category</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-icon-page"><p>The preference category</p>
+</div></td></tr><tr><td>icon</td><td><a href="" class="label type-hint type-hint-icon">icon</a></td><td><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-icon-page"><p>The type of the icon (i.e. the CSS class of the icon) to set.</p>
+</div></td></tr></tbody></table><h5 id="methods_icon_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-icon-page"><p>The type of the icon if used as a getter, the previous type of icon if used as a setter.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/env.js#L238" class="view-source icon-eye-open"> </a><h3 id="methods_preference">preference(category, name, defaultvalue, type)</h3>
+<div class="preference"><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-preference-page"><p>Defines a typed preference object for a given (category, name) tuple. A preference object provides the following methods :</p>
+<ul>
+<li>pref.value(theValue) : getter/setter for the preference value. If theValue is present it sets the value of the preference object, if not it returns the current value.</li>
+<li>pref.meta(theMetadataObject) : getter/setter for the preference metadata object. A preference metadata object can contain anything but the &#39;callback&#39; property is used as a function to call when the preference value has been set.</li>
+</ul>
+</div><h5 id="methods_preference_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>category</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-preference-page"><p>The preference category.</p>
+</div></td></tr><tr><td>name</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-preference-page"><p>The preference name.</p>
+</div></td></tr><tr><td>defaultvalue</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-preference-page"><p>The default value when the preference is first initialized.</p>
+</div></td></tr><tr><td>type</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-preference-page"><p>The data type of the preference. If omitted <code>typeof defaultvalue</code> is used instead.</p>
+</div></td></tr></tbody></table><h5 id="methods_preference_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-preference-page"><p>The preference object.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/env.js#L299" class="view-source icon-eye-open"> </a><h3 id="methods_preferences">preferences(category)</h3>
+<div class="preferences"><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-preferences-page"><p>Returns all the preferences for a given category.</p>
+</div><h5 id="methods_preferences_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>category</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-preferences-page"><p>The preference category.</p>
+</div></td></tr></tbody></table><h5 id="methods_preferences_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coreenv-service-page w20coreenv-service-preferencesservice-preferences-page"><p>An object containing all the preference from the given category.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

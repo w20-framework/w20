@@ -1,0 +1,100 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/security.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L489" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">AuthorizationService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">w20CoreSecurity</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-page"><p>The AuthorizationService provides an API to check for currently authenticated subject authorizations.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L845" class="view-source icon-eye-open"> </a><h3 id="methods_addsubjectauthorizations">addSubjectAuthorizations(realm, subject)</h3>
+<div class="addsubjectauthorizations"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-addsubjectauthorizations-page"><p>Merge subject permissions to realm permissions</p>
+</div><h5 id="methods_addsubjectauthorizations_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>realm</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-addsubjectauthorizations-page"><p>The realm to add permission into</p>
+</div></td></tr><tr><td>subject</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-addsubjectauthorizations-page"><p>The subject</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L824" class="view-source icon-eye-open"> </a><h3 id="methods_clear">clear()</h3>
+<div class="clear"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-clear-page"><p>Clear every roles and authorizations</p>
+</div></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L711" class="view-source icon-eye-open"> </a><h3 id="methods_getattributefilter">getAttributeFilter()</h3>
+<div class="getattributefilter"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-getattributefilter-page"><p>Get the security attribute filter</p>
+</div><h5 id="methods_getattributefilter_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-getattributefilter-page"><p>the attribute filter</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L582" class="view-source icon-eye-open"> </a><h3 id="methods_getattributes">getAttributes()</h3>
+<div class="getattributes"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-getattributes-page"><p>Get every attributes and their associated value</p>
+</div><h5 id="methods_getattributes_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-getattributes-page"><p>a map of attributes to their values</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L648" class="view-source icon-eye-open"> </a><h3 id="methods_getrolefilter">getRoleFilter()</h3>
+<div class="getrolefilter"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-getrolefilter-page"><p>Get the role filter</p>
+</div><h5 id="methods_getrolefilter_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-getrolefilter-page"><p>the list of filtered roles</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L568" class="view-source icon-eye-open"> </a><h3 id="methods_getroles">getRoles()</h3>
+<div class="getroles"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-getroles-page"><p>Get every available roles</p>
+</div><h5 id="methods_getroles_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-getroles-page"><p>a list of roles</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L773" class="view-source icon-eye-open"> </a><h3 id="methods_haspermission">hasPermission(realm, permission, attributes)</h3>
+<div class="haspermission"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-haspermission-page"><p>Check if the currently authenticated subject has the specified permission with the specified attributes in the
+specified realm.</p>
+</div><h5 id="methods_haspermission_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>realm</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-haspermission-page"><p>The realm the check is made against.</p>
+</div></td></tr><tr><td>permission</td><td><a href="" class="label type-hint type-hint-string">String[]</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-haspermission-page"><p>The permission to check (as an array of strings or as a &quot;:&quot; delimited unique string).</p>
+</div></td></tr><tr><td>attributes</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-haspermission-page"><p>The optional attributes object to further check on the permission.</p>
+</div></td></tr></tbody></table><h5 id="methods_haspermission_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-haspermission-page"><p>True if the subject has the permission, false otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L730" class="view-source icon-eye-open"> </a><h3 id="methods_hasrole">hasRole(realm, role, attributes)</h3>
+<div class="hasrole"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-hasrole-page"><p>Check if the currently authenticated subject has the specified role with the specified attributes in the
+specified realm.</p>
+</div><h5 id="methods_hasrole_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>realm</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-hasrole-page"><p>The realm the check is made against.</p>
+</div></td></tr><tr><td>role</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-hasrole-page"><p>The role to check.</p>
+</div></td></tr><tr><td>attributes</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-hasrole-page"><p>The optional attributes object to further check on the role.</p>
+</div></td></tr></tbody></table><h5 id="methods_hasrole_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-hasrole-page"><p>True if the subject has the role, false otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L893" class="view-source icon-eye-open"> </a><h3 id="methods_seal">seal()</h3>
+<div class="seal"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-seal-page"><p>Seal the AuthorizationService (an object sealed cannot be modified)</p>
+</div></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L662" class="view-source icon-eye-open"> </a><h3 id="methods_setattributefilter">setAttributeFilter(value)</h3>
+<div class="setattributefilter"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-setattributefilter-page"><p>Allow to restrict user security attributes</p>
+</div><h5 id="methods_setattributefilter_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-setattributefilter-page"><p>A subset of the result of getAttributes() which will restrict the user security attributes to it</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L605" class="view-source icon-eye-open"> </a><h3 id="methods_setrolefilter">setRoleFilter(value)</h3>
+<div class="setrolefilter"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-setrolefilter-page"><p>Allow to restrict user roles by setting a filter of roles</p>
+</div><h5 id="methods_setrolefilter_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-setrolefilter-page"><p>a list of role to restrict to. If this list is not a subset of the list returned by
+getRoles() an error is thrown</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+<div class="member event"><h2 id="events">Events</h2>
+<ul class="events"><li><h3 id="events_w20\security\attribute-filter-changed">w20\.security\.attribute-filter-changed</h3>
+<div class="w20\security\attribute-filter-changed"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-w20-security-attribute-filter-changed-page"><p>This event is emitted when user roles are filtered</p>
+</div><div class="inline"><h4 id="events_w20\security\attribute-filter-changed_type">Type:</h4>
+<div class="type">emitted</div>
+</div>
+<div class="inline"><h4 id="events_w20\security\attribute-filter-changed_target">Target:</h4>
+<div class="target">root scope</div>
+</div>
+<h5 id="events_w20\security\attribute-filter-changed_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>the</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-w20-security-attribute-filter-changed-page"><p>new map of security attributes</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="events_w20\security\role-filter-changed">w20\.security\.role-filter-changed</h3>
+<div class="w20\security\role-filter-changed"><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-w20-security-role-filter-changed-page"><p>This event is emitted when user roles are filtered</p>
+</div><div class="inline"><h4 id="events_w20\security\role-filter-changed_type">Type:</h4>
+<div class="type">emitted</div>
+</div>
+<div class="inline"><h4 id="events_w20\security\role-filter-changed_target">Target:</h4>
+<div class="target">root scope</div>
+</div>
+<h5 id="events_w20\security\role-filter-changed_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>the</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="w20coresecurity-service-page w20coresecurity-service-authorizationservice-w20-security-role-filter-changed-page"><p>new list of roles of the user</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+</div>

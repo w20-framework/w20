@@ -1,0 +1,37 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/env.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/env.js#L326" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">EventService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">w20CoreEnv</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20coreenv-service-page w20coreenv-service-eventservice-page"><p>The EventService provides functions to emit and listen to application-wide events. Behind the scenes the EventService,
+uses AngularJS events on the root scope.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/env.js#L349" class="view-source icon-eye-open"> </a><h3 id="methods_broadcast">broadcast(eventType, args)</h3>
+<div class="broadcast"><div class="w20coreenv-service-page w20coreenv-service-eventservice-broadcast-page"><p>Broadcast an application-wide event.</p>
+</div><h5 id="methods_broadcast_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>eventType</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-eventservice-broadcast-page"><p>The type of the event.</p>
+</div></td></tr><tr><td>args</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-eventservice-broadcast-page"><p>The arguments of the event (which will be passed to any listener function).</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/env.js#L365" class="view-source icon-eye-open"> </a><h3 id="methods_emit">emit(eventType, args)</h3>
+<div class="emit"><div class="w20coreenv-service-page w20coreenv-service-eventservice-emit-page"><p>Emit an application-wide event.</p>
+</div><h5 id="methods_emit_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>eventType</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-eventservice-emit-page"><p>The type of the event.</p>
+</div></td></tr><tr><td>args</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-eventservice-emit-page"><p>The arguments of the event (which will be passed to any listener function).</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/env.js#L385" class="view-source icon-eye-open"> </a><h3 id="methods_on">on(eventType, listener, listenerScope)</h3>
+<div class="on"><div class="w20coreenv-service-page w20coreenv-service-eventservice-on-page"><p>Register a listener for a given type of event. Listeners have a scope :</p>
+<ul>
+<li>Application scope (by default or &#39;application&#39; as the listenerScope argument). The listener will live for the duration of the application. No automatic deregistration will be done.</li>
+<li>View scope (&#39;view&#39; as listenerScope argument). The listener will live for the duration of the current view. On view change, it will be automatically deregistered.</li>
+</ul>
+</div><h5 id="methods_on_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>eventType</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-eventservice-on-page"><p>The type of the event.</p>
+</div></td></tr><tr><td>listener</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-eventservice-on-page"><p>A function that will be called upon event reception.</p>
+</div></td></tr><tr><td>listenerScope</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-eventservice-on-page"><p>The scope of the listener.</p>
+</div></td></tr></tbody></table><h5 id="methods_on_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="w20coreenv-service-page w20coreenv-service-eventservice-on-page"><p>The listener unregistration function.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

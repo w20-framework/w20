@@ -1,0 +1,59 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/security.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/security.js#L96" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">w20CoreSecurity</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20coresecurity-page"><p>This module provides authentication and authorization functions through realms. A realm is a security domain
+where a subject has some attributes and permissions. A subject may have different permissions in different realms.
+A permission check is always done in a specific realm and valid only for this realm. Realms are declared in
+fragments and are named with the fragment identifier.</p>
+<p>Authentication is handled through authentication providers. You can register additional providers with the API.</p>
+<h4 id="description_configuration">Configuration</h4>
+<pre><code> &quot;security&quot; : {
+     // Automatically log in user on application initialization (possibly asking for credentials)
+     &quot;autoLogin&quot; : true|false
+
+     // If present this parameter change the current view to the one at the specified route path
+     // after logout
+     &quot;redirectAfterLogout&quot;: &quot;path/to/route/after/logout&quot;,
+
+     // If present this parameter change the current view to the one at the specified route path
+     // after login
+     &quot;redirectAfterLogin&quot;: &quot;path/to/route/after/login&quot;
+ }
+</code></pre><h4 id="description_fragment-definition-sections">Fragment definition sections</h4>
+<p>The &quot;security&quot; fragment definition section defines a security realm named as the fragment identifier.</p>
+<pre><code> &quot;security&quot; : {
+     &quot;provider&quot; : &quot;Name of the authentication provider&quot;,
+     &quot;config&quot; : {
+         ... // Provider-specific configuration
+     }
+ }
+</code></pre><h4 id="description_basic-authentication">Basic authentication</h4>
+<p>A provider handling basic authentication is built-in and available under the name <code>BasicAuthentication</code>. Its
+configuration in the fragment definition is as follows:</p>
+<pre><code> &quot;security&quot; : {
+     &quot;provider&quot; : &quot;BasicAuthentication&quot;,
+     &quot;config&quot; : {
+         &quot;authentication&quot;: &quot;url/of/the/authentication/resource&quot;,
+         &quot;authorizations&quot; : &quot;url/of/the/authorizations/resource&quot;,
+         &quot;clearCredentials&quot;: true|false
+     }
+ }
+</code></pre><p>The authentication resource is where the basic authentication challenge must take place:</p>
+<ul>
+<li>The first request issued to this resource is a GET without credentials,</li>
+<li>The resource triggers the credentials input dialog of the browser by returning a 401 status code,</li>
+<li>The browser issues a second GET request with the entered credentials to the resource which will return either
+a success status code (200 or 204) if the credentials are valid, or return a 401 status code again if credentials
+are invalid.</li>
+</ul>
+<p>Upon logout a DELETE request is made to the authentication resource which must invalidate the server-side security
+session for the authenticated subject. The resource must return a success status code (200 or 204) upon successful
+logout. A best-effort try is made to force the browser to forget the credentials but keep in mind that this is not
+standardized across browsers and may not work under some circumstances. To disable this attempt, specify <code>false</code>
+in the <code>clearCredentials</code> option.</p>
+<p>The authorizations resource is requested after successful authentication to return the profile of the authenticated
+subject along with its authorizations.</p>
+</div></div>
+</div>

@@ -1,0 +1,41 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/notifications.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/notifications.js#L62" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">NotificationHistoryService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">w20CoreNotifications</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-page"><p>This service provides an API to manage persisted user notifications.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/notifications.js#L112" class="view-source icon-eye-open"> </a><h3 id="methods_addnotification">addNotification(type, content, link, date)</h3>
+<div class="addnotification"><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-addnotification-page"><p>Add a new notification</p>
+</div><h5 id="methods_addnotification_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>type</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-addnotification-page"><p>The notification type (info, warn or alert).</p>
+</div></td></tr><tr><td>content</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-addnotification-page"><p>The notification content.</p>
+</div></td></tr><tr><td>link</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-addnotification-page"><p>The notification link (optional).</p>
+</div></td></tr><tr><td>date</td><td><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-addnotification-page"><p>The notification date (optional).</p>
+</div></td></tr></tbody></table><h5 id="methods_addnotification_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-addnotification-page"><p>the notification id</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/notifications.js#L136" class="view-source icon-eye-open"> </a><h3 id="methods_clearnotifications">clearNotifications()</h3>
+<div class="clearnotifications"><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-clearnotifications-page"><p>Delete all notifications in the history.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/notifications.js#L150" class="view-source icon-eye-open"> </a><h3 id="methods_deletenotification">deleteNotification(id)</h3>
+<div class="deletenotification"><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-deletenotification-page"><p>Delete the specified notification by id.</p>
+</div><h5 id="methods_deletenotification_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-deletenotification-page"><p>of the notification to delete</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/notifications.js#L92" class="view-source icon-eye-open"> </a><h3 id="methods_getnotification">getNotification(id)</h3>
+<div class="getnotification"><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-getnotification-page"><p>Return the notification or undefined if not found.</p>
+</div><h5 id="methods_getnotification_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-getnotification-page"><p>The id of the required notification</p>
+</div></td></tr></tbody></table><h5 id="methods_getnotification_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-getnotification-page"><p>the notification or undefined if not found.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/notifications.js#L77" class="view-source icon-eye-open"> </a><h3 id="methods_getnotifications">getNotifications()</h3>
+<div class="getnotifications"><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-getnotifications-page"><p>Return the entire list of notifications.</p>
+</div><h5 id="methods_getnotifications_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="w20corenotifications-service-page w20corenotifications-service-notificationhistoryservice-getnotifications-page"><p>the list of notifications</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

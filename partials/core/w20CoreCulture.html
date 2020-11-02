@@ -1,0 +1,246 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/culture.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L488" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">w20CoreCulture</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20coreculture-page"><p>This module manages the end-user culture. Only one culture can be active at a time in the application but you
+can format values in any culture supported by the application, without switching the active one. This module
+handles text internationalization, date and time formatting, currency formatting, number formatting.</p>
+<h3 id="description_configuration">Configuration</h3>
+<pre><code> &quot;culture&quot; : {
+     // Array of available cultures in the application
+     &quot;available&quot; : [ &quot;ietf-code-1&quot;, &quot;ietf-code-2&quot;, ... ],
+
+     // Default culture of the application when no user preference is remembered
+     &quot;default&quot; : &quot;ietf-code&quot;,
+
+     // If true, translations that are missing in the active culture fallback to the default culture.
+     // If false, the raw keys are displayed instead.
+     // Note that setting this to true will always load default culture translation bundles, potentially in
+     // addition to active culture translations.
+     &quot;translationFallback&quot; : true|false
+ }
+</code></pre><h3 id="description_fragment-definition">Fragment definition</h3>
+<p>The fragment &quot;i18n&quot; section allows to declare culture localization bundles. All fragments &quot;i18n&quot; sections are merged
+on application initialization. Fragment &quot;i18n&quot; definitions cannot be overridden in application configuration. Bundles
+modules paths will be loaded as a text dependency and parsed as JSON. The empty language code can be used to point
+to a server-side parameterized url. The :language placeholder will be replaced by the actual IETF language code. This
+special bundle will always be loaded for any language. If no keys are available for a particular language an empty
+object can be returned.</p>
+<pre><code> &quot;i18n&quot; : {
+     &quot;&quot; : [ &quot;module/path/of/the/dynamic/bundle&quot; ]
+     &quot;ietf-language-code-1&quot; : [ &quot;module/path/of/the/bundle/1&quot;, &quot;module/path/of/the/bundle/2&quot;, ...  ],
+     &quot;ietf-language-code-2&quot; : [ &quot;module/path/of/the/bundle/1&quot;, &quot;module/path/of/the/bundle/2&quot;, ...  ]
+     ...
+ }
+</code></pre><h3 id="description_available-ietf-cultures-codes">Available IETF cultures codes</h3>
+<p>af-ZA, af, am-ET, am, ar-AE, ar-BH, ar-DZ, ar-EG, ar-IQ, ar-JO, ar-KW, ar-LB, ar-LY, ar-MA, ar-OM, ar-QA,
+ar-SA, ar-SY, ar-TN, ar-YE, ar, arn-CL, arn, as-IN, as, az-Cyrl-AZ, az-Cyrl, az-Latn-AZ, az-Latn, az, ba-RU,
+ba, be-BY, be, bg-BG, bg, bn-BD, bn-IN, bn, bo-CN, bo, br-FR, br, bs-Cyrl-BA, bs-Cyrl, bs-Latn-BA, bs-Latn,
+bs, ca-ES, ca, co-FR, co, cs-CZ, cs, cy-GB, cy, da-DK, da, de-AT, de-CH, de-DE, de-LI, de-LU, de, dsb-DE,
+dsb, dv-MV, dv, el-GR, el, en-029, en-AU, en-BZ, en-CA, en-GB, en-IE, en-IN, en-JM, en-MY, en-NZ, en-PH, en-SG,
+en-TT, en-US, en-ZA, en-ZW, es-AR, es-BO, es-CL, es-CO, es-CR, es-DO, es-EC, es-ES, es-GT, es-HN, es-MX, es-NI,
+es-PA, es-PE, es-PR, es-PY, es-SV, es-US, es-UY, es-VE, es, et-EE, et, eu-ES, eu, fa-IR, fa, fi-FI, fi,
+fil-PH, fil, fo-FO, fo, fr-BE, fr-CA, fr-CH, fr-FR, fr-LU, fr-MC, fr, fy-NL, fy, ga-IE, ga, gd-GB, gd,
+gl-ES, gl, gsw-FR, gsw, gu-IN, gu, ha-Latn-NG, ha-Latn, ha, he-IL, he, hi-IN, hi, hr-BA, hr-HR, hr, hsb-DE,
+hsb, hu-HU, hu, hy-AM, hy, id-ID, id, ig-NG, ig, ii-CN, ii, is-IS, is, it-CH, it-IT, it, iu-Cans-CA, iu-Cans,
+iu-Latn-CA, iu-Latn, iu, ja-JP, ja, ka-GE, ka, kk-KZ, kk, kl-GL, kl, km-KH, km, kn-IN, kn, ko-KR, ko, kok-IN,
+kok, ky-KG, ky, lb-LU, lb, lo-LA, lo, lt-LT, lt, lv-LV, lv, mi-NZ, mi, mk-MK, mk, ml-IN, ml, mn-Cyrl, mn-MN,
+mn-Mong-CN, mn-Mong, mn, moh-CA, moh, mr-IN, mr, ms-BN, ms-MY, ms, mt-MT, mt, nb-NO, nb, ne-NP, ne, nl-BE,
+nl-NL, nl, nn-NO, nn, no, nso-ZA, nso, oc-FR, oc, or-IN, or, pa-IN, pa, pl-PL, pl, prs-AF, prs, ps-AF, ps,
+pt-BR, pt-PT, pt, qut-GT, qut, quz-BO, quz-EC, quz-PE, quz, rm-CH, rm, ro-RO, ro, ru-RU, ru, rw-RW, rw,
+sa-IN, sa, sah-RU, sah, se-FI, se-NO, se-SE, se, si-LK, si, sk-SK, sk, sl-SI, sl, sma-NO, sma-SE, sma, smj-NO,
+smj-SE, smj, smn-FI, smn, sms-FI, sms, sq-AL, sq, sr-Cyrl-BA, sr-Cyrl-CS, sr-Cyrl-ME, sr-Cyrl-RS, sr-Cyrl, sr-Latn-BA,
+sr-Latn-CS, sr-Latn-ME, sr-Latn-RS, sr-Latn, sr, sv-FI, sv-SE, sv, sw-KE, sw, syr-SY, syr, ta-IN, ta, te-IN,
+te, tg-Cyrl-TJ, tg-Cyrl, tg, th-TH, th, tk-TM, tk, tn-ZA, tn, tr-TR, tr, tt-RU, tt, tzm-Latn-DZ, tzm-Latn, tzm,
+ug-CN, ug, uk-UA, uk, ur-PK, ur, uz-Cyrl-UZ, uz-Cyrl, uz-Latn-UZ, uz-Latn, uz, vi-VN, vi, wo-SN, wo, xh-ZA,
+xh, yo-NG, yo, zh-CHS, zh-CHT, zh-CN, zh-Hans, zh-Hant, zh-HK, zh-MO, zh-SG, zh-TW, zh, zu-ZA, zu.</p>
+<h4 id="description_available-ietf-cultures-codes_structure-of-the-culture-object">Structure of the culture object</h4>
+<pre><code> {
+     // A unique name for the culture in the form
+     // &lt;language code&gt;-&lt;country/region code&gt;
+     name:&quot;en-US&quot;,
+     // the name of the culture in the English language
+     englishName:&quot;English&quot;,
+     // the name of the culture in its own language
+     nativeName:&quot;English&quot;,
+     // whether the culture uses right-to-left text
+     isRTL:false,
+     // &quot;language&quot; is used for so-called &quot;specific&quot; cultures.
+     // For example, the culture &quot;es-CL&quot; means Spanish in Chili.
+     // It represents the Spanish-speaking culture as it is in Chili,
+     // which might have different formatting rules or even translations
+     // than Spanish in Spain. A &quot;neutral&quot; culture is one that is not
+     // specific to a region. For example, the culture &quot;es&quot; is the generic
+     // Spanish culture, which may be a more generalized version of the language
+     // that may or may not be what a specific culture expects.
+     // For a specific culture like &quot;es-CL&quot;, the &quot;language&quot; field refers to the
+     // neutral, generic culture information for the language it is using.
+     // This is not always a simple matter of the string before the dash.
+     // For example, the &quot;zh-Hans&quot; culture is neutral (Simplified Chinese).
+     // And the &quot;zh-SG&quot; culture is Simplified Chinese in Singapore, whose
+     // language field is &quot;zh-CHS&quot;, not &quot;zh&quot;.
+     // This field should be used to navigate from a specific culture to its
+     // more general, neutral culture. If a culture is already as general as it
+     // can get, the language may refer to itself.
+     language:&quot;en&quot;,
+     // &quot;numberFormat&quot; defines general number formatting rules, like the digits
+     // in each grouping, the group separator, and how negative numbers are
+     // displayed.
+     numberFormat:{
+         // [negativePattern]
+         // Note, numberFormat.pattern has no &quot;positivePattern&quot; unlike percent
+         // and currency, but is still defined as an array for consistency with
+         // them.
+         //    negativePattern: one of &quot;(n)|-n|- n|n-|n -&quot;
+         pattern:[ &quot;-n&quot; ],
+         // number of decimal places normally shown
+         decimals:2,
+         // string that separates number groups, as in 1,000,000
+         &quot;,&quot;:&quot;,&quot;,
+         // string that separates a number from the fractional portion,
+         // as in 1.99
+         &quot;.&quot;:&quot;.&quot;,
+         // array of numbers indicating the size of each number group.
+         groupSizes:[ 3 ],
+         // symbol used for positive numbers
+         &quot;+&quot;:&quot;+&quot;,
+         // symbol used for negative numbers
+         &quot;-&quot;:&quot;-&quot;,
+         percent:{
+             // [negativePattern, positivePattern]
+             //     negativePattern: one of &quot;-n %|-n%|-%n|%-n|%n-|n-%|n%-|-% n|n %-|% n-|% -n|n- %&quot;
+             //     positivePattern: one of &quot;n %|n%|%n|% n&quot;
+             pattern:[ &quot;-n %&quot;, &quot;n %&quot; ],
+             // number of decimal places normally shown
+             decimals:2,
+             // array of numbers indicating the size of each number group.
+             groupSizes:[ 3 ],
+             // string that separates number groups, as in 1,000,000
+             &quot;,&quot;:&quot;,&quot;,
+             // string that separates a number from the fractional portion, as in 1.99
+             &quot;.&quot;:&quot;.&quot;,
+             // symbol used to represent a percentage
+             symbol:&quot;%&quot;
+         },
+         currency:{
+             // [negativePattern, positivePattern]
+             //     negativePattern: one of &quot;($n)|-$n|$-n|$n-|(n$)|-n$|n-$|n$-|-n $|-$ n|n $-|$ n-|$ -n|n- $|($ n)|(n $)&quot;
+             //     positivePattern: one of &quot;$n|n$|$ n|n $&quot;
+             pattern:[ &quot;($n)&quot;, &quot;$n&quot; ],
+             // number of decimal places normally shown
+             decimals:2,
+             // array of numbers indicating the size of each number group.
+             groupSizes:[ 3 ],
+             // string that separates number groups, as in 1,000,000
+             &quot;,&quot;:&quot;,&quot;,
+             // string that separates a number from the fractional portion, as in 1.99
+             &quot;.&quot;:&quot;.&quot;,
+             // symbol used to represent currency
+             symbol:&quot;$&quot;
+         }
+     },
+     // &quot;calendars&quot; property defines all the possible calendars used by this
+     // culture. There should be at least one defined with name &quot;standard&quot; which
+     // is the default calendar used by the culture.
+     // A calendar contains information about how dates are formatted,
+     // information about the calendar&#39;s eras, a standard set of the date
+     // formats, translations for day and month names, and if the calendar is
+     // not based on the Gregorian calendar, conversion functions to and from
+     // the Gregorian calendar.
+     calendars:{
+         standard:{
+             // name that identifies the type of calendar this is
+             name:&quot;Gregorian_USEnglish&quot;,
+             // separator of parts of a date (e.g. &quot;/&quot; in 11/05/1955)
+             &quot;/&quot;:&quot;/&quot;,
+             // separator of parts of a time (e.g. &quot;:&quot; in 05:44 PM)
+             &quot;:&quot;:&quot;:&quot;,
+             // the first day of the week (0 = Sunday, 1 = Monday, etc)
+             firstDay:0,
+             days:{
+                 // full day names
+                 names:[ &quot;Sunday&quot;, &quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot; ],
+                 // abbreviated day names
+                 namesAbbr:[ &quot;Sun&quot;, &quot;Mon&quot;, &quot;Tue&quot;, &quot;Wed&quot;, &quot;Thu&quot;, &quot;Fri&quot;, &quot;Sat&quot; ],
+                 // shortest day names
+                 namesShort:[ &quot;Su&quot;, &quot;Mo&quot;, &quot;Tu&quot;, &quot;We&quot;, &quot;Th&quot;, &quot;Fr&quot;, &quot;Sa&quot; ]
+             },
+             months:[
+                 // full month names (13 months for lunar calendars -- 13th month should be &quot;&quot; if not lunar)
+                 names: [ &quot;January&quot;, &quot;February&quot;, &quot;March&quot;, &quot;April&quot;, &quot;May&quot;, &quot;June&quot;, &quot;July&quot;, &quot;August&quot;, &quot;September&quot;, &quot;October&quot;, &quot;November&quot;, &quot;December&quot;, &quot;&quot; ],
+                 // abbreviated month names
+                 namesAbbr: [ &quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;, &quot;&quot; ]
+             ],
+             // AM and PM designators in one of these forms:
+             // The usual view, and the upper and lower case versions
+             //      [standard,lowercase,uppercase]
+             // The culture does not use AM or PM (likely all standard date
+             // formats use 24 hour time)
+             //      null
+             AM: [ &quot;AM&quot;, &quot;am&quot;, &quot;AM&quot; ],
+             PM: [ &quot;PM&quot;, &quot;pm&quot;, &quot;PM&quot; ],
+             eras: [
+             // eras in reverse chronological order.
+             // name: the name of the era in this culture (e.g. A.D., C.E.)
+             // start: when the era starts in ticks, null if it is the
+             //        earliest supported era.
+             // offset: offset in years from gregorian calendar
+                 {&quot;name&quot;:&quot;A.D.&quot;,&quot;start&quot;:null,&quot;offset&quot;:0}
+             ],
+             // when a two digit year is given, it will never be parsed as a
+             // four digit year greater than this year (in the appropriate era
+             // for the culture)
+             // Set it as a full year (e.g. 2029) or use an offset format
+             // starting from the current year: &quot;+19&quot; would correspond to 2029
+             // if the current year is 2010.
+             twoDigitYearMax: 2029,
+             // set of predefined date and time patterns used by the culture.
+             // These represent the format someone in this culture would expect
+             // to see given the portions of the date that are shown.
+             patterns: {
+                 // short date pattern
+                 d: &quot;M/d/yyyy&quot;,
+                 // long date pattern
+                 D: &quot;dddd, MMMM dd, yyyy&quot;,
+                 // short time pattern
+                 t: &quot;h:mm tt&quot;,
+                 // long time pattern
+                 T: &quot;h:mm:ss tt&quot;,
+                 // long date, short time pattern
+                 f: &quot;dddd, MMMM dd, yyyy h:mm tt&quot;,
+                 // long date, long time pattern
+                 F: &quot;dddd, MMMM dd, yyyy h:mm:ss tt&quot;,
+                 // month/day pattern
+                 M: &quot;MMMM dd&quot;,
+                 // month/year pattern
+                 Y: &quot;yyyy MMMM&quot;,
+                 // S is a sortable format that does not vary by culture
+                 S: &quot;yyyy\u0027-\u0027MM\u0027-\u0027dd\u0027T\u0027HH\u0027:\u0027mm\u0027:\u0027ss&quot;
+             }
+             // optional fields for each calendar:
+             monthsGenitive:
+                 // Same as months but used when the day preceeds the month.
+                 // Omit if the culture has no genitive distinction in month names.
+                 // For an explanation of genitive months, see
+                 // http://blogs.msdn.com/michkap/archive/2004/12/25/332259.aspx
+             convert:
+                 // Allows for the support of non-gregorian based calendars. This
+                 // &quot;convert&quot; object defines two functions to convert a date to and
+                 // from a gregorian calendar date:
+                     // fromGregorian( date )
+                         // Given the date as a parameter, return an array with
+                         // parts [ year, month, day ] corresponding to the
+                         // non-gregorian based year, month, and day for the
+                         // calendar.
+                     // toGregorian( year, month, day )
+                         // Given the non-gregorian year, month, and day, return a
+                         // new Date() object set to the corresponding date in the
+                         // gregorian calendar.
+             }
+         },
+     // Map of messages used by .localize()
+     messages: {}
+ }
+</code></pre></div></div>
+</div>

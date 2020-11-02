@@ -1,0 +1,33 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/env.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/env.js#L84" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">StateService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">w20CoreEnv</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20coreenv-service-page w20coreenv-service-stateservice-page"><p>The StateService provides key/value storage for data that needs to be persisted across sessions.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/env.js#L169" class="view-source icon-eye-open"> </a><h3 id="methods_keys">keys(namespace)</h3>
+<div class="keys"><div class="w20coreenv-service-page w20coreenv-service-stateservice-keys-page"><p>This function returns all the state keys for a given namespace.</p>
+</div><h5 id="methods_keys_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>namespace</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-stateservice-keys-page"><p>The namespace of the state to retrieve the keys from.</p>
+</div></td></tr></tbody></table><h5 id="methods_keys_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String[]</a></td><td><div class="w20coreenv-service-page w20coreenv-service-stateservice-keys-page"><p>The list of keys for all stored states in the namespace.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/env.js#L109" class="view-source icon-eye-open"> </a><h3 id="methods_state">state(namespace, key, defaultvalue, session)</h3>
+<div class="state"><div class="w20coreenv-service-page w20coreenv-service-stateservice-state-page"><p>This function create a state object for a given (namespace, key) tuple. State objects are persisted accross
+sessions, can have a default value when first initialized and provides methods for reading and writing the
+state value :</p>
+<ul>
+<li>state.value(theValue) : getter/setter for the state value. If theValue is present it sets the value of the state object, if not it returns the current value.</li>
+<li>state.save() : explicitely save the value (useful when altering inner properties of a complex object and not replacing the value instance).</li>
+</ul>
+</div><h5 id="methods_state_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>namespace</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-stateservice-state-page"><p>The namespace of the state.</p>
+</div></td></tr><tr><td>key</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-stateservice-state-page"><p>The key of the state.</p>
+</div></td></tr><tr><td>defaultvalue</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreenv-service-page w20coreenv-service-stateservice-state-page"><p>The default value when the state is first initialized.</p>
+</div></td></tr><tr><td>session</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="w20coreenv-service-page w20coreenv-service-stateservice-state-page"><p>Specify if this state should be session scoped (using sessionStorage)</p>
+</div></td></tr></tbody></table><h5 id="methods_state_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coreenv-service-page w20coreenv-service-stateservice-state-page"><p>The state object</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

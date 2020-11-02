@@ -1,0 +1,385 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/culture.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L499" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">CultureService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">w20CoreCulture</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20coreculture-service-page w20coreculture-service-cultureservice-page"><p>This service is the façade of the culture module capabilities. It provides all the functions and properties
+you need to use it.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L996" class="view-source icon-eye-open"> </a><h3 id="methods_addcultureinfo">addCultureInfo([cultureName], [baseCultureName], info)</h3>
+<div class="addcultureinfo"><div class="w20coreculture-service-page w20coreculture-service-cultureservice-addcultureinfo-page"><p>This method allows you to create a new culture based on an existing culture or add to existing culture info.
+If the optional argument <code>baseCultureName</code> is not supplied, it will extend the existing culture if it
+exists or create a new culture based on the default culture if it doesn&#39;t exist. If <code>cultureName</code> is not
+supplied, it will add the supplied info to the current culture.</p>
+</div><h5 id="methods_addcultureinfo_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>[cultureName]</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-addcultureinfo-page"><p>If supplied it will create a culture with this name.</p>
+</div></td></tr><tr><td>[baseCultureName]</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-addcultureinfo-page"><p>If supplied it will extend this culture to create the new one.</p>
+</div></td></tr><tr><td>info</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-addcultureinfo-page"><p>The culture information to add, according to the culture object format.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L568" class="view-source icon-eye-open"> </a><h3 id="methods_availablecultures">availableCultures()</h3>
+<div class="availablecultures"><div class="w20coreculture-service-page w20coreculture-service-cultureservice-availablecultures-page"><p>Return an array of available cultures in the application.</p>
+</div><h5 id="methods_availablecultures_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-availablecultures-page"><p>The array of available cultures (fully detailed culture description).</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L531" class="view-source icon-eye-open"> </a><h3 id="methods_culture">culture([selector])</h3>
+<div class="culture"><div class="w20coreculture-service-page w20coreculture-service-cultureservice-culture-page"><p>Getter/setter of the currently active culture in the application. Return the current culture if the
+selector parameter is undefined, change it otherwise.</p>
+<p>Automatically load i18n string bundles configured when switching for the first time to a new culture.
+The <code>w20.culture.culture-changed</code> event is fired when the culture has switched.</p>
+</div><h5 id="methods_culture_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>[selector]</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-culture-page"><p>The selector of the culture to switch to. Examples : &quot;fr&quot;, &quot;fr-FR&quot;, [&quot;en-US&quot;, &quot;fr-FR&quot;], &quot;fr;q=0.4, es;q=0.5, he&quot;.</p>
+</div></td></tr></tbody></table><h5 id="methods_culture_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-culture-page"><p>The current culture object if no selector was specified, undefined if new culture selector was specified.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L977" class="view-source icon-eye-open"> </a><h3 id="methods_culture">culture(value, [formats], [culture])</h3>
+<div class="culture"><div class="w20coreculture-service-page w20coreculture-service-cultureservice-culture-page"><p>Parses a string representing a date into a JavaScript Date object, taking into
+account the given possible formats (or the given culture&#39;s set of default
+formats if not given). As before, the current culture is used if one is not
+specified.</p>
+<pre><code> cultureService.culture( &quot;en&quot; );
+ cultureService.parseDate( &quot;1/2/2003&quot; ); // Thu Jan 02 2003
+ cultureService.culture( &quot;fr&quot; );
+ cultureService.parseDate( &quot;1/2/2003&quot; ); // Sat Feb 01 2003
+</code></pre></div><h5 id="methods_culture_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-culture-page"><p>The value to parse as a date.</p>
+</div></td></tr><tr><td>[formats]</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-culture-page"><p>The formats used to do the parsing.</p>
+</div></td></tr><tr><td>[culture]</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-culture-page"><p>If specified this culture selector will be used to do the parsing.</p>
+</div></td></tr></tbody></table><h5 id="methods_culture_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-culture-page"><p>The date object parsed.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L512" class="view-source icon-eye-open"> </a><h3 id="methods_defaultculture">defaultCulture()</h3>
+<div class="defaultculture"><div class="w20coreculture-service-page w20coreculture-service-cultureservice-defaultculture-page"><p>Returns the default culture of the application (not necessarily the active one).</p>
+</div><h5 id="methods_defaultculture_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-defaultculture-page"><p>The default culture object</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L1016" class="view-source icon-eye-open"> </a><h3 id="methods_displayname">displayName(object, [values])</h3>
+<div class="displayname"><div class="w20coreculture-service-page w20coreculture-service-cultureservice-displayname-page"><p>Compute the display name of an object by following these steps:</p>
+<ul>
+<li>Return its <code>label</code> attribute if it exists, or,</li>
+<li>Return the localized form of its <code>i18n</code> attribute if it exists, or,</li>
+<li>Return an empty string.</li>
+</ul>
+</div><h5 id="methods_displayname_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>object</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-displayname-page"><p>The object to compute the display name of.</p>
+</div></td></tr><tr><td>[values]</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-displayname-page"><p>The values used to localize the i18n key if any.</p>
+</div></td></tr></tbody></table><h5 id="methods_displayname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-displayname-page"><p>The display name of the object.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L901" class="view-source icon-eye-open"> </a><h3 id="methods_format">format(value, format, [culture])</h3>
+<div class="format"><div class="w20coreculture-service-page w20coreculture-service-cultureservice-format-page"><p>Format any value according to the format parameter. The current culture is used for formatting rules,
+except if a selector is specified as the culture parameter.</p>
+<h8 id="methods_format_number-formatting">Number formatting</h8>
+<p>When formatting a number with format(), the main purpose is to convert the
+number into a human readable string using the culture&#39;s standard grouping and
+decimal rules. The rules between cultures can vary a lot. For example, in some
+cultures, the grouping of numbers is done unevenly. In the &quot;te-IN&quot; culture
+(Telugu in India), groups have 3 digits and then 2 digits. The number 1000000
+(one million) is written as &quot;10,00,000&quot;. Some cultures do not group numbers at
+all.</p>
+<p>There are four main types of number formatting:</p>
+<ul>
+<li><strong>n</strong> for number</li>
+<li><strong>d</strong> for decimal digits</li>
+<li><strong>p</strong> for percentage</li>
+<li><strong>c</strong> for currency</li>
+</ul>
+
+<p>Even within the same culture, the formatting rules can vary between these four
+types of numbers. For example, the expected number of decimal places may differ
+from the number format to the currency format. Each format token may also be
+followed by a number. The number determines how many decimal places to display
+for all the format types except decimal, for which it means the minimum number
+of digits to display, zero padding it if necessary. Also note that the way
+negative numbers are represented in each culture can vary, such as what the
+negative sign is, and whether the negative sign appears before or after the
+number. This is especially apparent with currency formatting, where many
+cultures use parentheses instead of a negative sign.</p>
+<pre><code> // just for example - will vary by culture
+ CultureService.format( 123.45, &quot;n&quot; ); // 123.45
+ CultureService.format( 123.45, &quot;n0&quot; ); // 123
+ CultureService.format( 123.45, &quot;n1&quot; ); // 123.5
+
+ CultureService.format( 123.45, &quot;d&quot; ); // 123
+ CultureService.format( 12, &quot;d3&quot; ); // 012
+
+ CultureService.format( 123.45, &quot;c&quot; ); // $123.45
+ CultureService.format( 123.45, &quot;c0&quot; ); // $123
+ CultureService.format( 123.45, &quot;c1&quot; ); // $123.5
+ CultureService.format( -123.45, &quot;c&quot; ); // ($123.45)
+
+ CultureService.format( 0.12345, &quot;p&quot; ); // 12.35 %
+ CultureService.format( 0.12345, &quot;p0&quot; ); // 12 %
+ CultureService.format( 0.12345, &quot;p4&quot; ); // 12.3450 %
+</code></pre><p>Parsing with parseInt and parseFloat also accepts any of these formats.</p>
+<h8 id="methods_format_date-formatting">Date formatting</h8>
+<p>Date formatting varies wildly by culture, not just in the spelling of month and
+day names, and the date separator, but by the expected order of the various
+date components, whether to use a 12 or 24 hour clock, and how months and days
+are abbreviated. Many cultures even include &quot;genitive&quot; month names, which are
+different from the typical names and are used only in certain cases.</p>
+<p>Also, each culture has a set of &quot;standard&quot; or &quot;typical&quot; formats. For example,
+in &quot;en-US&quot;, when displaying a date in its fullest form, it looks like
+&quot;Saturday, November 05, 1955&quot;. Note the non-abbreviated day and month name, the
+zero padded date, and four digit year. So, the culture service expects a certain set
+of &quot;standard&quot; formatting strings for dates in the &quot;patterns&quot; property of the
+&quot;standard&quot; calendar of each culture, that describe specific formats for the
+culture. The third column shows example values in the neutral English culture
+&quot;en-US&quot;; see the second table for the meaning tokens used in date formats.</p>
+<pre><code> // just for example - will vary by culture
+ cultureService.format( new Date(2012, 1, 20), &#39;d&#39; ); // 2/20/2012
+ cultureService.format( new Date(2012, 1, 20), &#39;D&#39; ); // Monday, February 20, 2012
+</code></pre><table class="table table-striped">
+<tr>
+<th>Format</th>
+<th>Meaning</th>
+<th>&quot;en-US&quot;</th>
+</tr>
+<tr>
+<td>f</td>
+<td>Long Date, Short Time</td>
+<td>dddd, MMMM dd, yyyy h:mm tt</td>
+</tr>
+<tr>
+<td>F</td>
+<td>Long Date, Long Time</td>
+<td>dddd, MMMM dd, yyyy h:mm:ss tt</td>
+</tr>
+<tr>
+<td>t</td>
+<td>Short Time</td>
+<td>h:mm tt</td>
+</tr>
+<tr>
+<td>T</td>
+<td>Long Time</td>
+<td>h:mm:ss tt</td>
+</tr>
+<tr>
+<td>d</td>
+<td>Short Date</td>
+<td>M/d/yyyy</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Long Date</td>
+<td>dddd, MMMM dd, yyyy</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>Month/Year</td>
+<td>MMMM, yyyy</td>
+</tr>
+<tr>
+<td>M</td>
+<td>Month/Day</td>
+<td>MMMM dd</td>
+</tr>
+</table>
+
+<p>In addition to these standard formats, there is the &quot;S&quot; format. This is a
+sortable format that is identical in every culture:
+&quot;<strong>yyyy&#39;-&#39;MM&#39;-&#39;dd&#39;T&#39;HH&#39;:&#39;mm&#39;:&#39;ss</strong>&quot;.</p>
+<p>When more specific control is needed over the formatting, you may use any
+format you wish by specifying the following custom tokens:</p>
+<table class="table table-striped">
+<tr>
+<th>Token</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>d</td>
+<td>Day of month (no leading zero)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>Day of month (leading zero)</td>
+<td>05</td>
+</tr>
+<tr>
+<td>ddd</td>
+<td>Day name (abbreviated)</td>
+<td>Sat</td>
+</tr>
+<tr>
+<td>dddd</td>
+<td>Day name (full)</td>
+<td>Saturday</td>
+</tr>
+<tr>
+<td>M</td>
+<td>Month of year (no leading zero)</td>
+<td>9</td>
+</tr>
+<tr>
+<td>MM</td>
+<td>Month of year (leading zero)</td>
+<td>09</td>
+</tr>
+<tr>
+<td>MMM</td>
+<td>Month name (abbreviated)</td>
+<td>Sep</td>
+</tr>
+<tr>
+<td>MMMM</td>
+<td>Month name (full)</td>
+<td>September</td>
+</tr>
+<tr>
+<td>yy</td>
+<td>Year (two digits)</td>
+<td>55</td>
+</tr>
+<tr>
+<td>yyyy</td>
+<td>Year (four digits)</td>
+<td>1955</td>
+</tr>
+<tr>
+<td>&#39;literal&#39;</td>
+<td>Literal Text</td>
+<td>&#39;of the clock&#39;</td>
+</tr>
+<tr>
+<td>\&#39;</td>
+<td>Single Quote</td>
+<td>&#39;o&#39;\&#39;&#39;clock&#39;</td><!-- o'clock -->
+</tr>
+<tr>
+<td>m</td>
+<td>Minutes (no leading zero)</td>
+<td>9</td>
+</tr>
+<tr>
+<td>mm</td>
+<td>Minutes (leading zero)</td>
+<td>09</td>
+</tr>
+<tr>
+<td>h</td>
+<td>Hours (12 hour time, no leading zero)</td>
+<td>6</td>
+</tr>
+<tr>
+<td>hh</td>
+<td>Hours (12 hour time, leading zero)</td>
+<td>06</td>
+</tr>
+<tr>
+<td>H</td>
+<td>Hours (24 hour time, no leading zero)</td>
+<td>5 (5am) 15 (3pm)</td>
+</tr>
+<tr>
+<td>HH</td>
+<td>Hours (24 hour time, leading zero)</td>
+<td>05 (5am) 15 (3pm)</td>
+</tr>
+<tr>
+<td>s</td>
+<td>Seconds (no leading zero)</td>
+<td>9</td>
+</tr>
+<tr>
+<td>ss</td>
+<td>Seconds (leading zero)</td>
+<td>09</td>
+</tr>
+<tr>
+<td>f</td>
+<td>Deciseconds</td>
+<td>1</td>
+</tr>
+<tr>
+<td>ff</td>
+<td>Centiseconds</td>
+<td>11</td>
+</tr>
+<tr>
+<td>fff</td>
+<td>Milliseconds</td>
+<td>111</td>
+</tr>
+<tr>
+<td>t</td>
+<td>AM/PM indicator (first letter)</td>
+<td>A or P</td>
+</tr>
+<tr>
+<td>tt</td>
+<td>AM/PM indicator (full)</td>
+<td>AM or PM</td>
+</tr>
+<tr>
+<td>z</td>
+<td>Timezone offset (hours only, no leading zero)</td>
+<td>-8</td>
+</tr>
+<tr>
+<td>zz</td>
+<td>Timezone offset (hours only, leading zero)</td>
+<td>-08</td>
+</tr>
+<tr>
+<td>zzz</td>
+<td>Timezone offset (full hours/minutes)</td>
+<td>-08:00</td>
+</tr>
+<tr>
+<td>g or gg</td>
+<td>Era name</td>
+<td>A.D.</td>
+</tr>
+</table></div><h5 id="methods_format_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-object">*</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-format-page"><p>The value to format.</p>
+</div></td></tr><tr><td>format</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-format-page"><p>Pattern used for the formatting.</p>
+</div></td></tr><tr><td>[culture]</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-format-page"><p>If specified this culture selector will be used to do the formatting.</p>
+</div></td></tr></tbody></table><h5 id="methods_format_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-format-page"><p>The value formatted.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L587" class="view-source icon-eye-open"> </a><h3 id="methods_localize">localize(key, [values], [defaultValue], [culture])</h3>
+<div class="localize"><div class="w20coreculture-service-page w20coreculture-service-cultureservice-localize-page"><p>Localize an i18n key in the current culture or the explicitely specified one. An localized string
+can contain placeholders like {0}, {1}, {2}, ... {n} which will be replaced by the corresponding
+element in the values array.</p>
+</div><h5 id="methods_localize_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>key</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-localize-page"><p>The i18n key to localize.</p>
+</div></td></tr><tr><td>[values]</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-localize-page"><p>The localized string placeholder values.</p>
+</div></td></tr><tr><td>[defaultValue]</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-localize-page"><p>A default value to be returned if no localization exists in the language.</p>
+</div></td></tr><tr><td>[culture]</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-localize-page"><p>If specified this culture selector will be used to do the localization.</p>
+</div></td></tr></tbody></table><h5 id="methods_localize_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-localize-page"><p>The translated string, with placeholders replaced by their respective values.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L953" class="view-source icon-eye-open"> </a><h3 id="methods_parsefloat">parseFloat(value, [radix], [culture])</h3>
+<div class="parsefloat"><div class="w20coreculture-service-page w20coreculture-service-cultureservice-parsefloat-page"><p>Parses a string representing a floating point number in the given radix (10 by
+default), taking into account any formatting rules followed by the given
+culture (or the current culture, if not specified).</p>
+<pre><code> // assuming a culture where &quot;,&quot; is the group separator
+ // and &quot;.&quot; is the decimal separator
+ CultureService.parseFloat( &quot;1,234.56&quot; ); // 1234.56
+ // assuming a culture where &quot;.&quot; is the group separator
+ // and &quot;,&quot; is the decimal separator
+ CultureService.parseFloat( &quot;1.234,56&quot; ); // 1234.56
+</code></pre></div><h5 id="methods_parsefloat_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-parsefloat-page"><p>The value to parse as a float.</p>
+</div></td></tr><tr><td>[radix]</td><td><a href="" class="label type-hint type-hint-int">int</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-parsefloat-page"><p>The radix used for the conversion (10 by default).</p>
+</div></td></tr><tr><td>[culture]</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-parsefloat-page"><p>If specified this culture selector will be used to do the parsing.</p>
+</div></td></tr></tbody></table><h5 id="methods_parsefloat_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-parsefloat-page"><p>The float parsed.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/culture.js#L927" class="view-source icon-eye-open"> </a><h3 id="methods_parseint">parseInt(value, [radix], [culture])</h3>
+<div class="parseint"><div class="w20coreculture-service-page w20coreculture-service-cultureservice-parseint-page"><p>Parses a string representing a whole number in the given radix (10 by default),
+taking into account any formatting rules followed by the given culture (or the
+current culture, if not specified).</p>
+<pre><code> // assuming a culture where &quot;,&quot; is the group separator
+ // and &quot;.&quot; is the decimal separator
+ CultureService.parseInt( &quot;1,234.56&quot; ); // 1234
+ // assuming a culture where &quot;.&quot; is the group separator
+ // and &quot;,&quot; is the decimal separator
+ CultureService.parseInt( &quot;1.234,56&quot; ); // 1234
+</code></pre></div><h5 id="methods_parseint_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-parseint-page"><p>The value to parse as an integer.</p>
+</div></td></tr><tr><td>[radix]</td><td><a href="" class="label type-hint type-hint-int">int</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-parseint-page"><p>The radix used for the conversion (10 by default).</p>
+</div></td></tr><tr><td>[culture]</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-parseint-page"><p>If specified this culture selector will be used to do the parsing.</p>
+</div></td></tr></tbody></table><h5 id="methods_parseint_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-int">int</a></td><td><div class="w20coreculture-service-page w20coreculture-service-cultureservice-parseint-page"><p>The integer parsed.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

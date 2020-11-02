@@ -1,0 +1,66 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/ui.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/ui.js#L287" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">NavigationService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">w20CoreUI</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20coreui-service-page w20coreui-service-navigationservice-page"><p>This service provides an api for dealing with routes hierarchy in the application. It is used in themes
+to build the tree menu for instance.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/ui.js#L590" class="view-source icon-eye-open"> </a><h3 id="methods_buildlink">buildLink(path)</h3>
+<div class="buildlink"><div class="w20coreui-service-page w20coreui-service-navigationservice-buildlink-page"><p>This method take a route path and build a suitable link depending on pretty URLs mode. Path is prefixed by
+the hashbang if application is in legacy mode. Path is stripped of starting slash if application is in
+HTML5 mode.</p>
+</div><h5 id="methods_buildlink_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>path</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreui-service-page w20coreui-service-navigationservice-buildlink-page"><p>Route path to build link from.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/ui.js#L462" class="view-source icon-eye-open"> </a><h3 id="methods_computesubtree">computeSubTree(parentMenuTree)</h3>
+<div class="computesubtree"><div class="w20coreui-service-page w20coreui-service-navigationservice-computesubtree-page"><p>Given a parent tree this function will compute the underlying subtree. This function is used to
+determine the deeper level of themes sidebar tree in a recursive way.</p>
+</div><h5 id="methods_computesubtree_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>parentMenuTree</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coreui-service-page w20coreui-service-navigationservice-computesubtree-page"><p>The parent tree</p>
+</div></td></tr></tbody></table><h5 id="methods_computesubtree_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coreui-service-page w20coreui-service-navigationservice-computesubtree-page"><p>The subtree of a parent tree</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/ui.js#L492" class="view-source icon-eye-open"> </a><h3 id="methods_expandedroutecategories">expandedRouteCategories()</h3>
+<div class="expandedroutecategories"><div class="w20coreui-service-page w20coreui-service-navigationservice-expandedroutecategories-page"><p>Return the list of the opened categories in a tree menu</p>
+</div><h5 id="methods_expandedroutecategories_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="w20coreui-service-page w20coreui-service-navigationservice-expandedroutecategories-page"><p>A list of the expanded route categories i.e the categories opened in a route menu of themes</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/ui.js#L573" class="view-source icon-eye-open"> </a><h3 id="methods_refreshnavigation">refreshNavigation()</h3>
+<div class="refreshnavigation"><div class="w20coreui-service-page w20coreui-service-navigationservice-refreshnavigation-page"><p>Refresh the routes hierarchy. This function is used on security event such as login/logout to refresh the available
+routes for instance.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/ui.js#L445" class="view-source icon-eye-open"> </a><h3 id="methods_routetree">routeTree()</h3>
+<div class="routetree"><div class="w20coreui-service-page w20coreui-service-navigationservice-routetree-page"><p>Returns the route hierarchy (i.e organized by categories).</p>
+</div><h5 id="methods_routetree_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coreui-service-page w20coreui-service-navigationservice-routetree-page"><p>A map of routes hierarchically organized</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/ui.js#L539" class="view-source icon-eye-open"> </a><h3 id="methods_routesfromcategory">routesFromCategory(category)</h3>
+<div class="routesfromcategory"><div class="w20coreui-service-page w20coreui-service-navigationservice-routesfromcategory-page"><p>Returns the list of all visible routes from a given category name.</p>
+</div><h5 id="methods_routesfromcategory_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>category</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="w20coreui-service-page w20coreui-service-navigationservice-routesfromcategory-page"><p>The category from which to obtain all the available routes</p>
+</div></td></tr></tbody></table><h5 id="methods_routesfromcategory_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="w20coreui-service-page w20coreui-service-navigationservice-routesfromcategory-page"><p>A list of the visible routes of the supplied category</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/ui.js#L558" class="view-source icon-eye-open"> </a><h3 id="methods_routesfromcategory">routesFromCategory(route)</h3>
+<div class="routesfromcategory"><div class="w20coreui-service-page w20coreui-service-navigationservice-routesfromcategory-page"><p>Routes can be hidden (see security in w20CoreApplication). This function return the visibility state of a given
+route.</p>
+</div><h5 id="methods_routesfromcategory_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>route</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="w20coreui-service-page w20coreui-service-navigationservice-routesfromcategory-page"><p>The route to check visibility of</p>
+</div></td></tr></tbody></table><h5 id="methods_routesfromcategory_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="w20coreui-service-page w20coreui-service-navigationservice-routesfromcategory-page"><p>The visibility status of the route</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/ui.js#L508" class="view-source icon-eye-open"> </a><h3 id="methods_toplevelroutecategories">topLevelRouteCategories()</h3>
+<div class="toplevelroutecategories"><div class="w20coreui-service-page w20coreui-service-navigationservice-toplevelroutecategories-page"><p>The top level categories are the one that appear first in a menu before any tree are opened. This function
+return these top level categories.</p>
+</div><h5 id="methods_toplevelroutecategories_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="w20coreui-service-page w20coreui-service-navigationservice-toplevelroutecategories-page"><p>A list of the top level categories</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/ui.js#L523" class="view-source icon-eye-open"> </a><h3 id="methods_toplevelroutes">topLevelRoutes()</h3>
+<div class="toplevelroutes"><div class="w20coreui-service-page w20coreui-service-navigationservice-toplevelroutes-page"><p>Routes that are not part of a category are top level routes. Returns a list of these routes.</p>
+</div><h5 id="methods_toplevelroutes_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="w20coreui-service-page w20coreui-service-navigationservice-toplevelroutes-page"><p>A list of the top level routes</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

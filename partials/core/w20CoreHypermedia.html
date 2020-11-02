@@ -1,0 +1,33 @@
+<a href="https://github.com/w20-framework/w20/edit/master/modules/hypermedia.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/w20-framework/w20/blob/3a26135/modules/hypermedia.js#L58" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">w20CoreHypermedia</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="w20corehypermedia-page"><p>This module provide a support for working with hypermedia api.
+The following hypermedia type are supported:</p>
+<ul>
+<li>JSON-HOME document for configuring the entry points to an hypermedia api</li>
+<li>HAL document for the actual hypermedia resources</li>
+</ul>
+<h3 id="description_configuration">Configuration</h3>
+<p>Values of field are the default values</p>
+<pre><code> &quot;hypermedia&quot;: {
+     // a map of APIs name to the actual url of the API exposing a JSON-HOME document
+      api: {},
+      // Automatically transform all responses served as application/hal+json
+      interceptAll: true
+      // The name of the property used to reference resources links. Default to the one used in the HAL specification.
+      linksKey: &#39;_links&#39;
+      // The name of the property used to reference resources links url. Default to the one used in the HAL specification.
+      linksHrefKey: &#39;href&#39;,
+      // The name of the property used to reference resources self links. Default to the one used in the HAL specification.
+      linksSelfLinkName: &#39;self&#39;,
+      // The name of the property used to reference resources embedded resources. Default to the one used in the HAL specification.
+      embeddedKey: &#39;_embedded&#39;,
+      // The name of the property to add to $resource objects to retrieve embedded resources.
+      embeddedNewKey: &#39;$embedded&#39;,
+      // The name of the property to add to $resource objects to retrieve resources links.
+      resourcesKey: &#39;$links&#39;,
+ }
+</code></pre></div></div>
+</div>
