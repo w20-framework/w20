@@ -90,8 +90,8 @@ angular-touch@^1.7.1:
   resolved "https://registry.yarnpkg.com/angular-touch/-/angular-touch-1.7.2.tgz#54ba21e67520b0fbf6a1c7a7cfa45fbd8fc59ef7"
 
 angular@^1.7.1:
-  version "1.7.9"
-  resolved "https://registry.yarnpkg.com/angular/-/angular-1.7.9.tgz#e52616e8701c17724c3c238cfe4f9446fd570bc4"
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/angular/-/angular-1.8.3.tgz#851ad75d5163c105a7e329555ef70c90aa706894"
 
 ansi-regex@^2.0.0:
   version "2.1.1"
